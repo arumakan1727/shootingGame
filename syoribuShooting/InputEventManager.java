@@ -57,7 +57,7 @@ public class InputEventManager
     public void keyPressed(KeyEvent e)
     {
         keyState[e.getKeyCode()] = true;
-        System.out.println(e.getKeyCode());
+//        System.out.println(e.getKeyCode());
     }
 
     @Override
@@ -73,7 +73,7 @@ public class InputEventManager
     public void mousePressed(MouseEvent e)
     {
         mouseState[e.getButton()] = true;
-        System.out.println(e.getButton());
+//        System.out.println(e.getButton());
     }
 
     @Override

@@ -57,4 +57,9 @@ public class GameWindow
     {
         return eventManager;
     }
+    
+    public void setTitle(String title)
+    {
+        this.window.setTitle(title);
+    }
 }
