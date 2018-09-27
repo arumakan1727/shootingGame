@@ -17,6 +17,7 @@ public class Target extends Sprite
 
         this.img = img;
         this.setState(State.ZOOM_UP);
+        this.setZoom(0);
         this.setCenterX(centerX);
         this.setCenterY(centerY);
         this.setLoopCount(0);
@@ -26,8 +27,6 @@ public class Target extends Sprite
     {
         int loopCount = this.getLoopCount() + 1;
         this.setLoopCount(loopCount);
-        
-        System.out.printf("zoom: %d\n", this.getZoom());
         
         switch (this.getState()) {
         case ZOOM_UP:
@@ -57,21 +56,20 @@ public class Target extends Sprite
         int zoom = this.getZoom();
         double prevCX = this.getCenterX();
         double prevCY = this.getCenterY();
+        boolean canZoom = true;
+
+        zoom += addition;
 
         if (zoom >= MAX_ZOOM_UP)
         {
-            this.setZoom(MAX_ZOOM_UP);
-            this.setCenterX(prevCX);
-            this.setCenterY(prevCY);
-            return false;
+            zoom = MAX_ZOOM_UP;
+            canZoom = false;
         }
-        
-        zoom += addition;
         this.setZoom(zoom);
         this.setCenterX(prevCX);
         this.setCenterY(prevCY);
-        
-        return true;
+
+        return canZoom;
     }
     
     public void draw(Graphics2D g2d)

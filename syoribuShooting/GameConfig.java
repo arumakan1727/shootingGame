@@ -26,7 +26,7 @@ public final class GameConfig
         isFullScreen = true;
         
         try {
-            img_target = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "target-test.png"));
+            img_target = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "target01.png"));
         } catch (IOException e){
             e.printStackTrace();
             System.exit(1);
