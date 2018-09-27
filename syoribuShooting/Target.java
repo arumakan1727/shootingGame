@@ -3,33 +3,23 @@ package syoribuShooting;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-public class Target
+public class Target extends Sprite
 {
-    protected static final double MAX_ZOOM_UP = 1.0;
+    protected static final int MAX_ZOOM_UP = 100;
     
     protected BufferedImage img;
-    private double x, y;
     private int loopCount;
     private State state;
-    
-    private final int defaultWidth;
-    private final int defaultHeight;
-    
-    private int imgWidth;
-    private int imgHeight;
-    private double zoom; // 何倍にするか
-    
+        
     public Target(BufferedImage img, double centerX, double centerY)
     {
+        super(img.getWidth(), img.getHeight());
+
         this.img = img;
-        this.defaultHeight = this.img.getHeight();
-        this.defaultWidth =  this.img.getWidth();
         this.setState(State.ZOOM_UP);
-        this.setLoopCount(0);
-        
         this.setCenterX(centerX);
         this.setCenterY(centerY);
-        this.setZoom(0);
+        this.setLoopCount(0);
     }
     
     public void update(Game game)
@@ -37,13 +27,13 @@ public class Target
         int loopCount = this.getLoopCount() + 1;
         this.setLoopCount(loopCount);
         
-        System.out.printf("zoom: %2.2f\n", this.getZoom());
+        System.out.printf("zoom: %d\n", this.getZoom());
         
         switch (this.getState()) {
         case ZOOM_UP:
             if (loopCount < 20) break;
             
-            if (this.zoomUp(0.24) == false)
+            if (this.zoomUp(15) == false)
             {
                 this.setState(State.FLY);
             }
@@ -62,9 +52,9 @@ public class Target
         }
     }
     
-    protected boolean zoomUp(double addition)
+    protected boolean zoomUp(int addition)
     {
-        double zoom = this.getZoom();
+        int zoom = this.getZoom();
         double prevCX = this.getCenterX();
         double prevCY = this.getCenterY();
 
@@ -86,95 +76,9 @@ public class Target
     
     public void draw(Graphics2D g2d)
     {
-        g2d.drawImage(this.img, (int)this.getX(), (int)this.getY(), this.getImgWidth(), this.getImgHeight(), null);
+        g2d.drawImage(this.img, (int)this.getX(), (int)this.getY(), this.getWidth(), this.getHeight(), null);
     }
     
-    public double getZoom()
-    {
-        return zoom;
-    }
-    
-    public void setZoom(double zoom) throws IllegalArgumentException
-    {
-        if (zoom < 0) throw new IllegalArgumentException();
-        
-        this.zoom = zoom;
-        this.setImgWidth((int)(this.getDefaultWidth() * zoom));
-        this.setImgHeight((int)(this.getDefaultHeight() * zoom));
-    }
-    
-    public int getImgWidth()
-    {
-        return imgWidth;
-    }
-
-    public void setImgWidth(int imgWidth)
-    {
-        this.imgWidth = imgWidth;
-    }
-
-    public int getImgHeight()
-    {
-        return imgHeight;
-    }
-
-    public void setImgHeight(int imgHeight)
-    {
-        this.imgHeight = imgHeight;
-    }
-
-    public int getDefaultWidth()
-    {
-        return defaultWidth;
-    }
-
-    public int getDefaultHeight()
-    {
-        return defaultHeight;
-    }
-
-    
-    public double getCenterX()
-    {
-        return this.getX() + this.getImgWidth() / 2;
-    }
-    
-    public void setCenterX(double centerX)
-    {
-        this.setX(centerX - this.getImgWidth() / 2);
-    }
-
-
-    public double getCenterY()
-    {
-        return this.getY() + this.getImgHeight() / 2;
-    }
-    
-    public void setCenterY(double centerY)
-    {
-        this.setY(centerY - this.getImgHeight() / 2);
-    }
-    
-    public double getX()
-    {
-        return x;
-    }
-
-    public void setX(double x)
-    {
-        this.x = x;
-    }
-
-    public double getY()
-    {
-        return y;
-    }
-
-    public void setY(double y)
-    {
-        this.y = y;
-    }
-
     public State getState()
     {
         return state;
