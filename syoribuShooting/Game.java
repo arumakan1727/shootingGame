@@ -3,6 +3,7 @@ package syoribuShooting;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 public class Game extends FPSTimer
 {
@@ -25,6 +26,13 @@ public class Game extends FPSTimer
         }
         
         target.update(this);
+
+        if (eventManager.mousePressed(MouseEvent.BUTTON1)) {
+            if (target.getBounds().isContain(eventManager.mouseX(), eventManager.mouseY()))
+            {
+                x = 0;
+            }
+        }
     }
 
     void draw(Graphics2D g2d)

@@ -50,6 +50,11 @@ public class Target extends Sprite
             break;
         }
     }
+
+    public Bounds getBounds()
+    {
+        return new CircleBounds(this.getCenterX(), this.getCenterY(), this.getWidth() / 2);
+    }
     
     protected boolean zoomUp(int addition)
     {
