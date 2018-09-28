@@ -55,7 +55,7 @@ public class CircleBounds extends Bounds
         this.radius = radius;
     }
 
-    private int sqr(int n) throws ArithmeticException
+    private static int sqr(int n) throws ArithmeticException
     {
         if (n > 45000) throw new ArithmeticException(n + "^2 is too large for int");
         return n * n;

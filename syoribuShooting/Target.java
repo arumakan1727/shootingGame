@@ -23,7 +23,7 @@ public class Target extends Sprite
         this.setLoopCount(0);
     }
     
-    public void update(Game game)
+    public void update(final Game game)
     {
         int loopCount = this.getLoopCount() + 1;
         this.setLoopCount(loopCount);
@@ -32,20 +32,9 @@ public class Target extends Sprite
         case ZOOM_UP:
             if (loopCount < 20) break;
             
-            if (this.zoomUp(15) == false)
+            if (this.zoomUp(20) == false)
             {
                 this.setState(State.FLY);
-            }
-            break;
-            
-        case FLY:
-            if (loopCount > 60)
-            {
-                this.setLoopCount(0);
-                this.setState(State.ZOOM_UP);
-                this.setZoom(0);
-                this.setCenterX(800);
-                this.setCenterY(400);
             }
             break;
         }
@@ -77,7 +66,7 @@ public class Target extends Sprite
         return canZoom;
     }
     
-    public void draw(Graphics2D g2d)
+    public void draw(final Graphics2D g2d)
     {
         g2d.drawImage(this.img, (int)this.getX(), (int)this.getY(), this.getWidth(), this.getHeight(), null);
     }
@@ -110,6 +99,7 @@ public class Target extends Sprite
     {
         ZOOM_UP,
         FLY,
+        BREAK,
         DISPOSE
     }
 }

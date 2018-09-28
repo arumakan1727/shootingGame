@@ -14,6 +14,15 @@ public class InputEventManager
     private int mouseX, mouseY;
     private final boolean[] keyState    = new boolean[525];
     private final boolean[] mouseState  = new boolean[4];
+    private final boolean[] mouseClickedState = new boolean[4];
+    
+    public void update()
+    {
+        this.mouseClickedState[0] =
+                mouseClickedState[1] =
+                mouseClickedState[2] =
+                mouseClickedState[3] = false;
+    }
     
     public InputEventManager(Component component)
     {
@@ -67,7 +76,10 @@ public class InputEventManager
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) { }
+    public void mouseClicked(MouseEvent e)
+    {
+        this.mouseClickedState[e.getButton()] = true;
+    }
 
     @Override
     public void mousePressed(MouseEvent e)
@@ -96,5 +108,10 @@ public class InputEventManager
     {
         this.mouseX = e.getX();
         this.mouseY = e.getY();
+    }
+
+    public boolean mouseClicked(int mouseButtonCode)
+    {
+        return this.mouseClickedState[mouseButtonCode];
     }
 }

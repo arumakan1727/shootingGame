@@ -11,14 +11,13 @@ public class Game extends FPSTimer
     private final InputEventManager eventManager;
     private int x;
     private Target target;
+    private Color color;
+    
+    private TargetManager targetManager;
 
-    void update()
+    private void update()
     {
-        if (this.eventManager.keyPressed(KeyEvent.VK_ESCAPE))
-        {
-            this.stop();
-            System.exit(0);
-        }
+        
         x += 3;
         if (x > GameConfig.WINDOW_WIDTH)
         {
@@ -27,40 +26,54 @@ public class Game extends FPSTimer
         
         target.update(this);
 
-        if (eventManager.mousePressed(MouseEvent.BUTTON1)) {
+        if (eventManager.mouseClicked(MouseEvent.BUTTON1)) {
             if (target.getBounds().isContain(eventManager.mouseX(), eventManager.mouseY()))
             {
-                x = 0;
+                color = (color.equals(Color.RED)) ? Color.YELLOW : Color.red;
             }
         }
     }
 
-    void draw(Graphics2D g2d)
+    private void draw(Graphics2D g2d)
     {
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
-        g2d.setColor(Color.cyan);
+        g2d.setColor(this.color);
         g2d.fillRect(x, 5, 100, 20);
         
         target.draw(g2d);
     }
     
-    void initialize()
+    private void initialize()
     {
         target = new Target(GameConfig.img_target, 800, 400);
+        color = Color.RED;
+    }
+    
+    private void checkCloseTrigger()
+    {
+        if (this.eventManager.keyPressed(KeyEvent.VK_ESCAPE) && this.eventManager.keyPressed(KeyEvent.VK_SHIFT))
+        {
+            this.stop();
+            System.exit(0);
+        }
     }
 
     // ::::::: 変更禁止 :::::::
     // FPS毎にこの関数が呼び出される
     @Override
-        public void callBack()
-        {
-            this.update();
-            Graphics2D g2d = this.window.getCanvas().getRenderer();
-            this.draw(g2d);
-            g2d.dispose();
-            this.window.getCanvas().showBuffer();
-        }
+    public void callBack()
+    {
+        checkCloseTrigger();
+        
+        this.update();
+        this.eventManager.update();
+
+        Graphics2D g2d = this.window.getCanvas().getRenderer();
+        this.draw(g2d);
+        g2d.dispose();
+        this.window.getCanvas().showBuffer();
+    }
 
     public InputEventManager getEventManager()
     {
@@ -74,6 +87,7 @@ public class Game extends FPSTimer
         this.window = new GameWindow( GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT, GameConfig.isFullScreen);
         this.window.setTitle("SyoribuShooting");
         this.eventManager = window.getEventManager();
+        this.targetManager = new TargetManager();
         this.initialize();
         this.start();
     }
