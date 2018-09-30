@@ -10,8 +10,7 @@ public class Game extends FPSTimer
     private final GameWindow window;
     private final InputEventManager eventManager;
     private int x;
-    private Target target;
-    private Color color;
+    private GameStage nowStage;
     
     private TargetManager targetManager;
 
@@ -24,30 +23,24 @@ public class Game extends FPSTimer
             x = 0;
         }
         
-        target.update(this);
+        nowStage.update(this);
 
-        if (eventManager.mouseClicked(MouseEvent.BUTTON1)) {
-            if (target.getBounds().isContain(eventManager.mouseX(), eventManager.mouseY()))
-            {
-                color = (color.equals(Color.RED)) ? Color.YELLOW : Color.red;
-            }
-        }
     }
 
     private void draw(Graphics2D g2d)
     {
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
-        g2d.setColor(this.color);
+        g2d.setColor(Color.GRAY);
         g2d.fillRect(x, 5, 100, 20);
         
-        target.draw(g2d);
+        nowStage.draw(g2d);
     }
     
     private void initialize()
     {
-        target = new Target(GameConfig.img_target, 800, 400);
-        color = Color.RED;
+//        target = new Target(GameConfig.img_target, 800, 400);
+//        color = Color.RED;
     }
     
     private void checkCloseTrigger()
@@ -87,7 +80,8 @@ public class Game extends FPSTimer
         this.window = new GameWindow( GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT, GameConfig.isFullScreen);
         this.window.setTitle("SyoribuShooting");
         this.eventManager = window.getEventManager();
-        this.targetManager = new TargetManager();
+        this.targetManager = new TargetManager(this.eventManager);
+        this.nowStage = new RandomStage1(targetManager);
         this.initialize();
         this.start();
     }

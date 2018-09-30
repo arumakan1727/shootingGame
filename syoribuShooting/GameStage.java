@@ -1,17 +1,31 @@
 package syoribuShooting;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 public abstract class GameStage
 {
-    private final TargetManager targetManager;
+    protected final TargetManager targetManager;
+    private BufferedImage backImage;
     
-    public GameStage(final TargetManager manager)
+    public GameStage(final TargetManager manager, BufferedImage img)
     {
         this.targetManager = manager;
+        this.setBackImage(img);
+        this.targetManager.initialize();
     }
     
-    abstract public void update(Game game);
+    abstract public void update(final Game game);
     
-    abstract public void draw(Graphics2D g2d);
+    abstract public void draw(final Graphics2D g2d);
+
+    public BufferedImage getBackImage()
+    {
+        return backImage;
+    }
+
+    public void setBackImage(BufferedImage backImage)
+    {
+        this.backImage = backImage;
+    }
 }
