@@ -1,4 +1,4 @@
-package syoribuShooting;
+package syoribuShooting.sprite;
 
 public abstract class Sprite
 {

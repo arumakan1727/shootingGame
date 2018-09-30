@@ -1,9 +1,12 @@
 package syoribuShooting;
 
-import java.awt.Color;
+import syoribuShooting.stage.GameStage;
+import syoribuShooting.stage.RandomStage1;
+import syoribuShooting.system.FPSTimer;
+import syoribuShooting.system.GameWindow;
+
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 public class Game extends FPSTimer
 {
@@ -32,7 +35,7 @@ public class Game extends FPSTimer
     
     private void initialize()
     {
-        //this.window.getCanvas().setCursor(GameConfig.shootingCursor);
+        this.window.getCanvas().setCursor(GameConfig.shootingCursor);
     }
     
     private void checkCloseTrigger()

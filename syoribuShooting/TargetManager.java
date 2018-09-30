@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.ListIterator;
 
-import syoribuShooting.Target.State;
+import syoribuShooting.sprite.Target;
+import syoribuShooting.sprite.Target.State;
+import syoribuShooting.stage.GameStage;
 
 public class TargetManager
 {

@@ -1,4 +1,6 @@
-package syoribuShooting;
+package syoribuShooting.sprite;
+
+import syoribuShooting.Game;
 
 import java.awt.image.BufferedImage;
 
@@ -7,7 +9,7 @@ public class StaticTarget extends Target
     private static final int SCORE = 100;
 
     @Override
-    int getScore()
+    public int getScore()
     {
         return SCORE;
     }

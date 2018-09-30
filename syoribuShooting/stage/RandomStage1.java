@@ -1,4 +1,10 @@
-package syoribuShooting;
+package syoribuShooting.stage;
+
+import syoribuShooting.Game;
+import syoribuShooting.TargetManager;
+import syoribuShooting.sprite.StaticTarget;
+import syoribuShooting.stage.GameStage;
+import syoribuShooting.GameConfig;
 
 import java.awt.Graphics2D;
 

@@ -1,4 +1,9 @@
-package syoribuShooting;
+package syoribuShooting.sprite;
+
+import syoribuShooting.Game;
+import syoribuShooting.sprite.Bounds;
+import syoribuShooting.sprite.CircleBounds;
+import syoribuShooting.sprite.Sprite;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -11,7 +16,7 @@ public abstract class Target extends Sprite
     private int loopCount;
     private State state;
 
-    abstract int getScore();
+    abstract public int getScore();
 
     public Target(BufferedImage img, double centerX, double centerY)
     {

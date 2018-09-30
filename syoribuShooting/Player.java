@@ -1,5 +1,8 @@
 package syoribuShooting;
 
+import syoribuShooting.sprite.Target;
+import syoribuShooting.stage.GameStage;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;

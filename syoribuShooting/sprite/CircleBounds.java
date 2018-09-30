@@ -1,4 +1,4 @@
-package syoribuShooting;
+package syoribuShooting.sprite;
 
 public class CircleBounds extends Bounds
 {

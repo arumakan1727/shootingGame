@@ -8,16 +8,16 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-final class GameConfig
+public final class GameConfig
 {
     
-    static final int WINDOW_WIDTH;
-    static final int WINDOW_HEIGHT;
-    static final int FPS;
-    static final boolean isFullScreen;
-    static final String PATH_IMAGE;
-    static final Cursor shootingCursor;
-    static BufferedImage
+    public static final int WINDOW_WIDTH;
+    public static final int WINDOW_HEIGHT;
+    public static final int FPS;
+    public static final boolean isFullScreen;
+    public static final String PATH_IMAGE;
+    public static final Cursor shootingCursor;
+    public static BufferedImage
             img_shootingCursor,
             img_target,
             img_back01;
@@ -44,6 +44,9 @@ final class GameConfig
 
         shootingCursor = toolkit.createCustomCursor(img_shootingCursor, new Point(125, 134), "Shooting-Cursor");
         System.out.println("GetResource: done");
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {}
     }
 
 }

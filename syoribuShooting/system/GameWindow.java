@@ -1,4 +1,7 @@
-package syoribuShooting;
+package syoribuShooting.system;
+
+import syoribuShooting.InputEventManager;
+import syoribuShooting.system.BufferedCanvas;
 
 import javax.swing.JFrame;
 import java.awt.GraphicsDevice;

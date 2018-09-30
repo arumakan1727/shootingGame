@@ -1,7 +1,7 @@
 /**
  * 
  */
-package syoribuShooting;
+package syoribuShooting.system;
 
 /**
  * @author ei1727

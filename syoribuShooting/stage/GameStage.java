@@ -1,4 +1,8 @@
-package syoribuShooting;
+package syoribuShooting.stage;
+
+import syoribuShooting.Game;
+import syoribuShooting.TargetManager;
+import syoribuShooting.sprite.Target;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;

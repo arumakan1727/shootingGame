@@ -1,4 +1,4 @@
-package syoribuShooting;
+package syoribuShooting.system;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
