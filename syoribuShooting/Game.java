@@ -9,6 +9,7 @@ public class Game extends FPSTimer
 {
     private final GameWindow window;
     private final InputEventManager eventManager;
+    private final Player player;
     private GameStage nowStage;
     
     private TargetManager targetManager;
@@ -16,15 +17,17 @@ public class Game extends FPSTimer
     private void update()
     {
         nowStage.update(this);
+        player.update(this);
     }
 
     private void draw(Graphics2D g2d)
     {
         nowStage.draw(g2d);
+        player.draw(g2d);
 
-        final boolean mousePressed = this.eventManager.isMousePressed(MouseEvent.BUTTON1);
-        g2d.setColor(Color.MAGENTA);
-        g2d.drawString("isMousePressed: " + (mousePressed? "ON" : "OFF"), 30, 30);
+//        final boolean mousePressed = this.eventManager.isMousePressed(MouseEvent.BUTTON1);
+//        g2d.setColor(Color.MAGENTA);
+//        g2d.drawString("isMousePressed: " + (mousePressed? "ON" : "OFF"), 30, 30);
     }
     
     private void initialize()
@@ -62,15 +65,26 @@ public class Game extends FPSTimer
         return this.eventManager;
     }
 
+    public void setNowStage(final GameStage stage)
+    {
+        this.nowStage = stage;
+    }
+    public GameStage getNowStage()
+    {
+        return this.nowStage;
+    }
+
 
     public Game()
     {
         super(GameConfig.FPS);
         this.window = new GameWindow( GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT, GameConfig.isFullScreen);
-        this.window.setTitle("SyoribuShooting");
+        this.window.setTitle("Syoribu-Shooting");
         this.eventManager = window.getEventManager();
         this.targetManager = new TargetManager(this.eventManager);
         this.nowStage = new RandomStage1(targetManager);
+        this.player = Player.getInstance();
+
         this.initialize();
         this.start();
     }

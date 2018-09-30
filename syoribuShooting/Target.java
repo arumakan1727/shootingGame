@@ -3,14 +3,16 @@ package syoribuShooting;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-public class Target extends Sprite
+public abstract class Target extends Sprite
 {
     protected static final int MAX_ZOOM_UP = 100;
     
     protected BufferedImage img;
     private int loopCount;
     private State state;
-        
+
+    abstract int getScore();
+
     public Target(BufferedImage img, double centerX, double centerY)
     {
         super(img.getWidth(), img.getHeight());

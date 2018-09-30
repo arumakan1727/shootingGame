@@ -33,14 +33,19 @@ public class TargetManager
                 }
             }
         }
+
+        GameStage stage = game.getNowStage();
+        Target hitTarget = null;
+
         if (eventManager.isMouseReleased(MouseEvent.BUTTON1))
         {
-            final Target hitTarget = checkHit(eventManager.mouseX(), eventManager.mouseY());
+            hitTarget = checkHit(eventManager.mouseX(), eventManager.mouseY());
             if (hitTarget != null)
             {
                 hitTarget.setState(State.DISPOSE);
             }            
         }
+        stage.setHitTarget(hitTarget);
     }
     
     public void draw(final Graphics2D g2d)

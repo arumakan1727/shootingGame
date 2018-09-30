@@ -7,6 +7,7 @@ public abstract class GameStage
 {
     protected final TargetManager targetManager;
     private BufferedImage backImage;
+    private Target hitTarget;
     
     public GameStage(final TargetManager manager, BufferedImage img)
     {
@@ -27,5 +28,15 @@ public abstract class GameStage
     public void setBackImage(BufferedImage backImage)
     {
         this.backImage = backImage;
+    }
+
+    public Target getHitTarget()
+    {
+        return hitTarget;
+    }
+
+    public void setHitTarget(Target hitTarget)
+    {
+        this.hitTarget = hitTarget;
     }
 }

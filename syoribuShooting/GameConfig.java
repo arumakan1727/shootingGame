@@ -8,16 +8,16 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public final class GameConfig
+final class GameConfig
 {
     
-    public static final int WINDOW_WIDTH;
-    public static final int WINDOW_HEIGHT;
-    public static final int FPS;
-    public static final boolean isFullScreen;
-    public static final String PATH_IMAGE;
-    public static final Cursor shootingCursor;
-    public static BufferedImage
+    static final int WINDOW_WIDTH;
+    static final int WINDOW_HEIGHT;
+    static final int FPS;
+    static final boolean isFullScreen;
+    static final String PATH_IMAGE;
+    static final Cursor shootingCursor;
+    static BufferedImage
             img_shootingCursor,
             img_target,
             img_back01;

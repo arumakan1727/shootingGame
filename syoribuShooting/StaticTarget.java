@@ -4,6 +4,13 @@ import java.awt.image.BufferedImage;
 
 public class StaticTarget extends Target
 {
+    private static final int SCORE = 100;
+
+    @Override
+    int getScore()
+    {
+        return SCORE;
+    }
 
     public StaticTarget(BufferedImage img, double centerX, double centerY)
     {
