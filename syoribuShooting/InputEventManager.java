@@ -13,23 +13,23 @@ public class InputEventManager
     private final Component component;
     private int mouseX, mouseY;
     private final boolean[] keyState    = new boolean[525];
-    private final boolean[] mouseState  = new boolean[4];
-    private final boolean[] mouseClickedState = new boolean[4];
-    
-    public void update()
-    {
-        this.mouseClickedState[0] =
-                mouseClickedState[1] =
-                mouseClickedState[2] =
-                mouseClickedState[3] = false;
-    }
-    
+    private final boolean[] mousePressedState = new boolean[4];
+    private final boolean[] mouseReleasedState = new boolean[4];
+
     public InputEventManager(Component component)
     {
         this.component = component;
         this.component.addKeyListener(this);
         this.component.addMouseListener(this);
         this.component.addMouseMotionListener(this);
+    }
+
+    public void update()
+    {
+        mouseReleasedState[0] = false;
+        mouseReleasedState[1] = false;
+        mouseReleasedState[2] = false;
+        mouseReleasedState[3] = false;
     }
 
     public int mouseX()
@@ -46,18 +46,21 @@ public class InputEventManager
 
 
 
-    public boolean keyPressed(int keyCode)
+    public boolean isKeyPressed(int keyCode)
     {
         return keyState[keyCode];
     }
 
 
-
-    public boolean mousePressed(int mouseButtonCode)
+    public boolean isMousePressed(int mouseButtonCode)
     {
-        return mouseState[mouseButtonCode];
+        return mousePressedState[mouseButtonCode];
     }
 
+    public boolean isMouseReleased(int mouseButtonCode)
+    {
+        return this.mouseReleasedState[mouseButtonCode];
+    }
 
     @Override
     public void keyTyped(KeyEvent e) { }
@@ -66,7 +69,6 @@ public class InputEventManager
     public void keyPressed(KeyEvent e)
     {
         keyState[e.getKeyCode()] = true;
-//        System.out.println(e.getKeyCode());
     }
 
     @Override
@@ -78,20 +80,23 @@ public class InputEventManager
     @Override
     public void mouseClicked(MouseEvent e)
     {
-        this.mouseClickedState[e.getButton()] = true;
+        this.mouseReleasedState[e.getButton()] = true;
     }
 
     @Override
     public void mousePressed(MouseEvent e)
     {
-        mouseState[e.getButton()] = true;
-//        System.out.println(e.getButton());
+        mousePressedState[e.getButton()] = true;
     }
 
     @Override
     public void mouseReleased(MouseEvent e)
     {
-        mouseState[e.getButton()] = false;
+        final int code = e.getButton();
+        if (mousePressedState[code] == true) {
+            mouseReleasedState[code] = true;
+        }
+        mousePressedState[code] = false;
     }
 
     @Override
@@ -101,7 +106,11 @@ public class InputEventManager
     public void mouseExited(MouseEvent e) { }
 
     @Override
-    public void mouseDragged(MouseEvent e) { }
+    public void mouseDragged(MouseEvent e)
+    {
+       this.mouseX = e.getX();
+       this.mouseY = e.getY();
+    }
 
     @Override
     public void mouseMoved(MouseEvent e)
@@ -110,8 +119,4 @@ public class InputEventManager
         this.mouseY = e.getY();
     }
 
-    public boolean mouseClicked(int mouseButtonCode)
-    {
-        return this.mouseClickedState[mouseButtonCode];
-    }
 }

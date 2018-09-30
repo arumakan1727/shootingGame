@@ -33,7 +33,7 @@ public class TargetManager
                 }
             }
         }
-        if (eventManager.mouseClicked(MouseEvent.BUTTON1))
+        if (eventManager.isMouseReleased(MouseEvent.BUTTON1))
         {
             final Target hitTarget = checkHit(eventManager.mouseX(), eventManager.mouseY());
             if (hitTarget != null)
@@ -78,6 +78,16 @@ public class TargetManager
     public int size()
     {
         return targets.size();
+    }
+
+    public boolean isEmpty()
+    {
+        return targets.isEmpty();
+    }
+
+    public ArrayList getTargets()
+    {
+        return targets;
     }
 
 }

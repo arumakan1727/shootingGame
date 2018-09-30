@@ -9,43 +9,32 @@ public class Game extends FPSTimer
 {
     private final GameWindow window;
     private final InputEventManager eventManager;
-    private int x;
     private GameStage nowStage;
     
     private TargetManager targetManager;
 
     private void update()
     {
-        
-        x += 3;
-        if (x > GameConfig.WINDOW_WIDTH)
-        {
-            x = 0;
-        }
-        
         nowStage.update(this);
-
     }
 
     private void draw(Graphics2D g2d)
     {
-        g2d.setColor(Color.BLACK);
-        g2d.fillRect(0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
-        g2d.setColor(Color.GRAY);
-        g2d.fillRect(x, 5, 100, 20);
-        
         nowStage.draw(g2d);
+
+        final boolean mousePressed = this.eventManager.isMousePressed(MouseEvent.BUTTON1);
+        g2d.setColor(Color.MAGENTA);
+        g2d.drawString("isMousePressed: " + (mousePressed? "ON" : "OFF"), 30, 30);
     }
     
     private void initialize()
     {
-//        target = new Target(GameConfig.img_target, 800, 400);
-//        color = Color.RED;
+        //this.window.getCanvas().setCursor(GameConfig.shootingCursor);
     }
     
     private void checkCloseTrigger()
     {
-        if (this.eventManager.keyPressed(KeyEvent.VK_ESCAPE) && this.eventManager.keyPressed(KeyEvent.VK_SHIFT))
+        if (this.eventManager.isKeyPressed(KeyEvent.VK_ESCAPE) && this.eventManager.isKeyPressed(KeyEvent.VK_SHIFT))
         {
             this.stop();
             System.exit(0);
@@ -60,7 +49,7 @@ public class Game extends FPSTimer
         checkCloseTrigger();
         
         this.update();
-        this.eventManager.update();
+        eventManager.update();
 
         Graphics2D g2d = this.window.getCanvas().getRenderer();
         this.draw(g2d);
