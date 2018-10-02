@@ -3,35 +3,64 @@ package syoribuShooting.stage;
 import syoribuShooting.Game;
 import syoribuShooting.TargetManager;
 import syoribuShooting.sprite.StaticTarget;
-import syoribuShooting.stage.GameStage;
 import syoribuShooting.GameConfig;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 
 public class RandomStage1 extends GameStage
 {
     private static final int NUM_TARGETS = 8;
+    private static final int TIME_LIMIT = 30 * 1000;    // 30秒 (x1000でミリ指定)
 
     public RandomStage1(final TargetManager manager)
     {
         super(manager, GameConfig.img_back01);
-        this.storeTargets(NUM_TARGETS);
+        this.initialize();
     }
 
     @Override
     public void update(final Game game)
     {
-        if (this.targetManager.size() < 7) {
-            storeTargets((int)(Math.random() * 6) + 2);
+        switch (this.getState())
+        {
+            case INITIAL_WAITING:
+                this.startTimer();
+                this.setState(State.SHOOTING);
+                break;
+            case SHOOTING:
+                if (this.isOverTimeLimit())
+                {
+                    this.targetManager.getTargets().clear();
+                    this.stopTimer();
+                    this.setState(State.TIME_OVER);
+                }
+                else
+                {
+                    if (this.targetManager.size() < 7) {
+                        storeTargets((int) (Math.random() * 6) + 2);
+                    }
+                    this.targetManager.update(game);
+                }
+                break;
         }
-        this.targetManager.update(game);
     }
 
     @Override
     public void draw(final Graphics2D g2d)
     {
         g2d.drawImage(this.getBackImage(), 0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT, null);
+        g2d.setFont(new Font(Font.MONOSPACED, Font.ITALIC, 30));
+        g2d.setColor(Color.GREEN);
+        g2d.drawString("Time: " + this.getElapsedMillis() / 1000, GameConfig.WINDOW_WIDTH - 300, 30);
         this.targetManager.draw(g2d);
+    }
+
+    @Override
+    public int getTimeLimitMillis()
+    {
+        return TIME_LIMIT;
     }
 
     private void storeTargets(int num)
@@ -42,5 +71,12 @@ public class RandomStage1 extends GameStage
             double centerY = Math.random() * GameConfig.WINDOW_HEIGHT;
             this.targetManager.add(new StaticTarget(GameConfig.img_target, centerX, centerY));
         }
+    }
+
+    public void initialize()
+    {
+        this.storeTargets(NUM_TARGETS);
+        this.setState(State.INITIAL_WAITING);
+        this.initTimer();
     }
 }
