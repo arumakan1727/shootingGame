@@ -1,29 +1,18 @@
 package syoribuShooting.system;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class StopWatch
 {
     private final static int TIMER_INTERVAL = 20;
-    private final Timer timer;
-    private final TimerTask timerTask;
+    private long startTime;
     private int elapsed;
-    private int limit;
+    private int addition;
+    private int timeLimit;
+    private boolean running;
 
     public StopWatch()
     {
-        this.timer = new Timer();
-        this.timerTask = new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                addElapsed(TIMER_INTERVAL);
-            }
-        };
-
         this.setTimeLimitMillis(-1);
+        this.running = false;
     }
 
     public void initTimer()
@@ -31,52 +20,73 @@ public class StopWatch
         this.initTimer(-1);
     }
 
+    private void updateElapsed()
+    {
+        if (this.running) {
+            elapsed = (int)(System.currentTimeMillis() - this.startTime);
+        }
+    }
+
     public void initTimer(int limit)
     {
         this.setTimeLimitMillis(limit);
         this.setElapsed(0);
+        this.startTime = -1;
+        this.addition = 0;
+        this.running = false;
     }
 
     public void startTimer()
     {
-        this.timer.scheduleAtFixedRate(this.timerTask, 0, TIMER_INTERVAL);
+        if (this.startTime >= 0) {
+            initTimer();
+        }
+        this.running = true;
+        this.startTime = System.currentTimeMillis();
+    }
+
+    public void restartTimer()
+    {
+        this.running = true;
     }
 
     public void stopTimer()
     {
-        this.timer.cancel();
-    }
-
-    public boolean isOverTimeLimit()
-    {
-        if (getTimeLimitMillis() < 0) throw new IllegalStateException("TimeLimit is Undefined.");
-        return this.getElapsedMillis() >= this.getTimeLimitMillis();
-    }
-
-    public synchronized int getElapsedMillis()
-    {
-        return this.elapsed;
+        this.running = false;
     }
 
     public int getElapsedSec()
     {
-        return this.getElapsedMillis() / 1000;
+        return this.getElapsed() / 1000;
     }
 
-    public synchronized void setElapsed(int e)
+    public int getElapsed()
+    {
+        this.updateElapsed();
+        return this.elapsed + addition;
+    }
+
+    private void setElapsed(int e)
     {
         this.elapsed = e;
     }
 
+    public boolean isOverTimeLimit()
+    {
+        if (getTimeLimit() < 0) throw new IllegalStateException("TimeLimit is Undefined.");
+        return this.getElapsed() >= this.getTimeLimit();
+    }
+
+
     public void addElapsed(int addition)
     {
-        this.setElapsed(getElapsedMillis() + addition);
+        this.addition += addition;
     }
 
     public int getRemainTime()
     {
-        if(getTimeLimitMillis() < 0) throw new IllegalStateException("TimeLimit is Undefined.");
-        return this.getTimeLimitMillis() - this.getElapsedMillis();
+        if(getTimeLimit() < 0) throw new IllegalStateException("TimeLimit is Undefined.");
+        return this.getTimeLimit() - this.getElapsed();
     }
 
     public void addRemainTime(int addition)
@@ -84,14 +94,14 @@ public class StopWatch
         this.addElapsed(-addition);
     }
 
-    public int getTimeLimitMillis()
+    public int getTimeLimit()
     {
-        return this.limit;
+        return this.timeLimit;
     }
 
     public void setTimeLimitMillis(int limit)
     {
-        this.limit = limit;
+        this.timeLimit = limit;
     }
 
 
