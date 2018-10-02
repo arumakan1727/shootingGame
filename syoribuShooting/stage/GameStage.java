@@ -13,6 +13,7 @@ public abstract class GameStage
 {
     protected final static int TIMER_INTERVAL = 20; // ミリ秒指定
 
+    abstract public void initialize();
     abstract public void update(final Game game);
     abstract public void draw(final Graphics2D g2d);
     abstract public int getTimeLimitMillis();
@@ -38,6 +39,7 @@ public abstract class GameStage
         this.setBackImage(img);
         this.targetManager.initialize();
         this.timer = new Timer();
+        this.setState(State.INITIAL_WAITING);
 
         this.timerTask = new TimerTask()
         {
@@ -47,6 +49,7 @@ public abstract class GameStage
                 setElapsed(getElapsedMillis() + TIMER_INTERVAL);
             }
         };
+        this.initialize();
     }
 
 
@@ -105,8 +108,30 @@ public abstract class GameStage
         return this.elapsed;
     }
 
-    private synchronized void setElapsed(int e)
+    public int getElapsedSec()
+    {
+        return this.getElapsedMillis() / 1000;
+    }
+
+    public synchronized void setElapsed(int e)
     {
         this.elapsed = e;
     }
+
+    public void addElapsed(int addition)
+    {
+        this.setElapsed(getElapsedMillis() + addition);
+    }
+
+    public int getRemainTime()
+    {
+        return this.getTimeLimitMillis() - this.getElapsedMillis();
+    }
+
+    public void addRemainTime(int addition)
+    {
+        this.addElapsed(-addition);
+    }
+
+
 }

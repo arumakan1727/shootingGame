@@ -30,7 +30,7 @@ public final class GameConfig
         WINDOW_WIDTH    = (int)(toolkit.getScreenSize().getWidth());
         WINDOW_HEIGHT   = (int)(toolkit.getScreenSize().getHeight());
         FPS = 40;
-        isFullScreen = true;
+        isFullScreen = false;
         PATH_IMAGE = "/images/";
 
         try {

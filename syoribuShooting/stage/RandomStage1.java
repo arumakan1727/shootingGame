@@ -17,7 +17,6 @@ public class RandomStage1 extends GameStage
     public RandomStage1(final TargetManager manager)
     {
         super(manager, GameConfig.img_back01);
-        this.initialize();
     }
 
     @Override
@@ -53,7 +52,7 @@ public class RandomStage1 extends GameStage
         g2d.drawImage(this.getBackImage(), 0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT, null);
         g2d.setFont(new Font(Font.MONOSPACED, Font.ITALIC, 30));
         g2d.setColor(Color.GREEN);
-        g2d.drawString("Time: " + this.getElapsedMillis() / 1000, GameConfig.WINDOW_WIDTH - 300, 30);
+        g2d.drawString("Time: " + this.getElapsedSec(), GameConfig.WINDOW_WIDTH - 200, 40);
         this.targetManager.draw(g2d);
     }
 
@@ -61,6 +60,14 @@ public class RandomStage1 extends GameStage
     public int getTimeLimitMillis()
     {
         return TIME_LIMIT;
+    }
+
+    @Override
+    public void initialize()
+    {
+        this.storeTargets(NUM_TARGETS);
+        this.setState(State.INITIAL_WAITING);
+        this.initTimer();
     }
 
     private void storeTargets(int num)
@@ -71,12 +78,5 @@ public class RandomStage1 extends GameStage
             double centerY = Math.random() * GameConfig.WINDOW_HEIGHT;
             this.targetManager.add(new StaticTarget(GameConfig.img_target, centerX, centerY));
         }
-    }
-
-    public void initialize()
-    {
-        this.storeTargets(NUM_TARGETS);
-        this.setState(State.INITIAL_WAITING);
-        this.initTimer();
     }
 }
