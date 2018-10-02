@@ -1,9 +1,6 @@
 package syoribuShooting.sprite;
 
 import syoribuShooting.Game;
-import syoribuShooting.sprite.Bounds;
-import syoribuShooting.sprite.CircleBounds;
-import syoribuShooting.sprite.Sprite;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;

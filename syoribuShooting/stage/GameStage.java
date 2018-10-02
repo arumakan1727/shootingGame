@@ -3,6 +3,7 @@ package syoribuShooting.stage;
 import syoribuShooting.Game;
 import syoribuShooting.TargetManager;
 import syoribuShooting.sprite.Target;
+import syoribuShooting.system.StopWatch;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -19,11 +20,9 @@ public abstract class GameStage
     abstract public int getTimeLimitMillis();
 
     protected final TargetManager targetManager;
+    protected final StopWatch stopWatch;
     private BufferedImage backImage;
     private Target hitTarget;
-    private final Timer timer;
-    private final TimerTask timerTask;
-    private int elapsed;
     private State state;
 
     public enum State
@@ -36,19 +35,11 @@ public abstract class GameStage
     public GameStage(final TargetManager manager, BufferedImage img)
     {
         this.targetManager = manager;
+        this.stopWatch = new StopWatch();
         this.setBackImage(img);
         this.targetManager.initialize();
-        this.timer = new Timer();
         this.setState(State.INITIAL_WAITING);
 
-        this.timerTask = new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                setElapsed(getElapsedMillis() + TIMER_INTERVAL);
-            }
-        };
         this.initialize();
     }
 
@@ -82,56 +73,5 @@ public abstract class GameStage
     {
         this.state = state;
     }
-
-    public void initTimer()
-    {
-        this.setElapsed(0);
-    }
-
-    public void startTimer()
-    {
-        this.timer.scheduleAtFixedRate(this.timerTask, 0, TIMER_INTERVAL);
-    }
-
-    public void stopTimer()
-    {
-        this.timer.cancel();
-    }
-
-    public boolean isOverTimeLimit()
-    {
-        return this.getElapsedMillis() >= this.getTimeLimitMillis();
-    }
-
-    public synchronized int getElapsedMillis()
-    {
-        return this.elapsed;
-    }
-
-    public int getElapsedSec()
-    {
-        return this.getElapsedMillis() / 1000;
-    }
-
-    public synchronized void setElapsed(int e)
-    {
-        this.elapsed = e;
-    }
-
-    public void addElapsed(int addition)
-    {
-        this.setElapsed(getElapsedMillis() + addition);
-    }
-
-    public int getRemainTime()
-    {
-        return this.getTimeLimitMillis() - this.getElapsedMillis();
-    }
-
-    public void addRemainTime(int addition)
-    {
-        this.addElapsed(-addition);
-    }
-
 
 }

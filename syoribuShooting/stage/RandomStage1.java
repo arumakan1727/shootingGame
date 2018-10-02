@@ -25,14 +25,14 @@ public class RandomStage1 extends GameStage
         switch (this.getState())
         {
             case INITIAL_WAITING:
-                this.startTimer();
+                this.stopWatch.startTimer();
                 this.setState(State.SHOOTING);
                 break;
             case SHOOTING:
-                if (this.isOverTimeLimit())
+                if (this.stopWatch.isOverTimeLimit())
                 {
                     this.targetManager.getTargets().clear();
-                    this.stopTimer();
+                    this.stopWatch.stopTimer();
                     this.setState(State.TIME_OVER);
                 }
                 else
@@ -52,7 +52,7 @@ public class RandomStage1 extends GameStage
         g2d.drawImage(this.getBackImage(), 0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT, null);
         g2d.setFont(new Font(Font.MONOSPACED, Font.ITALIC, 30));
         g2d.setColor(Color.GREEN);
-        g2d.drawString("Time: " + this.getElapsedSec(), GameConfig.WINDOW_WIDTH - 200, 40);
+        g2d.drawString("Time: " + this.stopWatch.getElapsedSec(), GameConfig.WINDOW_WIDTH - 200, 40);
         this.targetManager.draw(g2d);
     }
 
@@ -67,7 +67,7 @@ public class RandomStage1 extends GameStage
     {
         this.storeTargets(NUM_TARGETS);
         this.setState(State.INITIAL_WAITING);
-        this.initTimer();
+        this.stopWatch.initTimer(getTimeLimitMillis());
     }
 
     private void storeTargets(int num)

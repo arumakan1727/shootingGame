@@ -7,6 +7,7 @@ import syoribuShooting.system.GameWindow;
 
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.awt.Cursor;
 
 public class Game extends FPSTimer
 {
@@ -36,6 +37,7 @@ public class Game extends FPSTimer
     private void initialize()
     {
         this.window.getCanvas().setCursor(GameConfig.shootingCursor);
+        //this.window.getCanvas().setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     private void checkCloseTrigger()
