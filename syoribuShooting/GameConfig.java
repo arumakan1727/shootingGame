@@ -1,10 +1,14 @@
 package syoribuShooting;
 
+import syoribuShooting.system.GifReader;
+
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -35,8 +39,8 @@ public final class GameConfig
 
         try {
             img_shootingCursor = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "shooting_cursor.png"));
-            img_target = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "normal_target.png"));
-            img_back01 = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "back01.jpg"));
+            img_target  = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "normal_target.png"));
+            img_back01  = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "back01.jpg"));
         } catch (IOException e){
             e.printStackTrace();
             System.exit(1);

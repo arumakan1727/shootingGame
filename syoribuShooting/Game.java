@@ -32,12 +32,12 @@ public class Game extends FPSTimer
 //        g2d.setColor(Color.MAGENTA);
 //        g2d.drawString("isMousePressed: " + (mousePressed? "ON" : "OFF"), 30, 30);
     }
-    
+
     private void initialize()
     {
         this.window.getCanvas().setCursor(GameConfig.shootingCursor);
     }
-    
+
     private void checkCloseTrigger()
     {
         if (this.eventManager.isKeyPressed(KeyEvent.VK_ESCAPE) && this.eventManager.isKeyPressed(KeyEvent.VK_SHIFT))
@@ -53,7 +53,7 @@ public class Game extends FPSTimer
     public void callBack()
     {
         checkCloseTrigger();
-        
+
         this.update();
         eventManager.update();
 
