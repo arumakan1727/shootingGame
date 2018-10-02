@@ -15,16 +15,21 @@ public class StopWatch
         this.running = false;
     }
 
-    public void initTimer()
-    {
-        this.initTimer(-1);
-    }
-
     private void updateElapsed()
     {
         if (this.running) {
             elapsed = (int)(System.currentTimeMillis() - this.startTime);
         }
+    }
+
+    private void setElapsed(int e)
+    {
+        this.elapsed = e;
+    }
+
+    public void initTimer()
+    {
+        this.initTimer(-1);
     }
 
     public void initTimer(int limit)
@@ -38,6 +43,7 @@ public class StopWatch
 
     public void startTimer()
     {
+        // もし initされていなければ initTimer() を呼ぶ
         if (this.startTime >= 0) {
             initTimer();
         }
@@ -66,11 +72,6 @@ public class StopWatch
         return this.elapsed + addition;
     }
 
-    private void setElapsed(int e)
-    {
-        this.elapsed = e;
-    }
-
     public boolean isOverTimeLimit()
     {
         if (getTimeLimit() < 0) throw new IllegalStateException("TimeLimit is Undefined.");
@@ -91,6 +92,7 @@ public class StopWatch
 
     public void addRemainTime(int addition)
     {
+        if(getTimeLimit() < 0) throw new IllegalStateException("TimeLimit is Undefined.");
         this.addElapsed(-addition);
     }
 
@@ -103,6 +105,5 @@ public class StopWatch
     {
         this.timeLimit = limit;
     }
-
 
 }

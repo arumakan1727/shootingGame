@@ -14,6 +14,7 @@ public class Game extends FPSTimer
     private final GameWindow window;
     private final InputEventManager eventManager;
     private final Player player;
+    private final FeverManager feverManager;
     private GameStage nowStage;
     
     private TargetManager targetManager;
@@ -22,12 +23,14 @@ public class Game extends FPSTimer
     {
         nowStage.update(this);
         player.update(this);
+        feverManager.update(this);
     }
 
     private void draw(Graphics2D g2d)
     {
         nowStage.draw(g2d);
         player.draw(g2d);
+        feverManager.draw(g2d);
 
 //        final boolean mousePressed = this.eventManager.isMousePressed(MouseEvent.BUTTON1);
 //        g2d.setColor(Color.MAGENTA);
@@ -89,6 +92,7 @@ public class Game extends FPSTimer
         this.targetManager = new TargetManager(this.eventManager);
         this.nowStage = new RandomStage1(targetManager);
         this.player = Player.getInstance();
+        this.feverManager = new FeverManager();
 
         this.initialize();
         this.start();
