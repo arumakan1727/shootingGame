@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 public class GifReader
 {
-    public static ArrayList readGif(InputStream is) throws IOException
+    public static ArrayList<BufferedImage> readGif(InputStream is) throws IOException
     {
         ArrayList<BufferedImage> images = new ArrayList<>();
         Iterator<ImageReader> iter = ImageIO.getImageReadersByFormatName("gif");

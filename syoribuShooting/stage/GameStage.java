@@ -7,8 +7,6 @@ import syoribuShooting.system.StopWatch;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public abstract class GameStage
 {

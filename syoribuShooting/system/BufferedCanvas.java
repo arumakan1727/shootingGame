@@ -11,6 +11,7 @@ import java.awt.image.BufferStrategy;
  * @author ei1727
  *
  */
+@SuppressWarnings("serial")
 public class BufferedCanvas extends Canvas
 {
 	/**

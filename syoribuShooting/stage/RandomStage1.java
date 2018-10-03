@@ -11,7 +11,7 @@ import java.awt.Graphics2D;
 
 public class RandomStage1 extends GameStage
 {
-    private static final int NUM_TARGETS = 8;
+    private static final int NUM_TARGETS = 6;
     private static final int TIME_LIMIT = 30 * 1000;    // 30秒 (x1000でミリ指定)
 
     public RandomStage1(final TargetManager manager)
@@ -37,8 +37,8 @@ public class RandomStage1 extends GameStage
                 }
                 else
                 {
-                    if (this.targetManager.size() < 7) {
-                        storeTargets((int) (Math.random() * 6) + 2);
+                    if (this.targetManager.size() < 5) {
+                        storeTargets((int) (Math.random() * 3) + 1);
                     }
                     this.targetManager.update(game);
                 }
@@ -50,9 +50,9 @@ public class RandomStage1 extends GameStage
     public void draw(final Graphics2D g2d)
     {
         g2d.drawImage(this.getBackImage(), 0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT, null);
-        g2d.setFont(new Font(Font.MONOSPACED, Font.ITALIC, 30));
+        g2d.setFont(new Font(Font.MONOSPACED, Font.ITALIC, 70));
         g2d.setColor(Color.GREEN);
-        g2d.drawString("Time: " + this.stopWatch.getElapsedSec(), GameConfig.WINDOW_WIDTH - 200, 40);
+        g2d.drawString("Time: " + this.stopWatch.getElapsedSec(), GameConfig.WINDOW_WIDTH - 500, 80);
         this.targetManager.draw(g2d);
     }
 

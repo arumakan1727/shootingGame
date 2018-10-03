@@ -2,8 +2,9 @@ package syoribuShooting;
 
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 
 import syoribuShooting.sprite.Target;
@@ -12,7 +13,7 @@ import syoribuShooting.stage.GameStage;
 
 public class TargetManager
 {
-    private ArrayList<Target> targets = new ArrayList<>();
+    private List<Target> targets = new LinkedList<>();
     private final InputEventManager eventManager;
     
     public TargetManager(final InputEventManager manager)
@@ -92,7 +93,7 @@ public class TargetManager
         return targets.isEmpty();
     }
 
-    public ArrayList getTargets()
+    public List<Target> getTargets()
     {
         return targets;
     }

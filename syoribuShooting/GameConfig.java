@@ -44,7 +44,7 @@ public final class GameConfig
             System.exit(1);
         }
 
-        shootingCursor = toolkit.createCustomCursor(img_shootingCursor, new Point(125, 134), "Shooting-Cursor");
+        shootingCursor = toolkit.createCustomCursor(img_shootingCursor, new Point(32, 32), "Shooting-Cursor");
         System.out.println("GetResource: done");
         try {
             Thread.sleep(300);
