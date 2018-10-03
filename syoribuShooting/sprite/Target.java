@@ -1,6 +1,8 @@
 package syoribuShooting.sprite;
 
 import syoribuShooting.Game;
+import syoribuShooting.GameConfig;
+import syoribuShooting.InputEventManager;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -29,9 +31,16 @@ public abstract class Target extends Sprite
     
     public void update(final Game game)
     {
+        final InputEventManager eventManager = game.getEventManager();
         int loopCount = this.getLoopCount() + 1;
         this.setLoopCount(loopCount);
-        
+
+
+        if (this.getBounds().isContain(eventManager.mouseX(), eventManager.mouseY()))
+        {
+            game.getPlayer().setTouchingTarget(true);
+        }
+
         switch (this.getState()) {
         case ZOOM_UP:
             if (loopCount < 20) break;

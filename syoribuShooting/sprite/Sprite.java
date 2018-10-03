@@ -9,10 +9,10 @@ public abstract class Sprite
     private int height;
     private int zoom; // 何倍にするか
 
-    public Sprite(int width, int hegit)
+    public Sprite(int width, int height)
     {
         this.defaultWidth =  width;
-        this.defaultHeight = hegit;
+        this.defaultHeight = height;
         this.setZoom(100);
     }
     
@@ -98,6 +98,11 @@ public abstract class Sprite
         this.x = x;
     }
 
+    public void addX(double a)
+    {
+        this.x += a;
+    }
+
     public double getY()
     {
         return y;
@@ -106,6 +111,11 @@ public abstract class Sprite
     public void setY(double y)
     {
         this.y = y;
+    }
+
+    public void addY(double a)
+    {
+        this.y += a;
     }
 
 }

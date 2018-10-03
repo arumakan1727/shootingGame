@@ -1,5 +1,6 @@
 package syoribuShooting;
 
+import syoribuShooting.sprite.HitEffect1;
 import syoribuShooting.sprite.Target;
 import syoribuShooting.stage.GameStage;
 
@@ -13,6 +14,7 @@ public class Player
     private static Player ourInstance = new Player();
     private int score;
     private int comboCount;
+    private boolean touchingTarget;
 
     public static Player getInstance()
     {
@@ -23,13 +25,15 @@ public class Player
     {
         setScore(0);
         setComboCount(0);
+        setTouchingTarget(false);
     }
 
     public void update(Game game)
     {
         final GameStage stage = game.getNowStage();
+        final InputEventManager eventManager = game.getEventManager();
 
-        if (game.getEventManager().isMouseReleased(MouseEvent.BUTTON1))
+        if (eventManager.isMouseReleased(MouseEvent.BUTTON1))
         {
             Target hitTarget = stage.getHitTarget();
             if (hitTarget == null) {
@@ -38,8 +42,18 @@ public class Player
             else {
                 this.addComboCount(1);
                 this.addScore(hitTarget.getScore());
+                game.getEffectManager().addEffect(new HitEffect1(eventManager.mouseX(), eventManager.mouseY(), false));
             }
         }
+
+        if (isTouchingTarget())
+        {
+            game.setCursor(GameConfig.shootingCursorGreen);
+        }
+        else {
+            game.setCursor(GameConfig.shootingCursor);
+        }
+        this.setTouchingTarget(false);
     }
 
     public void draw(Graphics2D g2d)
@@ -76,5 +90,15 @@ public class Player
     public void addComboCount(int addition)
     {
         this.setComboCount(getComboCount() + addition);
+    }
+
+    public boolean isTouchingTarget()
+    {
+        return touchingTarget;
+    }
+
+    public void setTouchingTarget(boolean touchingTarget)
+    {
+        this.touchingTarget = touchingTarget;
     }
 }

@@ -16,15 +16,16 @@ public class Game extends FPSTimer
     private final InputEventManager eventManager;
     private final Player player;
     private final FeverManager feverManager;
+    private final TargetManager targetManager;
+    private final EffectManager effectManager;
     private GameStage nowStage;
-    
-    private TargetManager targetManager;
 
     private void update()
     {
         nowStage.update(this);
         player.update(this);
         feverManager.update(this);
+        effectManager.update(this);
     }
 
     private void draw(Graphics2D g2d)
@@ -35,6 +36,7 @@ public class Game extends FPSTimer
         g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         nowStage.draw(g2d);
+        effectManager.draw(g2d);
         player.draw(g2d);
         feverManager.draw(g2d);
 
@@ -45,7 +47,7 @@ public class Game extends FPSTimer
 
     private void initialize()
     {
-        this.window.getCanvas().setCursor(GameConfig.shootingCursor);
+        this.setCursor(GameConfig.shootingCursor);
         //this.window.getCanvas().setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -90,7 +92,15 @@ public class Game extends FPSTimer
     {
         return this.nowStage;
     }
+    public EffectManager getEffectManager()
+    {
+        return this.effectManager;
+    }
 
+    public void setCursor(final Cursor cursor)
+    {
+        this.window.getCanvas().setCursor(cursor);
+    }
 
     public Game()
     {
@@ -102,6 +112,7 @@ public class Game extends FPSTimer
         this.nowStage = new RandomStage1(targetManager);
         this.player = Player.getInstance();
         this.feverManager = new FeverManager();
+        this.effectManager = new EffectManager();
 
         this.initialize();
         this.start();
