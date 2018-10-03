@@ -2,7 +2,6 @@ package syoribuShooting.system;
 
 public class StopWatch
 {
-    private final static int TIMER_INTERVAL = 20;
     private long startTime;
     private int elapsed;
     private int addition;

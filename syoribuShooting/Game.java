@@ -72,7 +72,10 @@ public class Game extends FPSTimer
     {
         return this.eventManager;
     }
-
+    public Player getPlayer()
+    {
+        return this.player;
+    }
     public void setNowStage(final GameStage stage)
     {
         this.nowStage = stage;
