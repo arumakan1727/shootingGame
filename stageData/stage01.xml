@@ -1,29 +1,41 @@
 <?xml version="1.0" ?>
+<!--
+的の数:3個
+画面左縦に生成、右へ水平移動
+ -->
 <stage>
     <objects>
 
-        <target type="special">
-            <appear zoom="false" delay="30">
-                <delay>30</delay>
-                <pointX>180</pointX>
-                <pointY>180</pointY>
+        <target type="rankC">
+            <appear zoom="true" delay="0">
+                <pointX>50</pointX>
+                <pointY>150</pointY>
             </appear>
-            <motion type="liner" delay="0">
-                <toX>500</toX>
-                <toY>800</toY>
-                <speed>5</speed>
+            <motion type="linear" speed="5.0" acceleration="0.08" delay="0">
+                <toX>$INF</toX>
+                <toY>150</toY>
             </motion>
         </target>
 
-        <target type="normal">
-            <appear zoom="false" delay="30">
-                <pointX>200</pointX>
-                <pointY>180</pointY>
+        <target type="rankC">
+            <appear zoom="true" delay="250">
+                <pointX>50</pointX>
+                <pointY>300</pointY>
             </appear>
-            <motion type="circle" delay="0">
-                <!-- -->
-                <radius>100</radius>
-                <speed>5</speed>
+            <motion type="linear" speed="5.0" acceleration="0.08" delay="0">
+                <toX>$INF</toX>
+                <toY>300</toY>
+            </motion>
+        </target>
+
+        <target type="rankC">
+            <appear zoom="true" delay="500">
+                <pointX>50</pointX>
+                <pointY>450</pointY>
+            </appear>
+            <motion type="linear" speed="5.0" acceleration="0.08" delay="0">
+                <toX>$INF</toX>
+                <toY>450</toY>
             </motion>
         </target>
 

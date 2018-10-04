@@ -104,7 +104,7 @@ public class Game extends FPSTimer
         this.window.setTitle("Syoribu-Shooting");
         this.eventManager = window.getEventManager();
         this.targetManager = new TargetManager(this.eventManager);
-        this.nowStage = new RandomStage1(this.targetManager);
+        this.nowStage = new TestStage(this.targetManager);
         this.player = Player.getInstance();
         this.feverManager = new FeverManager();
         this.effectManager = new EffectManager();

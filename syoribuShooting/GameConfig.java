@@ -73,6 +73,10 @@ public final class GameConfig
 
         System.out.println("GetResource: done");
         System.out.println("Window: " + WINDOW_WIDTH + "x" + WINDOW_HEIGHT);
+        System.out.println("FPS: " + FPS);
+        System.out.printf("targetA: %dx%d\n", img_targetA.getWidth(), img_targetA.getHeight());
+        System.out.printf("targetB: %dx%d\n", img_targetB.getWidth(), img_targetB.getHeight());
+        System.out.printf("targetC: %dx%d\n", img_targetC.getWidth(), img_targetC.getHeight());
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {}

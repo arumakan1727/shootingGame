@@ -21,8 +21,8 @@ public class TestStage extends GameStage
         this.setState(State.INITIAL_WAITING);
         this.stopWatch.initTimer(getTimeLimitMillis());
 
-        MoveTarget target = TargetFactory.createTarget(TargetFactory.TargetType.RANK_C, 600, 300);
-        target.setMotion(new LinearMotion(target, 10, 600, 300, 605, 302));
+        MoveTarget target = TargetFactory.createTarget(TargetFactory.TargetType.rankA, 600, 300);
+        //target.setMotion(new LinearMotion(target, 10, 600, 300, 605, 302));
         this.targetManager.add(target);
     }
 

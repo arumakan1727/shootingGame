@@ -1,5 +1,7 @@
 package syoribuShooting;
 
+import syoribuShooting.sprite.Bounds;
+import syoribuShooting.sprite.CircleBounds;
 import syoribuShooting.sprite.Motion;
 import syoribuShooting.sprite.MoveTarget;
 
@@ -9,9 +11,9 @@ public class TargetFactory
 
     public enum TargetType
     {
-        RANK_A,
-        RANK_B,
-        RANK_C;
+        rankA,
+        rankB,
+        rankC;
 
         private TargetType() {}
 
@@ -19,9 +21,9 @@ public class TargetFactory
         {
             switch (id)
             {
-                case 0: return RANK_A;
-                case 1: return RANK_B;
-                case 2: return RANK_C;
+                case 0: return rankA;
+                case 1: return rankB;
+                case 2: return rankC;
                 default: throw new IndexOutOfBoundsException();
             }
         }
@@ -41,7 +43,7 @@ public class TargetFactory
     {
         switch (type)
         {
-            case RANK_A:
+            case rankA:
                 return new MoveTarget(GameConfig.img_targetA, centerX, centerY, motion)
                 {
                     @Override
@@ -49,9 +51,12 @@ public class TargetFactory
                     {
                         return 500;
                     }
+
+                    @Override
+                    public Bounds getBounds() { return new CircleBounds(getCenterX(), getCenterY(), 65); }
                 };
 
-            case RANK_B:
+            case rankB:
                 return new MoveTarget(GameConfig.img_targetB, centerX, centerY, motion)
                 {
                     @Override
@@ -61,7 +66,7 @@ public class TargetFactory
                     }
                 };
 
-            case RANK_C:
+            case rankC:
                 return new MoveTarget(GameConfig.img_targetC, centerX, centerY, motion)
                 {
                     @Override
