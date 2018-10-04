@@ -2,6 +2,7 @@ package syoribuShooting;
 
 import syoribuShooting.stage.GameStage;
 import syoribuShooting.stage.RandomStage1;
+import syoribuShooting.stage.TestStage;
 import syoribuShooting.system.FPSTimer;
 import syoribuShooting.system.GameWindow;
 
@@ -30,9 +31,9 @@ public class Game extends FPSTimer
 
     private void draw(Graphics2D g2d)
     {
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         nowStage.draw(g2d);
@@ -103,7 +104,7 @@ public class Game extends FPSTimer
         this.window.setTitle("Syoribu-Shooting");
         this.eventManager = window.getEventManager();
         this.targetManager = new TargetManager(this.eventManager);
-        this.nowStage = new RandomStage1(targetManager);
+        this.nowStage = new RandomStage1(this.targetManager);
         this.player = Player.getInstance();
         this.feverManager = new FeverManager();
         this.effectManager = new EffectManager();

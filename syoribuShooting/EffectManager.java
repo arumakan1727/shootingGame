@@ -22,7 +22,7 @@ public class EffectManager
         while (itr.hasNext())
         {
             Effect elem = itr.next();
-            if (elem.isDisporsed())
+            if (elem.isDisposed())
             {
                 itr.remove();
                 continue;

@@ -72,7 +72,7 @@ public abstract class FPSTimer implements Runnable
             // 前回のフレームの休止時間誤差も引いておく
             sleepTime = (this.period - timeDiff) - overSleepTime;
 
-            System.out.println("sleepTime: " + sleepTime / 1_000_000);
+//            System.out.println("sleepTime: " + sleepTime / 1_000_000 + "\t runTime: " + (period - sleepTime)/ 1_000_000);
 
             if (sleepTime > 0) { // 休止時間が取れる場合
                 try {

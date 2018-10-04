@@ -75,7 +75,31 @@ public abstract class Target extends Sprite
     {
         g2d.drawImage(this.img, (int)this.getX(), (int)this.getY(), this.getWidth(), this.getHeight(), null);
     }
-    
+
+    @Override
+    double getXdefault()
+    {
+        return getCenterX();
+    }
+
+    @Override
+    double getYdefault()
+    {
+        return getCenterY();
+    }
+
+    @Override
+    void setXdefault(double x)
+    {
+        this.setCenterX(x);
+    }
+
+    @Override
+    void setYdefault(double y)
+    {
+        this.setCenterY(y);
+    }
+
     public State getState()
     {
         return state;

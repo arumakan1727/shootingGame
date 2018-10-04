@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 
 public abstract class MoveTarget extends Target
 {
-    protected final Motion motion;
+    protected Motion motion;
 
     public MoveTarget(final BufferedImage img, double centerX, double centerY, final Motion motion)
     {
@@ -14,11 +14,26 @@ public abstract class MoveTarget extends Target
         this.motion = motion;
     }
 
+    public MoveTarget(final BufferedImage img, double centerX, double centerY)
+    {
+        this(img, centerX, centerY, Motion.NO_MOVE);
+    }
+
     @Override
     public void update(Game game)
     {
         super.update(game);
-        this.motion.move(this);
+        this.motion.move();
+    }
+
+    public void setMotion(final Motion motion)
+    {
+        this.motion = motion;
+    }
+
+    public Motion getMotion()
+    {
+        return this.motion;
     }
 
 }

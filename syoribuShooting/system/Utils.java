@@ -12,6 +12,21 @@ public class Utils
     {
         if (from == to) return to;
         if (to < from) return nextInt(to, from);
-        return random.nextInt(to - from) + from;
+        return random.nextInt(to - from + 1) + from;
+    }
+
+    public static double dist(int sx, int sy, int gx, int gy)
+    {
+        return Math.sqrt(distSqr(sx, sy, gx, gy));
+    }
+
+    public static long distSqr(int sx, int sy, int gx, int gy)
+    {
+        return sqr(gx-sx) + sqr(gy-sy);
+    }
+
+    public static long sqr(long n)
+    {
+        return n * n;
     }
 }

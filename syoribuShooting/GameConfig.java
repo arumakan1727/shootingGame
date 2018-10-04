@@ -72,6 +72,7 @@ public final class GameConfig
         }
 
         System.out.println("GetResource: done");
+        System.out.println("Window: " + WINDOW_WIDTH + "x" + WINDOW_HEIGHT);
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {}

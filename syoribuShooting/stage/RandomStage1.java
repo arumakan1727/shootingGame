@@ -2,19 +2,16 @@ package syoribuShooting.stage;
 
 import syoribuShooting.Game;
 import syoribuShooting.TargetManager;
-import syoribuShooting.sprite.StaticTarget;
 import syoribuShooting.GameConfig;
-import syoribuShooting.sprite.TargetFactory;
+import syoribuShooting.TargetFactory;
+import syoribuShooting.sprite.LinearMotion;
+import syoribuShooting.sprite.MoveTarget;
 import syoribuShooting.system.Utils;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
 
 public class RandomStage1 extends GameStage
 {
     private static final int NUM_TARGETS = 6;
-    private static final int TIME_LIMIT = 10 * 1000;    // x1000でミリ指定
+    private static final int TIME_LIMIT = 30 * 1000;    // x1000でミリ指定
 
     public RandomStage1(final TargetManager manager)
     {
@@ -49,16 +46,6 @@ public class RandomStage1 extends GameStage
     }
 
     @Override
-    public void draw(final Graphics2D g2d)
-    {
-        g2d.drawImage(this.getBackImage(), 0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT, null);
-        g2d.setFont(new Font(Font.MONOSPACED, Font.ITALIC, 70));
-        g2d.setColor(Color.GREEN);
-        g2d.drawString("Time: " + this.stopWatch.getRemainTimeSec(), GameConfig.WINDOW_WIDTH - 500, 80);
-        this.targetManager.draw(g2d);
-    }
-
-    @Override
     public int getTimeLimitMillis()
     {
         return TIME_LIMIT;
@@ -76,13 +63,15 @@ public class RandomStage1 extends GameStage
     {
         for (int i = 0; i < num; ++i)
         {
-            int centerX = Utils.nextInt(100, GameConfig.WINDOW_WIDTH - 100);
-            int centerY = Utils.nextInt(100, GameConfig.WINDOW_HEIGHT - 100);
-//            this.targetManager.add(new StaticTarget(GameConfig.img_targetA, centerX, centerY));
-            this.targetManager.add(TargetFactory.createTarget(
-                    TargetFactory.TargetType.getTypeByID((Utils.nextInt(0, 3))),
+            int centerX = Utils.nextInt(1000, GameConfig.WINDOW_WIDTH - 100);
+            int centerY = Utils.nextInt(300, GameConfig.WINDOW_HEIGHT - 100);
+            MoveTarget target = TargetFactory.createTarget(
+                    TargetFactory.TargetType.getTypeByID((Utils.nextInt(0, 2))),
                     centerX,
-                    centerY));
+                    centerY);
+            target.setMotion(new LinearMotion(target, 5, 0, 0));
+            target.getMotion().setAcceleration(0.05);
+            this.targetManager.add(target);
         }
     }
 }

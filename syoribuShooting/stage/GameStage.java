@@ -1,10 +1,13 @@
 package syoribuShooting.stage;
 
 import syoribuShooting.Game;
+import syoribuShooting.GameConfig;
 import syoribuShooting.TargetManager;
 import syoribuShooting.sprite.Target;
 import syoribuShooting.system.StopWatch;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
@@ -14,7 +17,6 @@ public abstract class GameStage
 
     abstract public void initialize();
     abstract public void update(final Game game);
-    abstract public void draw(final Graphics2D g2d);
     abstract public int getTimeLimitMillis();
 
     protected final TargetManager targetManager;
@@ -41,6 +43,14 @@ public abstract class GameStage
         this.initialize();
     }
 
+    public void draw(final Graphics2D g2d)
+    {
+        g2d.drawImage(this.getBackImage(), 0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT, null);
+        this.targetManager.draw(g2d);
+        g2d.setFont(new Font(Font.MONOSPACED, Font.ITALIC, 70));
+        g2d.setColor(Color.GREEN);
+        g2d.drawString("Time: " + this.stopWatch.getRemainTimeSec(), GameConfig.WINDOW_WIDTH - 500, 80);
+    }
 
     public BufferedImage getBackImage()
     {

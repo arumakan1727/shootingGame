@@ -11,7 +11,7 @@ public abstract class Effect extends Sprite
     protected final List<BufferedImage> anim;
     private int index;
     private final boolean isLoop;
-    private boolean disporsed;
+    private boolean disposed;
 
     public Effect(List<BufferedImage> anim, int x, int y, boolean isLoop)
     {
@@ -21,7 +21,7 @@ public abstract class Effect extends Sprite
     public Effect(List<BufferedImage> anim, int x, int y, int width, int height, boolean isLoop)
     {
         super(x, y, width, height);
-        this.setDisporsed(false);
+        this.setDisposed(false);
         this.setIndex(0);
         this.anim = anim;
         this.isLoop = isLoop;
@@ -57,13 +57,13 @@ public abstract class Effect extends Sprite
         return this.isLoop;
     }
 
-    public boolean isDisporsed()
+    public boolean isDisposed()
     {
-        return disporsed;
+        return disposed;
     }
 
-    public void setDisporsed(boolean disporsed)
+    public void setDisposed(boolean disposed)
     {
-        this.disporsed = disporsed;
+        this.disposed = disposed;
     }
 }

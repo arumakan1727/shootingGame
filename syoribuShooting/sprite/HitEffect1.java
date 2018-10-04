@@ -2,9 +2,6 @@ package syoribuShooting.sprite;
 
 import syoribuShooting.GameConfig;
 
-import java.awt.image.BufferedImage;
-import java.util.List;
-
 public class HitEffect1 extends Effect
 {
     public HitEffect1(int x, int y, boolean isLoop)
@@ -25,7 +22,7 @@ public class HitEffect1 extends Effect
         if (this.getIndex() >= this.anim.size() - 1)
         {
             this.setIndex(this.anim.size() - 1);
-            this.setDisporsed(true);
+            this.setDisposed(true);
         }
     }
 }

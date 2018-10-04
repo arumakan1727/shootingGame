@@ -9,6 +9,11 @@ public abstract class Sprite
     private int height;
     private int zoom; // 何倍にするか
 
+    double getXdefault() { return getX(); }
+    double getYdefault() { return getY(); }
+    void setXdefault(double x) { setX(x); }
+    void setYdefault(double y) { setY(y); }
+
     public Sprite(int width, int height)
     {
         this.defaultWidth =  width;

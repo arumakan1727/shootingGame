@@ -1,6 +1,7 @@
-package syoribuShooting.sprite;
+package syoribuShooting;
 
-import syoribuShooting.GameConfig;
+import syoribuShooting.sprite.Motion;
+import syoribuShooting.sprite.MoveTarget;
 
 public class TargetFactory
 {

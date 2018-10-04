@@ -1,5 +1,7 @@
 package syoribuShooting.sprite;
 
+import static syoribuShooting.system.Utils.sqr;
+
 public class CircleBounds extends Bounds
 {
     private int centerX;
@@ -53,11 +55,5 @@ public class CircleBounds extends Bounds
     public void setRadius(int radius)
     {
         this.radius = radius;
-    }
-
-    private static int sqr(int n) throws ArithmeticException
-    {
-        if (n > 45000) throw new ArithmeticException(n + "^2 is too large for int");
-        return n * n;
     }
 }
