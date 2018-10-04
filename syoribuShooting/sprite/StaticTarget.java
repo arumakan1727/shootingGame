@@ -9,7 +9,7 @@ public class StaticTarget extends Target
     private static final int SCORE = 100;
 
     @Override
-    public int getScore()
+    public int getScore(int screenX, int screenY)
     {
         return SCORE;
     }

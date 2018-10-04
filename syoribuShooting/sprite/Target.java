@@ -11,10 +11,9 @@ public abstract class Target extends Sprite
     protected static final int MAX_ZOOM_UP = 100;
     
     protected BufferedImage img;
-    private int loopCount;
     private State state;
 
-    abstract public int getScore();
+    abstract public int getScore(int screenX, int screenY);
 
     public Target(BufferedImage img, double centerX, double centerY)
     {
@@ -25,15 +24,11 @@ public abstract class Target extends Sprite
         this.setZoom(0);
         this.setCenterX(centerX);
         this.setCenterY(centerY);
-        this.setLoopCount(0);
     }
     
     public void update(final Game game)
     {
         final InputEventManager eventManager = game.getEventManager();
-        int loopCount = this.getLoopCount() + 1;
-        this.setLoopCount(loopCount);
-
 
         if (this.getBounds().isContain(eventManager.mouseX(), eventManager.mouseY()))
         {
@@ -42,8 +37,6 @@ public abstract class Target extends Sprite
 
         switch (this.getState()) {
         case ZOOM_UP:
-            if (loopCount < 20) break;
-            
             if (this.zoomUp(20) == false)
             {
                 this.setState(State.FLY);
@@ -92,20 +85,6 @@ public abstract class Target extends Sprite
     {
         this.state = state;
     }
-
-
-
-    public int getLoopCount()
-    {
-        return loopCount;
-    }
-
-    public void setLoopCount(int loopCount)
-    {
-        this.loopCount = loopCount;
-    }
-
-
 
     public enum State
     {

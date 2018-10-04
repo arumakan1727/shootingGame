@@ -1,21 +1,24 @@
 package syoribuShooting.sprite;
 
+import syoribuShooting.Game;
+
 import java.awt.image.BufferedImage;
 
-public class MoveTarget extends Target
+public abstract class MoveTarget extends Target
 {
+    protected final Motion motion;
 
-    public MoveTarget(BufferedImage img, double centerX, double centerY)
+    public MoveTarget(final BufferedImage img, double centerX, double centerY, final Motion motion)
     {
         super(img, centerX, centerY);
-        // TODO 自動生成されたコンストラクター・スタブ
+        this.motion = motion;
     }
 
     @Override
-    public int getScore()
+    public void update(Game game)
     {
-        // TODO 自動生成されたメソッド・スタブ
-        return 0;
+        super.update(game);
+        this.motion.move(this);
     }
 
 }

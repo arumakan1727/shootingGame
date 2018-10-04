@@ -4,6 +4,8 @@ import syoribuShooting.Game;
 import syoribuShooting.TargetManager;
 import syoribuShooting.sprite.StaticTarget;
 import syoribuShooting.GameConfig;
+import syoribuShooting.sprite.TargetFactory;
+import syoribuShooting.system.Utils;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -74,9 +76,13 @@ public class RandomStage1 extends GameStage
     {
         for (int i = 0; i < num; ++i)
         {
-            double centerX = Math.random() * GameConfig.WINDOW_WIDTH;
-            double centerY = Math.random() * GameConfig.WINDOW_HEIGHT;
-            this.targetManager.add(new StaticTarget(GameConfig.img_target, centerX, centerY));
+            int centerX = Utils.nextInt(100, GameConfig.WINDOW_WIDTH - 100);
+            int centerY = Utils.nextInt(100, GameConfig.WINDOW_HEIGHT - 100);
+//            this.targetManager.add(new StaticTarget(GameConfig.img_targetA, centerX, centerY));
+            this.targetManager.add(TargetFactory.createTarget(
+                    TargetFactory.TargetType.getTypeByID((Utils.nextInt(0, 3))),
+                    centerX,
+                    centerY));
         }
     }
 }
