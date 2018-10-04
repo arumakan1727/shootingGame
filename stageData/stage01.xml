@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<stage>
+    <objects>
+
+        <target type="special">
+            <appear zoom="false" delay="30">
+                <delay>30</delay>
+                <pointX>180</pointX>
+                <pointY>180</pointY>
+            </appear>
+            <motion type="liner" delay="0">
+                <toX>500</toX>
+                <toY>800</toY>
+                <speed>5</speed>
+            </motion>
+        </target>
+
+        <target type="normal">
+            <appear zoom="false" delay="30">
+                <pointX>200</pointX>
+                <pointY>180</pointY>
+            </appear>
+            <motion type="circle" delay="0">
+                <!-- -->
+                <radius>100</radius>
+                <speed>5</speed>
+            </motion>
+        </target>
+
+    </objects>
+</stage>
