@@ -32,17 +32,13 @@ public class Game extends FPSTimer
     {
         g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         nowStage.draw(g2d);
         effectManager.draw(g2d);
         player.draw(g2d);
         feverManager.draw(g2d);
-
-//        final boolean mousePressed = this.eventManager.isMousePressed(MouseEvent.BUTTON1);
-//        g2d.setColor(Color.MAGENTA);
-//        g2d.drawString("isMousePressed: " + (mousePressed? "ON" : "OFF"), 30, 30);
     }
 
     private void initialize()

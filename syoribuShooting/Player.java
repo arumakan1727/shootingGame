@@ -45,15 +45,16 @@ public class Player
                 game.getEffectManager().addEffect(new HitEffect1(eventManager.mouseX(), eventManager.mouseY(), false));
             }
         }
-/*
-        if (isTouchingTarget())
+
+        if (GameConfig.enableCursor)
         {
-            game.setCursor(GameConfig.shootingCursorGreen);
+            if (isTouchingTarget()) {
+                game.setCursor(GameConfig.shootingCursorGreen);
+            } else {
+                game.setCursor(GameConfig.shootingCursor);
+            }
+
         }
-        else {
-            game.setCursor(GameConfig.shootingCursor);
-        }
-  */
         this.setTouchingTarget(false);
     }
 

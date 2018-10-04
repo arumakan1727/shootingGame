@@ -1,7 +1,6 @@
 package syoribuShooting.sprite;
 
 import syoribuShooting.Game;
-import syoribuShooting.GameConfig;
 import syoribuShooting.InputEventManager;
 
 import java.awt.Graphics2D;

@@ -19,8 +19,8 @@ public final class GameConfig
     public static final int FPS;
     public static final boolean isFullScreen;
     public static final String PATH_IMAGE;
-    public static final boolean enableCursor; // TODO
-//    public static final Cursor shootingCursor, shootingCursorGreen;
+    public static final boolean enableCursor;
+    public static final Cursor shootingCursor, shootingCursorGreen;
     public static BufferedImage
             img_shootingCursor,
             img_shootingCursorGreen,
@@ -33,25 +33,32 @@ public final class GameConfig
     static {
         final Toolkit toolkit = Toolkit.getDefaultToolkit();
 
-        WINDOW_WIDTH    = (int)(toolkit.getScreenSize().getWidth());
-        WINDOW_HEIGHT   = (int)(toolkit.getScreenSize().getHeight());
+        WINDOW_WIDTH = (int) (toolkit.getScreenSize().getWidth());
+        WINDOW_HEIGHT = (int) (toolkit.getScreenSize().getHeight());
         FPS = 40;
         isFullScreen = false;
+        enableCursor = true;
         PATH_IMAGE = "/images/";
 
         try {
             img_shootingCursor = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "shooting_cursor.png"));
             img_shootingCursorGreen = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "shooting_cursor_green.png"));
-            img_target  = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "normal_target.png"));
-            img_back01  = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "back01.jpg"));
-            anim_hit    = GifReader.readGif(Game.class.getResourceAsStream(PATH_IMAGE + "hit-animation.gif"));
-        } catch (IOException e){
+            img_target = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "normal_target.png"));
+            img_back01 = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "back01.jpg"));
+            anim_hit = GifReader.readGif(Game.class.getResourceAsStream(PATH_IMAGE + "hit-animation.gif"));
+        } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
         }
 
-//        shootingCursor = toolkit.createCustomCursor(img_shootingCursor, new Point(32, 32), "Shooting-Cursor");
-//        shootingCursorGreen = toolkit.createCustomCursor(img_shootingCursorGreen, new Point(32, 32), "Shooting-Cursor-Green");
+        if (enableCursor) {
+            shootingCursor = toolkit.createCustomCursor(img_shootingCursor, new Point(32, 32), "Shooting-Cursor");
+            shootingCursorGreen = toolkit.createCustomCursor(img_shootingCursorGreen, new Point(32, 32), "Shooting-Cursor-Green");
+        } else {
+            shootingCursor = null;
+            shootingCursorGreen = null;
+        }
+
         System.out.println("GetResource: done");
         try {
             Thread.sleep(300);
