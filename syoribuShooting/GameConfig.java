@@ -19,7 +19,8 @@ public final class GameConfig
     public static final int FPS;
     public static final boolean isFullScreen;
     public static final String PATH_IMAGE;
-    public static final Cursor shootingCursor, shootingCursorGreen;
+    public static final boolean enableCursor; // TODO
+//    public static final Cursor shootingCursor, shootingCursorGreen;
     public static BufferedImage
             img_shootingCursor,
             img_shootingCursorGreen,
@@ -35,7 +36,7 @@ public final class GameConfig
         WINDOW_WIDTH    = (int)(toolkit.getScreenSize().getWidth());
         WINDOW_HEIGHT   = (int)(toolkit.getScreenSize().getHeight());
         FPS = 40;
-        isFullScreen = true;
+        isFullScreen = false;
         PATH_IMAGE = "/images/";
 
         try {
@@ -49,8 +50,8 @@ public final class GameConfig
             System.exit(1);
         }
 
-        shootingCursor = toolkit.createCustomCursor(img_shootingCursor, new Point(32, 32), "Shooting-Cursor");
-        shootingCursorGreen = toolkit.createCustomCursor(img_shootingCursorGreen, new Point(32, 32), "Shooting-Cursor-Green");
+//        shootingCursor = toolkit.createCustomCursor(img_shootingCursor, new Point(32, 32), "Shooting-Cursor");
+//        shootingCursorGreen = toolkit.createCustomCursor(img_shootingCursorGreen, new Point(32, 32), "Shooting-Cursor-Green");
         System.out.println("GetResource: done");
         try {
             Thread.sleep(300);

@@ -45,7 +45,7 @@ public class Player
                 game.getEffectManager().addEffect(new HitEffect1(eventManager.mouseX(), eventManager.mouseY(), false));
             }
         }
-
+/*
         if (isTouchingTarget())
         {
             game.setCursor(GameConfig.shootingCursorGreen);
@@ -53,6 +53,7 @@ public class Player
         else {
             game.setCursor(GameConfig.shootingCursor);
         }
+  */
         this.setTouchingTarget(false);
     }
 

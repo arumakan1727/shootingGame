@@ -47,8 +47,6 @@ public class Game extends FPSTimer
 
     private void initialize()
     {
-        this.setCursor(GameConfig.shootingCursor);
-        //this.window.getCanvas().setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     private void checkCloseTrigger()
