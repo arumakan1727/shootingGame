@@ -3,7 +3,7 @@ package syoribuShooting;
 import syoribuShooting.sprite.Bounds;
 import syoribuShooting.sprite.CircleBounds;
 import syoribuShooting.sprite.Motion;
-import syoribuShooting.sprite.MoveTarget;
+import syoribuShooting.sprite.Target;
 
 public class TargetFactory
 {
@@ -29,22 +29,22 @@ public class TargetFactory
         }
     }
 
-    public static MoveTarget createTarget(final TargetType type)
+    public static Target createTarget(final TargetType type)
     {
         return createTarget(type, 0, 0);
     }
 
-    public static MoveTarget createTarget(final TargetType type, int centerX, int centerY)
+    public static Target createTarget(final TargetType type, int centerX, int centerY)
     {
         return createTarget(type, centerX, centerY, Motion.NO_MOVE);
     }
 
-    public static MoveTarget createTarget(final TargetType type, int centerX, int centerY, final Motion motion)
+    public static Target createTarget(final TargetType type, int centerX, int centerY, final Motion motion)
     {
         switch (type)
         {
             case rankA:
-                return new MoveTarget(GameConfig.img_targetA, centerX, centerY, motion)
+                return new Target(GameConfig.img_targetA, centerX, centerY, motion)
                 {
                     @Override
                     public int getScore(int screenX, int screenY)
@@ -57,7 +57,7 @@ public class TargetFactory
                 };
 
             case rankB:
-                return new MoveTarget(GameConfig.img_targetB, centerX, centerY, motion)
+                return new Target(GameConfig.img_targetB, centerX, centerY, motion)
                 {
                     @Override
                     public int getScore(int screenX, int screenY)
@@ -67,7 +67,7 @@ public class TargetFactory
                 };
 
             case rankC:
-                return new MoveTarget(GameConfig.img_targetC, centerX, centerY, motion)
+                return new Target(GameConfig.img_targetC, centerX, centerY, motion)
                 {
                     @Override
                     public int getScore(int screenX, int screenY)

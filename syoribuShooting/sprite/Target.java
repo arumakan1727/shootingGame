@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 
 public abstract class Target extends Sprite
 {
+    abstract public int getScore(int screenX, int screenY);
+
     public enum State
     {
         ZOOM_UP,
@@ -17,21 +19,25 @@ public abstract class Target extends Sprite
     }
 
     protected static final int MAX_ZOOM_UP = 100;
-
     protected BufferedImage img;
+    protected Motion motion;
     private State state;
 
-    abstract public int getScore(int screenX, int screenY);
-
-    public Target(BufferedImage img, double centerX, double centerY)
+    public Target(BufferedImage img, double centerX, double centerY, final Motion motion)
     {
         super(img.getWidth(), img.getHeight());
 
         this.img = img;
+        this.motion = motion;
         this.setState(State.ZOOM_UP);
         this.setZoom(0);
         this.setCenterX(centerX);
         this.setCenterY(centerY);
+    }
+
+    public Target(BufferedImage img, double centerX, double centerY)
+    {
+        this(img, centerX, centerY, Motion.NO_MOVE);
     }
 
     public void update(final Game game)
@@ -55,6 +61,7 @@ public abstract class Target extends Sprite
                 deflationBreak();
                 break;
         }
+        this.motion.move();
     }
 
     public Bounds getBounds()
@@ -101,9 +108,10 @@ public abstract class Target extends Sprite
                 this.setState(State.DISPOSE);
             }
         }
-        setWidth(getWidth() - 80);
+        setWidth(getWidth() / 2);
         setCenterX(prevCX);
         setCenterY(prevCY);
+        setMotion(Motion.NO_MOVE);
     }
 
     public void draw(final Graphics2D g2d)
@@ -143,5 +151,15 @@ public abstract class Target extends Sprite
     public void setState(State state)
     {
         this.state = state;
+    }
+
+    public void setMotion(final Motion motion)
+    {
+        this.motion = motion;
+    }
+
+    public Motion getMotion()
+    {
+        return this.motion;
     }
 }

@@ -4,8 +4,7 @@ import syoribuShooting.Game;
 import syoribuShooting.GameConfig;
 import syoribuShooting.TargetFactory;
 import syoribuShooting.TargetManager;
-import syoribuShooting.sprite.LinearMotion;
-import syoribuShooting.sprite.MoveTarget;
+import syoribuShooting.sprite.Target;
 
 public class TestStage extends GameStage
 {
@@ -21,7 +20,7 @@ public class TestStage extends GameStage
         this.setState(State.INITIAL_WAITING);
         this.stopWatch.initTimer(getTimeLimitMillis());
 
-        MoveTarget target = TargetFactory.createTarget(TargetFactory.TargetType.rankA, 600, 300);
+        Target target = TargetFactory.createTarget(TargetFactory.TargetType.rankA, 600, 300);
         //target.setMotion(new LinearMotion(target, 10, 600, 300, 605, 302));
         this.targetManager.add(target);
     }

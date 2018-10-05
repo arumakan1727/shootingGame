@@ -5,7 +5,7 @@ import syoribuShooting.TargetManager;
 import syoribuShooting.GameConfig;
 import syoribuShooting.TargetFactory;
 import syoribuShooting.sprite.LinearMotion;
-import syoribuShooting.sprite.MoveTarget;
+import syoribuShooting.sprite.Target;
 import syoribuShooting.system.Utils;
 
 public class RandomStage1 extends GameStage
@@ -65,7 +65,7 @@ public class RandomStage1 extends GameStage
         {
             int centerX = Utils.nextInt(1000, GameConfig.WINDOW_WIDTH - 100);
             int centerY = Utils.nextInt(300, GameConfig.WINDOW_HEIGHT - 100);
-            MoveTarget target = TargetFactory.createTarget(
+            Target target = TargetFactory.createTarget(
                     TargetFactory.TargetType.getTypeByID((Utils.nextInt(0, 2))),
                     centerX,
                     centerY);
