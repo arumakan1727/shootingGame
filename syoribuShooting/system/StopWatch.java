@@ -86,7 +86,7 @@ public class StopWatch
     public int getRemainTime()
     {
         if(getTimeLimit() < 0) throw new IllegalStateException("TimeLimit is Undefined.");
-        return this.getTimeLimit() - this.getElapsed() + 1000;
+        return this.getTimeLimit() - this.getElapsed();
     }
 
     public int getRemainTimeSec()

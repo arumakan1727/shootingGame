@@ -45,8 +45,8 @@ public class TargetManager
             hitTarget = checkHit(eventManager.mouseReleasedX(), eventManager.mouseReleasedY());
             if (hitTarget != null)
             {
-                hitTarget.setState(State.DISPOSE);
-            }            
+                hitTarget.setState(State.BREAK);
+            }
         }
         stage.setHitTarget(hitTarget);
     }
@@ -69,7 +69,7 @@ public class TargetManager
         for (ListIterator<Target> it = targets.listIterator(targets.size()); it.hasPrevious();)
         {
             final Target elem = it.previous();
-            if (elem.getBounds().isContain(px, py))
+            if (elem.isClickable() && elem.getBounds().isContain(px, py))
             {
                 return elem;
             }

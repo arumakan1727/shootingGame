@@ -53,7 +53,7 @@ public class TargetFactory
                     }
 
                     @Override
-                    public Bounds getBounds() { return new CircleBounds(getCenterX(), getCenterY(), 65); }
+                    public Bounds getBounds() { return new CircleBounds(getCenterX(), getCenterY(), 70); }
                 };
 
             case rankB:

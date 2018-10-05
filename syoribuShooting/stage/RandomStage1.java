@@ -11,7 +11,7 @@ import syoribuShooting.system.Utils;
 public class RandomStage1 extends GameStage
 {
     private static final int NUM_TARGETS = 6;
-    private static final int TIME_LIMIT = 30 * 1000;    // x1000でミリ指定
+    private static final int TIME_LIMIT = 15 * 1000;    // x1000でミリ指定
 
     public RandomStage1(final TargetManager manager)
     {
@@ -69,7 +69,7 @@ public class RandomStage1 extends GameStage
                     TargetFactory.TargetType.getTypeByID((Utils.nextInt(0, 2))),
                     centerX,
                     centerY);
-            target.setMotion(new LinearMotion(target, 5, 0, 0));
+            target.setMotion(new LinearMotion(target, 5, Utils.nextInt(20, 500), Utils.nextInt(50, GameConfig.WINDOW_HEIGHT - 50)));
             target.getMotion().setAcceleration(0.05);
             this.targetManager.add(target);
         }

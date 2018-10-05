@@ -49,7 +49,9 @@ public abstract class GameStage
         this.targetManager.draw(g2d);
         g2d.setFont(new Font(Font.MONOSPACED, Font.ITALIC, 70));
         g2d.setColor(Color.GREEN);
-        g2d.drawString("Time: " + this.stopWatch.getRemainTimeSec(), GameConfig.WINDOW_WIDTH - 500, 80);
+        int t = this.stopWatch.getRemainTime();
+        if (t  < 0) t = 0;
+        g2d.drawString("Time: " + t/1000 + "." + t%1000 / 100, GameConfig.WINDOW_WIDTH - 500, 80);
     }
 
     public BufferedImage getBackImage()

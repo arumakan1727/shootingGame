@@ -8,8 +8,16 @@ import java.awt.image.BufferedImage;
 
 public abstract class Target extends Sprite
 {
+    public enum State
+    {
+        ZOOM_UP,
+        FLY,
+        BREAK,
+        DISPOSE
+    }
+
     protected static final int MAX_ZOOM_UP = 100;
-    
+
     protected BufferedImage img;
     private State state;
 
@@ -25,7 +33,7 @@ public abstract class Target extends Sprite
         this.setCenterX(centerX);
         this.setCenterY(centerY);
     }
-    
+
     public void update(final Game game)
     {
         final InputEventManager eventManager = game.getEventManager();
@@ -42,14 +50,23 @@ public abstract class Target extends Sprite
                 this.setState(State.FLY);
             }
             break;
+
+            case BREAK:
+                deflationBreak();
+                break;
         }
     }
 
     public Bounds getBounds()
     {
-        return new CircleBounds(this.getCenterX(), this.getCenterY(), this.getWidth() / 2);
+        return new CircleBounds(this.getCenterX(), this.getCenterY(), this.getWidth() / 2 + 10);
     }
-    
+
+    public boolean isClickable()
+    {
+        return getState() == State.FLY || getState() == State.ZOOM_UP;
+    }
+
     protected boolean zoomUp(int addition)
     {
         int zoom = this.getZoom();
@@ -70,7 +87,25 @@ public abstract class Target extends Sprite
 
         return canZoom;
     }
-    
+
+    protected void deflationBreak()
+    {
+        int prevCX = (int)this.getCenterX();
+        int prevCY = (int)this.getCenterY();
+
+        if (getWidth() < 90)
+        {
+            setHeight(getHeight() + 30);
+            if (getWidth() < 30)
+            {
+                this.setState(State.DISPOSE);
+            }
+        }
+        setWidth(getWidth() - 80);
+        setCenterX(prevCX);
+        setCenterY(prevCY);
+    }
+
     public void draw(final Graphics2D g2d)
     {
         g2d.drawImage(this.img, (int)this.getX(), (int)this.getY(), this.getWidth(), this.getHeight(), null);
@@ -108,13 +143,5 @@ public abstract class Target extends Sprite
     public void setState(State state)
     {
         this.state = state;
-    }
-
-    public enum State
-    {
-        ZOOM_UP,
-        FLY,
-        BREAK,
-        DISPOSE
     }
 }
