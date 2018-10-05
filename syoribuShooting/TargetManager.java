@@ -42,7 +42,7 @@ public class TargetManager
 
         if (eventManager.isMouseReleased(MouseEvent.BUTTON1))
         {
-            hitTarget = checkHit(eventManager.mouseX(), eventManager.mouseY());
+            hitTarget = checkHit(eventManager.mouseReleasedX(), eventManager.mouseReleasedY());
             if (hitTarget != null)
             {
                 hitTarget.setState(State.DISPOSE);

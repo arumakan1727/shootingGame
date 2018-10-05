@@ -12,6 +12,7 @@ public class InputEventManager
 {
     private final Component component;
     private int mouseX, mouseY;
+    private int mouseReleasedX, mouseReleasedY;
     private final boolean[] keyState    = new boolean[525];
     private final boolean[] mousePressedState = new boolean[4];
     private final boolean[] mouseReleasedState = new boolean[4];
@@ -44,7 +45,15 @@ public class InputEventManager
         return mouseY;
     }
 
-
+    public int mouseReleasedX()
+    {
+        return this.mouseReleasedX;
+    }
+    
+    public int mouseReleasedY()
+    {
+        return this.mouseReleasedY;
+    }
 
     public boolean isKeyPressed(int keyCode)
     {
@@ -93,10 +102,10 @@ public class InputEventManager
     public void mouseReleased(MouseEvent e)
     {
         final int code = e.getButton();
-        if (mousePressedState[code] == true) {
-            mouseReleasedState[code] = true;
-        }
+        mouseReleasedState[code] = true;
         mousePressedState[code] = false;
+        this.mouseReleasedX = e.getX();
+        this.mouseReleasedY = e.getY();
     }
 
     @Override

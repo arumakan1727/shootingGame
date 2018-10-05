@@ -42,7 +42,7 @@ public class Player
             else {
                 this.addComboCount(1);
                 this.addScore(hitTarget.getScore(eventManager.mouseX(), eventManager.mouseY()));
-                game.getEffectManager().addEffect(new HitEffect1(eventManager.mouseX(), eventManager.mouseY(), false));
+                game.getEffectManager().addEffect(new HitEffect1(eventManager.mouseReleasedX(), eventManager.mouseReleasedY(), false));
             }
         }
 
