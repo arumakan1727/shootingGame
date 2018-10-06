@@ -1,62 +1,38 @@
 package syoribuShooting.stage;
 
 import syoribuShooting.Game;
-import syoribuShooting.BaseScene;
 import syoribuShooting.GameConfig;
 import syoribuShooting.TargetFactory;
 import syoribuShooting.sprite.LinearMotion;
 import syoribuShooting.sprite.Target;
 import syoribuShooting.system.Utils;
 
+import java.awt.image.BufferedImage;
+
 public class RandomStage1 extends AbstractStage
 {
     private static final int NUM_TARGETS = 6;
-    private static final int TIME_LIMIT = 15 * 1000;    // x1000でミリ指定
 
-    public RandomStage1(final BaseScene manager)
+
+    public RandomStage1()
     {
-        super(manager, GameConfig.img_back01);
+        super(GameConfig.img_back01);
     }
 
     @Override
-    public void update(final Game game)
+    public void update(Game game)
     {
-        switch (this.getState())
+        super.update(game);
+        if (getTargets().size() < NUM_TARGETS - 2)
         {
-            case INITIAL_WAITING:
-                this.stopWatch.startTimer();
-                this.setState(State.SHOOTING);
-                break;
-            case SHOOTING:
-                if (this.stopWatch.isOverTimeLimit())
-                {
-                    this.baseScene.getTargets().clear();
-                    this.stopWatch.stopTimer();
-                    this.setState(State.TIME_OVER);
-                }
-                else
-                {
-                    if (this.baseScene.size() < 5) {
-                        storeTargets((int) (Math.random() * 3) + 1);
-                    }
-                    this.baseScene.update(game);
-                }
-                break;
+            this.storeTargets(Utils.nextInt(1, 2));
         }
-    }
-
-    @Override
-    public int getTimeLimitMillis()
-    {
-        return TIME_LIMIT;
     }
 
     @Override
     public void initialize()
     {
         this.storeTargets(NUM_TARGETS);
-        this.setState(State.INITIAL_WAITING);
-        this.stopWatch.initTimer(getTimeLimitMillis());
     }
 
     private void storeTargets(int num)
@@ -71,7 +47,7 @@ public class RandomStage1 extends AbstractStage
                     centerY);
             target.setMotion(new LinearMotion(target, 5, Utils.nextInt(20, 500), Utils.nextInt(50, GameConfig.WINDOW_HEIGHT - 50)));
             target.getMotion().setAcceleration(0.05);
-            this.baseScene.add(target);
+            this.getTargets().add(target);
         }
     }
 }

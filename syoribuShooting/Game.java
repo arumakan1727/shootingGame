@@ -1,7 +1,8 @@
 package syoribuShooting;
 
-import syoribuShooting.stage.AbstractStage;
+import syoribuShooting.stage.AbstractScene;
 import syoribuShooting.stage.RandomStage1;
+import syoribuShooting.stage.ShootingScene;
 import syoribuShooting.system.FPSTimer;
 import syoribuShooting.system.GameWindow;
 
@@ -14,17 +15,12 @@ public class Game extends FPSTimer
 {
     private final GameWindow window;
     private final InputEventManager eventManager;
-    private final Player player;
-    private final FeverManager feverManager;
-    private final BaseScene baseScene;
     private final EffectManager effectManager;
-    private AbstractStage nowStage;
+    private AbstractScene nowScene;
 
     private void update()
     {
-        nowStage.update(this);
-        player.update(this);
-        feverManager.update(this);
+        nowScene.update(this);
         effectManager.update(this);
     }
 
@@ -35,10 +31,9 @@ public class Game extends FPSTimer
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT);
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        nowStage.draw(g2d);
+
+        nowScene.draw(g2d);
         effectManager.draw(g2d);
-        player.draw(g2d);
-        feverManager.draw(g2d);
     }
 
     private void initialize()
@@ -74,18 +69,17 @@ public class Game extends FPSTimer
     {
         return this.eventManager;
     }
-    public Player getPlayer()
+
+    public void setNowScene(final AbstractScene scene)
     {
-        return this.player;
+        this.nowScene = scene;
     }
-    public void setNowStage(final AbstractStage stage)
+
+    public AbstractScene getNowScene()
     {
-        this.nowStage = stage;
+        return this.nowScene;
     }
-    public AbstractStage getNowStage()
-    {
-        return this.nowStage;
-    }
+
     public EffectManager getEffectManager()
     {
         return this.effectManager;
@@ -102,10 +96,7 @@ public class Game extends FPSTimer
         this.window = new GameWindow( GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT, GameConfig.isFullScreen);
         this.window.setTitle("Syoribu-Shooting");
         this.eventManager = window.getEventManager();
-        this.baseScene = new BaseScene(this.eventManager);
-        this.nowStage = new RandomStage1(this.baseScene);
-        this.player = Player.getInstance();
-        this.feverManager = new FeverManager();
+        this.nowScene = new ShootingScene(new RandomStage1());
         this.effectManager = new EffectManager();
 
         this.initialize();
