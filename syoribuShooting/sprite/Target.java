@@ -12,6 +12,7 @@ public abstract class Target extends Sprite
 
     public enum State
     {
+        CREATED,
         ZOOM_UP,
         FLY,
         BREAK,
@@ -22,6 +23,7 @@ public abstract class Target extends Sprite
     protected BufferedImage img;
     protected Motion motion;
     private State state;
+    private int delay;
 
     public Target(BufferedImage img, double centerX, double centerY, final Motion motion)
     {
@@ -31,6 +33,7 @@ public abstract class Target extends Sprite
         this.motion = motion;
         this.setState(State.ZOOM_UP);
         this.setZoom(0);
+        this.setDelay(0);
         this.setCenterX(centerX);
         this.setCenterY(centerY);
     }
@@ -40,15 +43,8 @@ public abstract class Target extends Sprite
         this(img, centerX, centerY, Motion.NO_MOVE);
     }
 
-    public void update(final Game game)
+    public void update()
     {
-        final InputEventManager eventManager = game.getEventManager();
-
-        if (this.getBounds().isContain(eventManager.mouseX(), eventManager.mouseY()))
-        {
-            game.getPlayer().setTouchingTarget(true);
-        }
-
         switch (this.getState()) {
         case ZOOM_UP:
             if (this.zoomUp(20) == false)
@@ -120,25 +116,25 @@ public abstract class Target extends Sprite
     }
 
     @Override
-    double getXdefault()
+    public double getXdefault()
     {
         return getCenterX();
     }
 
     @Override
-    double getYdefault()
+    public double getYdefault()
     {
         return getCenterY();
     }
 
     @Override
-    void setXdefault(double x)
+    public void setXdefault(double x)
     {
         this.setCenterX(x);
     }
 
     @Override
-    void setYdefault(double y)
+    public void setYdefault(double y)
     {
         this.setCenterY(y);
     }
@@ -161,5 +157,15 @@ public abstract class Target extends Sprite
     public Motion getMotion()
     {
         return this.motion;
+    }
+
+    public int getDelay()
+    {
+        return delay;
+    }
+
+    public void setDelay(int delay)
+    {
+        this.delay = delay;
     }
 }

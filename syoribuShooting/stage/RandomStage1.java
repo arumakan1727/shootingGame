@@ -1,19 +1,19 @@
 package syoribuShooting.stage;
 
 import syoribuShooting.Game;
-import syoribuShooting.TargetManager;
+import syoribuShooting.BaseScene;
 import syoribuShooting.GameConfig;
 import syoribuShooting.TargetFactory;
 import syoribuShooting.sprite.LinearMotion;
 import syoribuShooting.sprite.Target;
 import syoribuShooting.system.Utils;
 
-public class RandomStage1 extends GameStage
+public class RandomStage1 extends AbstractStage
 {
     private static final int NUM_TARGETS = 6;
     private static final int TIME_LIMIT = 15 * 1000;    // x1000でミリ指定
 
-    public RandomStage1(final TargetManager manager)
+    public RandomStage1(final BaseScene manager)
     {
         super(manager, GameConfig.img_back01);
     }
@@ -30,16 +30,16 @@ public class RandomStage1 extends GameStage
             case SHOOTING:
                 if (this.stopWatch.isOverTimeLimit())
                 {
-                    this.targetManager.getTargets().clear();
+                    this.baseScene.getTargets().clear();
                     this.stopWatch.stopTimer();
                     this.setState(State.TIME_OVER);
                 }
                 else
                 {
-                    if (this.targetManager.size() < 5) {
+                    if (this.baseScene.size() < 5) {
                         storeTargets((int) (Math.random() * 3) + 1);
                     }
-                    this.targetManager.update(game);
+                    this.baseScene.update(game);
                 }
                 break;
         }
@@ -71,7 +71,7 @@ public class RandomStage1 extends GameStage
                     centerY);
             target.setMotion(new LinearMotion(target, 5, Utils.nextInt(20, 500), Utils.nextInt(50, GameConfig.WINDOW_HEIGHT - 50)));
             target.getMotion().setAcceleration(0.05);
-            this.targetManager.add(target);
+            this.baseScene.add(target);
         }
     }
 }

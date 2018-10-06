@@ -9,24 +9,30 @@ import java.util.ListIterator;
 
 import syoribuShooting.sprite.Target;
 import syoribuShooting.sprite.Target.State;
-import syoribuShooting.stage.GameStage;
+import syoribuShooting.stage.AbstractStage;
 
-public class TargetManager
+public class BaseScene
 {
     private List<Target> targets = new LinkedList<>();
     private final InputEventManager eventManager;
     
-    public TargetManager(final InputEventManager manager)
+    public BaseScene(final InputEventManager manager)
     {
         this.eventManager = manager;
     }
     
     public void update(final Game game)
     {
+        final InputEventManager eventManager = game.getEventManager();
         for (ListIterator<Target> it = targets.listIterator(); it.hasNext();)
         {
             final Target elem = it.next();
-            elem.update(game);
+            elem.update();
+
+            if (elem.isClickable() && elem.getBounds().isContain(eventManager.mouseX(), eventManager.mouseY()))
+            {
+                game.getPlayer().setTouchingTarget(true);
+            }
             if (elem.getState() == State.DISPOSE)
             {
                 try {
@@ -37,7 +43,7 @@ public class TargetManager
             }
         }
 
-        GameStage stage = game.getNowStage();
+        AbstractStage stage = game.getNowStage();
         Target hitTarget = null;
 
         if (eventManager.isMouseReleased(MouseEvent.BUTTON1))

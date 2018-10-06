@@ -1,6 +1,7 @@
 package syoribuShooting;
 
 import syoribuShooting.system.GifReader;
+import syoribuShooting.system.Utils;
 
 import java.awt.Cursor;
 import java.awt.Point;
@@ -13,10 +14,20 @@ import javax.imageio.ImageIO;
 
 public final class GameConfig
 {
+    public enum Allocation
+    {
+        TOP, BOTTOM, LEFT, RIGHT, CENTER, ALL;
+        public static final int BORDER_HEIGHT = WINDOW_HEIGHT / 3;
+        public static final int BORDER_WIDTH  = WINDOW_WIDTH / 4;
+        public static final int MARGIN = 100;
+    }
+
     private static boolean enableCursor;
 
     public static final int WINDOW_WIDTH;
     public static final int WINDOW_HEIGHT;
+    public static final int OUTER_WINDOW_PLUS;
+    public static final int OUTER_WINDOW_MINUS;
     public static final int FPS;
     public static final boolean isFullScreen;
     public static final String PATH_IMAGE;
@@ -29,13 +40,15 @@ public final class GameConfig
     public static ArrayList<BufferedImage> anim_hit = new ArrayList<>();
 
     private GameConfig() {}
-    
+
     static {
         final Toolkit toolkit = Toolkit.getDefaultToolkit();
 
         WINDOW_WIDTH = (int) (toolkit.getScreenSize().getWidth());
         WINDOW_HEIGHT = (int) (toolkit.getScreenSize().getHeight());
-        FPS = 40;
+        OUTER_WINDOW_PLUS = WINDOW_WIDTH + 500;
+        OUTER_WINDOW_MINUS = -500;
+        FPS = 50;
         isFullScreen = false;
         enableCursor = true;
         PATH_IMAGE = "/images/";
@@ -83,5 +96,33 @@ public final class GameConfig
     }
 
     public static boolean isEnableCursor() { return enableCursor; }
+
+    public static int randomX(Allocation alloc)
+    {
+        switch (alloc) {
+            case LEFT:
+                return Utils.nextInt(0+Allocation.MARGIN, Allocation.BORDER_WIDTH);
+            case RIGHT:
+                return Utils.nextInt(WINDOW_WIDTH - Allocation.BORDER_WIDTH, WINDOW_WIDTH - Allocation.MARGIN);
+            case CENTER:
+                return Utils.nextInt(Allocation.BORDER_WIDTH, WINDOW_WIDTH - Allocation.BORDER_WIDTH);
+            default:
+                return Utils.nextInt(0+Allocation.MARGIN, WINDOW_WIDTH-Allocation.MARGIN);
+        }
+    }
+
+    public static int randomY(Allocation alloc)
+    {
+        switch (alloc) {
+            case TOP:
+                return Utils.nextInt(0+Allocation.MARGIN, Allocation.BORDER_HEIGHT);
+            case BOTTOM:
+                return Utils.nextInt(WINDOW_HEIGHT - Allocation.BORDER_HEIGHT, WINDOW_HEIGHT - Allocation.MARGIN);
+            case CENTER:
+                return Utils.nextInt(Allocation.BORDER_HEIGHT, WINDOW_HEIGHT - Allocation.BORDER_HEIGHT);
+            default:
+                return Utils.nextInt(0+Allocation.MARGIN, WINDOW_HEIGHT-Allocation.MARGIN);
+        }
+    }
 
 }

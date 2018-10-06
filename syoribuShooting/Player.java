@@ -2,7 +2,7 @@ package syoribuShooting;
 
 import syoribuShooting.sprite.HitEffect1;
 import syoribuShooting.sprite.Target;
-import syoribuShooting.stage.GameStage;
+import syoribuShooting.stage.AbstractStage;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -30,7 +30,7 @@ public class Player
 
     public void update(Game game)
     {
-        final GameStage stage = game.getNowStage();
+        final AbstractStage stage = game.getNowStage();
         final InputEventManager eventManager = game.getEventManager();
 
         if (eventManager.isMouseReleased(MouseEvent.BUTTON1))

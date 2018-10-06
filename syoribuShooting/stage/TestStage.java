@@ -3,12 +3,12 @@ package syoribuShooting.stage;
 import syoribuShooting.Game;
 import syoribuShooting.GameConfig;
 import syoribuShooting.TargetFactory;
-import syoribuShooting.TargetManager;
+import syoribuShooting.BaseScene;
 import syoribuShooting.sprite.Target;
 
-public class TestStage extends GameStage
+public class TestStage extends AbstractStage
 {
-    public TestStage(TargetManager manager)
+    public TestStage(BaseScene manager)
     {
         super(manager, GameConfig.img_back01);
 }
@@ -16,13 +16,13 @@ public class TestStage extends GameStage
     @Override
     public void initialize()
     {
-        this.targetManager.initialize();
+        this.baseScene.initialize();
         this.setState(State.INITIAL_WAITING);
         this.stopWatch.initTimer(getTimeLimitMillis());
 
         Target target = TargetFactory.createTarget(TargetFactory.TargetType.rankA, 600, 300);
         //target.setMotion(new LinearMotion(target, 10, 600, 300, 605, 302));
-        this.targetManager.add(target);
+        this.baseScene.add(target);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class TestStage extends GameStage
                 this.setState(State.SHOOTING);
                 break;
             case SHOOTING:
-                this.targetManager.update(game);
+                this.baseScene.update(game);
                 break;
         }
 

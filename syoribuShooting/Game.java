@@ -1,8 +1,7 @@
 package syoribuShooting;
 
-import syoribuShooting.stage.GameStage;
+import syoribuShooting.stage.AbstractStage;
 import syoribuShooting.stage.RandomStage1;
-import syoribuShooting.stage.TestStage;
 import syoribuShooting.system.FPSTimer;
 import syoribuShooting.system.GameWindow;
 
@@ -17,9 +16,9 @@ public class Game extends FPSTimer
     private final InputEventManager eventManager;
     private final Player player;
     private final FeverManager feverManager;
-    private final TargetManager targetManager;
+    private final BaseScene baseScene;
     private final EffectManager effectManager;
-    private GameStage nowStage;
+    private AbstractStage nowStage;
 
     private void update()
     {
@@ -32,10 +31,10 @@ public class Game extends FPSTimer
     private void draw(Graphics2D g2d)
     {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-        g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+        g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_DEFAULT);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         nowStage.draw(g2d);
         effectManager.draw(g2d);
         player.draw(g2d);
@@ -79,11 +78,11 @@ public class Game extends FPSTimer
     {
         return this.player;
     }
-    public void setNowStage(final GameStage stage)
+    public void setNowStage(final AbstractStage stage)
     {
         this.nowStage = stage;
     }
-    public GameStage getNowStage()
+    public AbstractStage getNowStage()
     {
         return this.nowStage;
     }
@@ -103,8 +102,8 @@ public class Game extends FPSTimer
         this.window = new GameWindow( GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT, GameConfig.isFullScreen);
         this.window.setTitle("Syoribu-Shooting");
         this.eventManager = window.getEventManager();
-        this.targetManager = new TargetManager(this.eventManager);
-        this.nowStage = new RandomStage1(this.targetManager);
+        this.baseScene = new BaseScene(this.eventManager);
+        this.nowStage = new RandomStage1(this.baseScene);
         this.player = Player.getInstance();
         this.feverManager = new FeverManager();
         this.effectManager = new EffectManager();

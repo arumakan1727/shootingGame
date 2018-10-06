@@ -1,43 +1,17 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 的の数:3個
 画面左縦に生成、右へ水平移動
  -->
 <stage>
-    <objects>
+    <entity>
 
         <target type="rankC">
-            <appear zoom="true" delay="0">
-                <pointX>50</pointX>
-                <pointY>150</pointY>
-            </appear>
+            <appear delay="0" x="$left" y="$left"/>
             <motion type="linear" speed="5.0" acceleration="0.08" delay="0">
-                <toX>$INF</toX>
-                <toY>150</toY>
+                <linearMotion x="$inf" y="$keep"/>
             </motion>
         </target>
 
-        <target type="rankC">
-            <appear zoom="true" delay="250">
-                <pointX>50</pointX>
-                <pointY>300</pointY>
-            </appear>
-            <motion type="linear" speed="5.0" acceleration="0.08" delay="0">
-                <toX>$INF</toX>
-                <toY>300</toY>
-            </motion>
-        </target>
-
-        <target type="rankC">
-            <appear zoom="true" delay="500">
-                <pointX>50</pointX>
-                <pointY>450</pointY>
-            </appear>
-            <motion type="linear" speed="5.0" acceleration="0.08" delay="0">
-                <toX>$INF</toX>
-                <toY>450</toY>
-            </motion>
-        </target>
-
-    </objects>
+    </entity>
 </stage>

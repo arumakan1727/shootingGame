@@ -2,7 +2,7 @@ package syoribuShooting.stage;
 
 import syoribuShooting.Game;
 import syoribuShooting.GameConfig;
-import syoribuShooting.TargetManager;
+import syoribuShooting.BaseScene;
 import syoribuShooting.sprite.Target;
 import syoribuShooting.system.StopWatch;
 
@@ -11,15 +11,13 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-public abstract class GameStage
+public abstract class AbstractStage
 {
-    protected final static int TIMER_INTERVAL = 20; // ミリ秒指定
-
     abstract public void initialize();
     abstract public void update(final Game game);
     abstract public int getTimeLimitMillis();
 
-    protected final TargetManager targetManager;
+    protected final BaseScene baseScene;
     protected final StopWatch stopWatch;
     private BufferedImage backImage;
     private Target hitTarget;
@@ -32,12 +30,12 @@ public abstract class GameStage
         TIME_OVER,
     }
 
-    public GameStage(final TargetManager manager, BufferedImage img)
+    public AbstractStage(final BaseScene manager, BufferedImage img)
     {
-        this.targetManager = manager;
+        this.baseScene = manager;
         this.stopWatch = new StopWatch();
         this.setBackImage(img);
-        this.targetManager.initialize();
+        this.baseScene.initialize();
         this.setState(State.INITIAL_WAITING);
 
         this.initialize();
@@ -46,7 +44,7 @@ public abstract class GameStage
     public void draw(final Graphics2D g2d)
     {
         g2d.drawImage(this.getBackImage(), 0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT, null);
-        this.targetManager.draw(g2d);
+        this.baseScene.draw(g2d);
         g2d.setFont(new Font(Font.MONOSPACED, Font.ITALIC, 70));
         g2d.setColor(Color.GREEN);
         int t = this.stopWatch.getRemainTime();
