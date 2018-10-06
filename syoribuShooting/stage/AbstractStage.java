@@ -5,6 +5,7 @@ import syoribuShooting.GameConfig;
 import syoribuShooting.InputEventManager;
 import syoribuShooting.sprite.HitEffect1;
 import syoribuShooting.sprite.Target;
+import syoribuShooting.system.StopWatch;
 
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
@@ -14,21 +15,30 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import static syoribuShooting.GameConfig.*;
+
 public abstract class AbstractStage
 {
-    abstract public void initialize();
-
     private List<Target> targets = new LinkedList<>();
     private Target hitTarget = null;
     private BufferedImage backImage;
+    private boolean isEnable = false;
+    private final StopWatch stopWatch = new StopWatch();
 
     public AbstractStage(BufferedImage backImage)
     {
         this.setBackImage(backImage);
     }
 
+    public void initialize()
+    {
+        this.stopWatch.initTimer();
+    }
+
     public void update(final Game game)
     {
+        if (!isEnable()) return;
+
         final InputEventManager eventManager = game.getEventManager();
         boolean isTouchingEntity = false;
 
@@ -37,11 +47,26 @@ public abstract class AbstractStage
         {
             final Target elem = it.next();
             elem.update();
+            if (elem.getState() == Target.State.CREATED && stopWatch.getElapsed() >= elem.getDelay())
+            {
+                elem.setState(Target.State.ZOOM_UP);
+            }
 
             // マウスカーソルが的に触れていればフラグを立てる
             if (elem.isClickable() && elem.getBounds().isContain(eventManager.mouseX(), eventManager.mouseY()))
             {
                 isTouchingEntity = true;
+            }
+
+            // 画面外になったら
+            final int x = ((int) elem.getXdefault());
+            final int y = ((int) elem.getYdefault());
+            if (x < OUTER_WINDOW_MINUS
+                    || y < OUTER_WINDOW_MINUS
+                    || OUTER_WINDOW_PLUS < x
+                    || OUTER_WINDOW_PLUS < y)
+            {
+                elem.setState(Target.State.DISPOSE);
             }
 
             // stateがDISPOSEならリストから消す
@@ -133,5 +158,20 @@ public abstract class AbstractStage
         }
 
         return null;
+    }
+
+    public boolean isEnable()
+    {
+        return isEnable;
+    }
+
+    public void setEnable(boolean enable)
+    {
+        this.isEnable = enable;
+        if (enable) {
+            this.stopWatch.restartTimer();
+        } else {
+            this.stopWatch.stopTimer();
+        }
     }
 }

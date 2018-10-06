@@ -31,7 +31,7 @@ public abstract class Target extends Sprite
 
         this.img = img;
         this.motion = motion;
-        this.setState(State.ZOOM_UP);
+        this.setState(State.CREATED);
         this.setZoom(0);
         this.setDelay(0);
         this.setCenterX(centerX);
@@ -46,18 +46,21 @@ public abstract class Target extends Sprite
     public void update()
     {
         switch (this.getState()) {
-        case ZOOM_UP:
-            if (this.zoomUp(20) == false)
-            {
-                this.setState(State.FLY);
-            }
-            break;
+            case ZOOM_UP:
+                if (this.zoomUp(20) == false)
+                {
+                    this.setState(State.FLY);
+                }
+                break;
+
+            case FLY:
+                this.motion.move();
+                break;
 
             case BREAK:
                 deflationBreak();
                 break;
         }
-        this.motion.move();
     }
 
     public Bounds getBounds()

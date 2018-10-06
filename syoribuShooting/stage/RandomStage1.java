@@ -7,7 +7,7 @@ import syoribuShooting.sprite.LinearMotion;
 import syoribuShooting.sprite.Target;
 import syoribuShooting.system.Utils;
 
-import java.awt.image.BufferedImage;
+import static syoribuShooting.GameConfig.*;
 
 public class RandomStage1 extends AbstractStage
 {
@@ -39,14 +39,15 @@ public class RandomStage1 extends AbstractStage
     {
         for (int i = 0; i < num; ++i)
         {
-            int centerX = Utils.nextInt(1000, GameConfig.WINDOW_WIDTH - 100);
-            int centerY = Utils.nextInt(300, GameConfig.WINDOW_HEIGHT - 100);
+            int centerX = randomX(Allocation.LEFT);
+            int centerY = randomY(Allocation.LEFT);
             Target target = TargetFactory.createTarget(
                     TargetFactory.TargetType.getTypeByID((Utils.nextInt(0, 2))),
                     centerX,
                     centerY);
-            target.setMotion(new LinearMotion(target, 5, Utils.nextInt(20, 500), Utils.nextInt(50, GameConfig.WINDOW_HEIGHT - 50)));
-            target.getMotion().setAcceleration(0.05);
+            target.setMotion(new LinearMotion(target, 2.0, randomX(Allocation.RIGHT), randomY(Allocation.RIGHT)));
+            target.setDelay(500 + i*150);
+            target.getMotion().setAcceleration(0.08);
             this.getTargets().add(target);
         }
     }

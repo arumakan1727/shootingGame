@@ -6,24 +6,13 @@ public class StopWatch
     private int elapsed;
     private int addition;
     private int timeLimit;
+    private long now, before;
     private boolean running;
 
     public StopWatch()
     {
         this.setTimeLimitMillis(-1);
         this.running = false;
-    }
-
-    private void updateElapsed()
-    {
-        if (this.running) {
-            elapsed = (int)(System.currentTimeMillis() - this.startTime);
-        }
-    }
-
-    private void setElapsed(int e)
-    {
-        this.elapsed = e;
     }
 
     public void initTimer()
@@ -35,6 +24,7 @@ public class StopWatch
     {
         this.setTimeLimitMillis(limit);
         this.setElapsed(0);
+        now = before = System.currentTimeMillis();
         this.startTime = -1;
         this.addition = 0;
         this.running = false;
@@ -52,6 +42,8 @@ public class StopWatch
 
     public void restartTimer()
     {
+        if (isRunning()) return;
+        now = before = System.currentTimeMillis();
         this.running = true;
     }
 
@@ -109,5 +101,26 @@ public class StopWatch
     {
         this.timeLimit = limit;
     }
+
+    private void updateElapsed()
+    {
+        if (this.running) {
+            this.before = this.now;
+            now = System.currentTimeMillis();
+            elapsed += now - before;
+//            elapsed = (int)(System.currentTimeMillis() - this.startTime);
+        }
+    }
+
+    private void setElapsed(int e)
+    {
+        this.elapsed = e;
+    }
+
+    public boolean isRunning()
+    {
+        return this.running;
+    }
+
 
 }

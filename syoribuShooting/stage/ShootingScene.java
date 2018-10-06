@@ -9,6 +9,7 @@ import syoribuShooting.system.StopWatch;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 
 public class ShootingScene extends AbstractScene
 {
@@ -40,10 +41,18 @@ public class ShootingScene extends AbstractScene
     @Override
     public void update(final Game game)
     {
+        if (game.getEventManager().isKeyPressed(KeyEvent.VK_SPACE)) {
+            stage.setEnable(false);
+            this.stopWatch.stopTimer();
+        } else {
+            stage.setEnable(true);
+            this.stopWatch.restartTimer();
+        }
         switch (this.getState()) {
             case WAIT_SHOOTING:
                 this.stopWatch.startTimer();
                 this.setState(State.SHOOTING);
+                this.stage.setEnable(true);
                 break;
             case SHOOTING:
                 if (this.stopWatch.isOverTimeLimit())

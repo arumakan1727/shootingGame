@@ -4,6 +4,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import syoribuShooting.sprite.Target;
+import syoribuShooting.stage.AbstractStage;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -29,6 +30,7 @@ public class XMLStageParser extends DefaultHandler
     private List<Target> list;
     private StringBuilder sb;
     private Target nowTarget;
+    private AbstractStage stage;
 
     public XMLStageParser(InputStream is)
     {

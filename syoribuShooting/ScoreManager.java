@@ -84,7 +84,7 @@ public class ScoreManager
 
     public void setFever(boolean isFever)
     {
-        isFever = isFever;
+        this.isFever = isFever;
     }
 
     private void checkHit(final Target hitTarget, int px, int py)
