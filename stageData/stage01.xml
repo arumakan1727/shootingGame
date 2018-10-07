@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-的の数:3個
-画面左縦に生成、右へ水平移動
+的の数:5個
+左右から挟み撃ち！w
  -->
 <stage backImageID="1" timeLimit="8000" stageID="1">
     <entity>

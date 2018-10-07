@@ -141,4 +141,12 @@ public final class GameConfig
                 + String.format("%02d.xml", num);
     }
 
+    public static TargetType randomTargetType()
+    {
+        int rnd = Utils.nextInt(0, 99);
+        if (rnd < 20) return TargetType.rankA;
+        if (rnd < 50) return TargetType.rankB;
+        return TargetType.rankC;
+    }
+
 }

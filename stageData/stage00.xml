@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+的の数:6個
+上下から挟み撃ち！w
+ -->
+<stage backImageID="1" timeLimit="3000" stageID="0">
+    <entity>
+        <target type="rank?">
+            <appear delay="0" x="$bottom" y="$bottom"/>
+            <linearMotion delay="100" speed="6.0" acceleration="0.1"
+                          x="$keep" y="$minf" />
+        </target>
+        <target type="rank?">
+            <appear delay="150" x="$bottom" y="$bottom"/>
+            <linearMotion delay="100" speed="6.0" acceleration="0.1"
+                          x="$keep" y="$minf" />
+        </target>
+        <target type="rank?">
+            <appear delay="300" x="$bottom" y="$bottom"/>
+            <linearMotion delay="100" speed="6.0" acceleration="0.1"
+                          x="$keep" y="$minf" />
+        </target>
+
+        <target type="rank?">
+            <appear delay="450" x="$top" y="$top"/>
+            <linearMotion delay="100" speed="6.0" acceleration="0.1"
+                          x="$keep" y="$inf" />
+        </target>
+        <target type="rank?">
+            <appear delay="600" x="$top" y="$top"/>
+            <linearMotion delay="100" speed="6.0" acceleration="0.1"
+                          x="$keep" y="$inf" />
+        </target>
+        <target type="rank?">
+            <appear delay="750" x="$top" y="$top"/>
+            <linearMotion delay="100" speed="6.0" acceleration="0.1"
+                          x="$keep" y="$inf" />
+        </target>
+    </entity>
+</stage>

@@ -9,26 +9,6 @@ public class TargetFactory
 {
     private TargetFactory() {}
 
-    public enum TargetType
-    {
-        rankA,
-        rankB,
-        rankC;
-
-        private TargetType() {}
-
-        public static TargetType getTypeByID(int id)
-        {
-            switch (id)
-            {
-                case 0: return rankA;
-                case 1: return rankB;
-                case 2: return rankC;
-                default: throw new IndexOutOfBoundsException();
-            }
-        }
-    }
-
     public static Target createTarget(final TargetType type)
     {
         return createTarget(type, 0, 0);
@@ -53,6 +33,10 @@ public class TargetFactory
                     }
 
                     @Override
+                    protected void _update()
+                    { }
+
+                    @Override
                     public Bounds getBounds() { return new CircleBounds(getCenterX(), getCenterY(), 70); }
                 };
 
@@ -64,6 +48,11 @@ public class TargetFactory
                     {
                         return 300;
                     }
+
+                    @Override
+                    protected void _update()
+                    {
+                    }
                 };
 
             case rankC:
@@ -73,6 +62,11 @@ public class TargetFactory
                     public int getScore(int screenX, int screenY)
                     {
                         return 100;
+                    }
+
+                    @Override
+                    protected void _update()
+                    {
                     }
                 };
 

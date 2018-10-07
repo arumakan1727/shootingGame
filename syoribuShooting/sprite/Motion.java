@@ -2,17 +2,19 @@ package syoribuShooting.sprite;
 
 public abstract class Motion
 {
-    public abstract void move(int elapsedTime);
+    abstract protected void onMove();
 
     private double speed;
     private double acceleration;
     private int startDelay;
     protected final Sprite sprite;
 
+    private long moveStartedTime = -1;
+
     public static final Motion NO_MOVE = new Motion(null)
     {
         @Override
-        public void move(int elapsedTime) {}
+        protected void onMove() {}
     };
 
     public Motion(final Sprite sprite)
@@ -25,6 +27,16 @@ public abstract class Motion
         this.sprite = sprite;
         this.setSpeed(speed);
         this.setSpeed(0);
+    }
+
+    public void move(int elapsedTime)
+    {
+        if (moveStartedTime < 0) {
+            setMoveStartedTime(elapsedTime);
+        }
+        if (elapsedTime - getMoveStartedTime() < this.getStartDelay()) return;
+
+        this.onMove();
     }
 
     @Override
@@ -62,5 +74,15 @@ public abstract class Motion
     public void setStartDelay(int startDelay)
     {
         this.startDelay = startDelay;
+    }
+
+    private long getMoveStartedTime()
+    {
+        return moveStartedTime;
+    }
+
+    private void setMoveStartedTime(long moveStartedTime)
+    {
+        this.moveStartedTime = moveStartedTime;
     }
 }

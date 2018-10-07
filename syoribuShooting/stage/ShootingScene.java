@@ -97,7 +97,7 @@ public class ShootingScene extends AbstractScene
 
     public void changeStage()
     {
-        String fileName = GameConfig.getStageDataFileName((this.stage.STATE_ID + 2) % 2 + 1);
+        String fileName = GameConfig.getStageDataFileName((this.stage.STATE_ID + 1) % 3);
         System.out.println(fileName);
         XMLStageParser stageParser = new XMLStageParser(Game.class.getResourceAsStream(fileName));
 

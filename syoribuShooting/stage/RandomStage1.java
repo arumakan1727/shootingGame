@@ -3,6 +3,7 @@ package syoribuShooting.stage;
 import syoribuShooting.Game;
 import syoribuShooting.GameConfig;
 import syoribuShooting.TargetFactory;
+import syoribuShooting.TargetType;
 import syoribuShooting.sprite.LinearMotion;
 import syoribuShooting.sprite.Target;
 import syoribuShooting.system.Utils;
@@ -20,9 +21,8 @@ public class RandomStage1 extends BaseStage
     }
 
     @Override
-    public void update(Game game)
+    protected void _update(Game game)
     {
-        super.update(game);
         if (getState() == State.SHOOTING && getTargetList().size() < NUM_TARGETS - 2)
         {
             this.storeTargets(Utils.nextInt(1, 2));
@@ -42,7 +42,7 @@ public class RandomStage1 extends BaseStage
     }
 
     @Override
-    public void initialize()
+    protected void _init()
     {
         this.storeTargets(NUM_TARGETS);
     }
@@ -54,7 +54,7 @@ public class RandomStage1 extends BaseStage
             int centerX = randomX(Allocation.LEFT);
             int centerY = randomY(Allocation.LEFT);
             Target target = TargetFactory.createTarget(
-                    TargetFactory.TargetType.getTypeByID((Utils.nextInt(0, 2))),
+                    TargetType.getTypeByID((Utils.nextInt(0, 2))),
                     centerX,
                     centerY);
             target.setMotion(new LinearMotion(target, 2.0, randomX(Allocation.RIGHT), randomY(Allocation.RIGHT)));

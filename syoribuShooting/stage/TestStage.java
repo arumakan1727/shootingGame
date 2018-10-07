@@ -1,7 +1,9 @@
 package syoribuShooting.stage;
 
+import syoribuShooting.Game;
 import syoribuShooting.GameConfig;
 import syoribuShooting.TargetFactory;
+import syoribuShooting.TargetType;
 import syoribuShooting.sprite.Target;
 
 public class TestStage extends BaseStage
@@ -24,10 +26,15 @@ public class TestStage extends BaseStage
     }
 
     @Override
-    public void initialize()
+    protected void _init()
     {
-        Target target = TargetFactory.createTarget(TargetFactory.TargetType.rankA, 600, 300);
+        Target target = TargetFactory.createTarget(TargetType.rankA, 600, 300);
         this.getTargetList().add(target);
+    }
+
+    @Override
+    protected void _update(Game game)
+    {
     }
 
 }

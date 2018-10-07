@@ -71,6 +71,7 @@ public class XMLStageParser extends DefaultHandler
             case "minf": ret = GameConfig.OUTER_WINDOW_MINUS; break;
             case "keep": ret = targetValueByName(this.nowTarget, name); break;
 
+            case "all":
             case "bottom":
             case "top":
             case "left":
@@ -128,10 +129,13 @@ public class XMLStageParser extends DefaultHandler
 
     private void tagTarget(String qName, Attributes attr)
     {
-        final String attrVal = attr.getValue(ATTR_TYPE);
-        TargetFactory.TargetType type = TargetFactory.TargetType.rankC;
-        if(attrVal != null) {
-            type = TargetFactory.TargetType.valueOf(attrVal);
+        final String typeStr = attr.getValue(ATTR_TYPE);
+        TargetType type = TargetType.rankC;
+        if(typeStr != null) {
+            if (typeStr.equals("rank?"))
+                type = GameConfig.randomTargetType();
+            else
+                type = TargetType.valueOf(typeStr);
         }
         nowTarget = TargetFactory.createTarget(type);
     }
@@ -211,6 +215,16 @@ public class XMLStageParser extends DefaultHandler
             public boolean shouldBeFinished()
             {
                 return this.stopWatch.getElapsed() >= this.getTimeLimit() || noTargets();
+            }
+
+            @Override
+            protected void _init()
+            {
+            }
+
+            @Override
+            protected void _update(Game game)
+            {
             }
         };
     }

@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 public abstract class Target extends Sprite
 {
     abstract public int getScore(int screenX, int screenY);
+    abstract protected void _update();
 
     public enum State
     {
@@ -65,6 +66,7 @@ public abstract class Target extends Sprite
                 deflationBreak();
                 break;
         }
+        _update();
     }
 
     public Bounds getBounds()

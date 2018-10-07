@@ -21,6 +21,8 @@ public abstract class BaseStage
 {
     abstract public int getTimeLimit();
     abstract public boolean shouldBeFinished();
+    abstract protected void _init();
+    abstract protected void _update(final Game game);
 
     private List<Target> targets = new LinkedList<>();
     private Target hitTarget = null;
@@ -58,6 +60,7 @@ public abstract class BaseStage
             throw new IllegalStateException("Now state=" + getState() + ". initialize must be WAITING");
         }
         this.stopWatch.initTimer();
+        _init();
     }
 
     public void update(final Game game)
@@ -133,6 +136,7 @@ public abstract class BaseStage
             );
         }
 
+        _update(game);
     }
 
     public void draw(final Graphics2D g2d)
