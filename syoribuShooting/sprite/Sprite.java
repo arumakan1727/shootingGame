@@ -8,6 +8,7 @@ public abstract class Sprite
     private int width;
     private int height;
     private int zoom; // 何倍にするか
+    private boolean isDisposed;
 
     public double getXdefault() { return getX(); }
     public double getYdefault() { return getY(); }
@@ -19,6 +20,7 @@ public abstract class Sprite
         this.defaultWidth =  width;
         this.defaultHeight = height;
         this.setZoom(100);
+        this.setDisposed(false);
     }
     
     public Sprite(int x, int y, int width, int height)
@@ -123,5 +125,14 @@ public abstract class Sprite
         this.y += a;
     }
 
+    public boolean isDisposed()
+    {
+        return isDisposed;
+    }
+
+    public void setDisposed(boolean disposed)
+    {
+        isDisposed = disposed;
+    }
 }
 

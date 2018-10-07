@@ -96,7 +96,8 @@ public class Game extends FPSTimer
         this.window = new GameWindow( GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT, GameConfig.isFullScreen);
         this.window.setTitle("Syoribu-Shooting");
         this.eventManager = window.getEventManager();
-        this.nowScene = new ShootingScene(new RandomStage1());
+//        this.nowScene = new ShootingScene(new RandomStage1());
+        this.nowScene = new ShootingScene(new XMLStageParser(Game.class.getResourceAsStream(GameConfig.getStageDataFileName(0))).getParsedStage());
         this.effectManager = new EffectManager();
 
         this.initialize();

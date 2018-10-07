@@ -43,6 +43,10 @@ public abstract class Target extends Sprite
 
     public void update(int elapsedTime)
     {
+        if (this.isDisposed())
+        {
+            this.setState(State.DISAPPEAR);
+        }
         switch (this.getState()) {
             case CREATED:
                 if (this.getState() == Target.State.CREATED && elapsedTime >= this.getZoomDelay())

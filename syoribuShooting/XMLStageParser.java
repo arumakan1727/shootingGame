@@ -5,6 +5,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import syoribuShooting.sprite.LinearMotion;
 import syoribuShooting.sprite.Motion;
+import syoribuShooting.sprite.QuietMotion;
 import syoribuShooting.sprite.Target;
 import syoribuShooting.stage.BaseStage;
 
@@ -22,6 +23,8 @@ public class XMLStageParser extends DefaultHandler
     private static final String TAG_TARGET  = "target";
     private static final String TAG_APPEAR  = "appear";
     private static final String TAG_LINEAR_MOTION  = "linearMotion";
+    private static final String TAG_QUIET_MOTION  = "quietMotion";
+
     private static final String ATTR_TYPE   = "type";
     private static final String ATTR_X      = "x";
     private static final String ATTR_Y      = "y";
@@ -115,7 +118,8 @@ public class XMLStageParser extends DefaultHandler
         }
         switch (qName)
         {
-            case TAG_STAGE: tagStage(qName, attributes);
+            case TAG_STAGE: tagStage(qName, attributes);break;
+
             case TAG_TARGET:
                 tagTarget(qName, attributes); break;
 
@@ -124,6 +128,9 @@ public class XMLStageParser extends DefaultHandler
 
             case TAG_LINEAR_MOTION:
                 tagLinearMotion(qName, attributes); break;
+
+            case TAG_QUIET_MOTION:
+                tagQuietMotion(qName, attributes); break;
         }
     }
 
@@ -195,6 +202,13 @@ public class XMLStageParser extends DefaultHandler
         nowTarget.setMotion(motion);
     }
 
+    private void tagQuietMotion(String qName, Attributes attr) throws SAXException
+    {
+        int aliveTime = parseValue(ATTR_TIMELIMIT, attr.getValue(ATTR_TIMELIMIT), -1);
+        if (aliveTime < 0) throw new SAXException();
+        this.nowTarget.setMotion(new QuietMotion(nowTarget, aliveTime));
+    }
+
     private void tagStage(String qName, Attributes attr) throws SAXException
     {
         int backImageID = parseValue(ATTR_BACK_ID, attr.getValue(ATTR_BACK_ID), 1);
@@ -218,14 +232,10 @@ public class XMLStageParser extends DefaultHandler
             }
 
             @Override
-            protected void _init()
-            {
-            }
+            protected void _init() {}
 
             @Override
-            protected void _update(Game game)
-            {
-            }
+            protected void _update(Game game) {}
         };
     }
 

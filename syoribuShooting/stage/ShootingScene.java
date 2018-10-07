@@ -46,15 +46,15 @@ public class ShootingScene extends AbstractScene
         {
             changeStage();
         }
-//        else {
-//            if (game.getEventManager().isKeyPressed(KeyEvent.VK_SPACE)) {
-//                stage.setState(BaseStage.State.WAITING);
-//                this.stopWatch.stopTimer();
-//            } else {
-//                stage.setState(BaseStage.State.SHOOTING);
-//                this.stopWatch.restartTimer();
-//            }
-//        }
+        else {
+            if (game.getEventManager().isKeyPressed(KeyEvent.VK_SPACE)) {
+                stage.setState(BaseStage.State.WAITING);
+                this.stopWatch.stopTimer();
+            } else {
+                stage.setState(BaseStage.State.SHOOTING);
+                this.stopWatch.restartTimer();
+            }
+        }
         System.out.println("Scene: " + getState()
                 + ", stage: " + stage.getState()
                 + ", elem=" + stage.getTargetList().size()
@@ -80,6 +80,19 @@ public class ShootingScene extends AbstractScene
         scoreManager.update(game, this.getStage());
     }
 
+    public void changeStage()
+    {
+        String fileName = GameConfig.getStageDataFileName((this.stage.STATE_ID + 1) % 5);
+//        String fileName = GameConfig.getStageDataFileName(4);
+        System.out.println(fileName);
+        XMLStageParser stageParser = new XMLStageParser(Game.class.getResourceAsStream(fileName));
+
+        BaseStage nextStage = stageParser.getParsedStage();
+        nextStage.initialize();
+        nextStage.setState(BaseStage.State.SHOOTING);
+        setStage(nextStage);
+    }
+
     @Override
     public void draw(final Graphics2D g2d)
     {
@@ -93,18 +106,6 @@ public class ShootingScene extends AbstractScene
         g2d.drawString("Time: " + t/1000 + "." + t%1000 / 100, GameConfig.WINDOW_WIDTH - 500, 80);
 
         scoreManager.draw(g2d);
-    }
-
-    public void changeStage()
-    {
-        String fileName = GameConfig.getStageDataFileName((this.stage.STATE_ID + 1) % 3);
-        System.out.println(fileName);
-        XMLStageParser stageParser = new XMLStageParser(Game.class.getResourceAsStream(fileName));
-
-        BaseStage nextStage = stageParser.getParsedStage();
-        nextStage.initialize();
-        nextStage.setState(BaseStage.State.SHOOTING);
-        setStage(nextStage);
     }
 
     public State getState()

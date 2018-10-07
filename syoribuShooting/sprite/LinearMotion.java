@@ -21,7 +21,7 @@ public class LinearMotion extends Motion
     }
 
     @Override
-    protected void onMove()
+    protected void onMove(long elapsedTime)
     {
         if (! isArrivedEndX()) {
             sprite.addX(this.vx);

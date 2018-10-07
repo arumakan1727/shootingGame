@@ -106,32 +106,51 @@ public final class GameConfig
 
     public static boolean isEnableCursor() { return enableCursor; }
 
+
+    private static int beforeRandX=0, beforeRandY=0;
+
     public static int randomX(Allocation alloc)
     {
+        int ret;
         switch (alloc) {
             case LEFT:
-                return Utils.nextInt(0+Allocation.MARGIN, Allocation.BORDER_WIDTH);
+                ret =  Utils.nextInt(0+Allocation.MARGIN, Allocation.BORDER_WIDTH);
+                break;
             case RIGHT:
-                return Utils.nextInt(WINDOW_WIDTH - Allocation.BORDER_WIDTH, WINDOW_WIDTH - Allocation.MARGIN);
+                ret =  Utils.nextInt(WINDOW_WIDTH - Allocation.BORDER_WIDTH, WINDOW_WIDTH - Allocation.MARGIN);
+                break;
             case CENTER:
-                return Utils.nextInt(Allocation.BORDER_WIDTH, WINDOW_WIDTH - Allocation.BORDER_WIDTH);
+                ret =  Utils.nextInt(Allocation.BORDER_WIDTH, WINDOW_WIDTH - Allocation.BORDER_WIDTH);
+                break;
             default:
-                return Utils.nextInt(0+Allocation.MARGIN, WINDOW_WIDTH-Allocation.MARGIN);
+                ret =  Utils.nextInt(0+Allocation.MARGIN, WINDOW_WIDTH-Allocation.MARGIN);
         }
+        if (Math.abs(ret - beforeRandX) < 100) return randomX(alloc);
+
+        beforeRandX = ret;
+        return ret;
     }
 
     public static int randomY(Allocation alloc)
     {
+        int ret;
         switch (alloc) {
             case TOP:
-                return Utils.nextInt(0+Allocation.MARGIN, Allocation.BORDER_HEIGHT);
+                ret =  Utils.nextInt(0+Allocation.MARGIN, Allocation.BORDER_HEIGHT);
+                break;
             case BOTTOM:
-                return Utils.nextInt(WINDOW_HEIGHT - Allocation.BORDER_HEIGHT, WINDOW_HEIGHT - Allocation.MARGIN);
+                ret =  Utils.nextInt(WINDOW_HEIGHT - Allocation.BORDER_HEIGHT, WINDOW_HEIGHT - Allocation.MARGIN);
+                break;
             case CENTER:
-                return Utils.nextInt(Allocation.BORDER_HEIGHT, WINDOW_HEIGHT - Allocation.BORDER_HEIGHT);
+                ret =  Utils.nextInt(Allocation.BORDER_HEIGHT, WINDOW_HEIGHT - Allocation.BORDER_HEIGHT);
+                break;
             default:
-                return Utils.nextInt(0+Allocation.MARGIN, WINDOW_HEIGHT-Allocation.MARGIN);
+                ret =  Utils.nextInt(0+Allocation.MARGIN, WINDOW_HEIGHT-Allocation.MARGIN);
         }
+        if (Math.abs(ret - beforeRandY) < 50) return randomY(alloc);
+
+        beforeRandY = ret;
+        return ret;
     }
 
     public static String getStageDataFileName(int num)
@@ -144,8 +163,8 @@ public final class GameConfig
     public static TargetType randomTargetType()
     {
         int rnd = Utils.nextInt(0, 99);
-        if (rnd < 20) return TargetType.rankA;
-        if (rnd < 50) return TargetType.rankB;
+        if (rnd < 15) return TargetType.rankA;
+        if (rnd < 40) return TargetType.rankB;
         return TargetType.rankC;
     }
 
