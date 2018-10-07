@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+的の数:4個
+画面下からポーン
+ -->
+<stage backImageID="1" timeLimit="5000" stageID="3">
+    <entity>
+        <target type="rankC">
+            <appear delay="0" x="$left" y="1200"/>
+            <linearMotion delay="0" speed="35.0" acceleration="-0.7"
+                          x="$keep" y="$minf" />
+        </target>
+        <target type="rankC">
+            <appear delay="0" x="$right" y="1200"/>
+            <linearMotion delay="200" speed="35.0" acceleration="-0.7"
+                          x="$keep" y="$minf" />
+        </target>
+        <target type="rankC">
+            <appear delay="0" x="$center" y="1200"/>
+            <linearMotion delay="400" speed="32.0" acceleration="-0.5"
+                          x="$keep" y="$minf" />
+        </target>
+        <target type="rankC">
+            <appear delay="0" x="$bottom" y="1200"/>
+            <linearMotion delay="800" speed="32.0" acceleration="-0.5"
+                          x="$keep" y="$minf" />
+        </target>
+
+        <target type="rank?">
+            <appear delay="0" x="$right" y="$right"/>
+            <quietMotion timeLimit="3000"/>
+        </target>
+        <target type="rank?">
+            <appear delay="150" x="$center" y="$center"/>
+            <quietMotion timeLimit="3000"/>
+        </target>
+        <target type="rank?">
+            <appear delay="450" x="$left" y="$left"/>
+            <quietMotion timeLimit="3000"/>
+        </target>
+    </entity>
+</stage>

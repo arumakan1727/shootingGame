@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+的の数:4個
+画面下からポーン
+ -->
+<stage backImageID="1" timeLimit="8000" stageID="4">
+    <entity>
+        <target type="rankC">
+            <appear delay="0" x="$center" y="$center"/>
+            <quietMotion timeLimit="2000"/>
+        </target>
+        <target type="rank?">
+            <appear delay="150" x="$center" y="$bottom"/>
+            <quietMotion timeLimit="2000"/>
+        </target>
+        <target type="rank?">
+            <appear delay="300" x="$center" y="$top"/>
+            <quietMotion timeLimit="2000"/>
+        </target>
+        <target type="rank?">
+            <appear delay="450" x="$left" y="$center"/>
+            <quietMotion timeLimit="2000"/>
+        </target>
+        <target type="rankC">
+            <appear delay="600" x="$right" y="$center"/>
+            <quietMotion timeLimit="2000"/>
+        </target>
+        <target type="rankC">
+            <appear delay="750" x="$right" y="$left"/>
+            <quietMotion timeLimit="2000"/>
+        </target>
+    </entity>
+</stage>
