@@ -2,7 +2,6 @@ package syoribuShooting.system;
 
 public class StopWatch
 {
-    private long startTime;
     private int elapsed;
     private int addition;
     private int timeLimit;
@@ -25,7 +24,6 @@ public class StopWatch
         this.setTimeLimitMillis(limit);
         this.setElapsed(0);
         now = before = System.currentTimeMillis();
-        this.startTime = -1;
         this.addition = 0;
         this.running = false;
     }
@@ -33,11 +31,10 @@ public class StopWatch
     public void startTimer()
     {
         // もし initされていなければ initTimer() を呼ぶ
-        if (this.startTime >= 0) {
+        if (now != before) {
             initTimer();
         }
         this.running = true;
-        this.startTime = System.currentTimeMillis();
     }
 
     public void restartTimer()
@@ -108,7 +105,6 @@ public class StopWatch
             this.before = this.now;
             now = System.currentTimeMillis();
             elapsed += now - before;
-//            elapsed = (int)(System.currentTimeMillis() - this.startTime);
         }
     }
 

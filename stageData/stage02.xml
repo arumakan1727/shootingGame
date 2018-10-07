@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+的の数:3個
+画面左縦に生成、右へ水平移動
+ -->
+<stage backImageID="1" timeLimit="5000" stageID="2">
+    <entity>
+        <target type="rankC">
+            <appear delay="0" x="200" y="900"/>
+            <linearMotion delay="500" speed="6.0" acceleration="0.11"
+                          x="$keep" y="$minf" />
+        </target>
+        <target type="rankC">
+            <appear delay="100" x="500" y="900"/>
+            <linearMotion delay="600" speed="6.0" acceleration="0.11"
+                          x="$keep" y="$minf" />
+        </target>
+        <target type="rankC">
+            <appear delay="200" x="800" y="900"/>
+            <linearMotion delay="700" speed="6.0" acceleration="0.11"
+                          x="$keep" y="$minf" />
+        </target>
+        <target type="rankC">
+            <appear delay="300" x="1100" y="900"/>
+            <linearMotion delay="800" speed="6.0" acceleration="0.11"
+                          x="$keep" y="$minf" />
+        </target>
+        <target type="rankC">
+            <appear delay="400" x="1400" y="900"/>
+            <linearMotion delay="900" speed="6.0" acceleration="0.11"
+                          x="$keep" y="$minf" />
+        </target>
+        <target type="rankC">
+            <appear delay="500" x="1700" y="900"/>
+            <linearMotion delay="1000" speed="6.0" acceleration="0.11"
+                          x="$keep" y="$minf" />
+        </target>
+    </entity>
+</stage>

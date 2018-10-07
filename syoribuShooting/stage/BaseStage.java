@@ -17,27 +17,61 @@ import java.util.ListIterator;
 
 import static syoribuShooting.GameConfig.*;
 
-public abstract class AbstractStage
+public abstract class BaseStage
 {
+    abstract public int getTimeLimit();
+    abstract public boolean shouldBeFinished();
+
     private List<Target> targets = new LinkedList<>();
     private Target hitTarget = null;
     private BufferedImage backImage;
-    private boolean isEnable = false;
-    private final StopWatch stopWatch = new StopWatch();
+    private State state;
+    public final int STATE_ID;
+    protected final StopWatch stopWatch = new StopWatch();
 
-    public AbstractStage(BufferedImage backImage)
+    public enum State
     {
+        WAITING(false),
+        SHOOTING(true),
+        DISAPPEAR(true),
+        FINISHED(false);
+
+        public final boolean isTargetMove;
+
+        State(boolean targetMove)
+        {
+            this.isTargetMove = targetMove;
+        }
+    }
+
+    public BaseStage(BufferedImage backImage, int stageID)
+    {
+        this.STATE_ID = stageID;
         this.setBackImage(backImage);
+        this.setState(State.WAITING);
     }
 
     public void initialize()
     {
+        System.out.println("Init elem: " + targets.size());
+        if (this.getState() != State.WAITING) {
+            throw new IllegalStateException("Now state=" + getState() + ". initialize must be WAITING");
+        }
         this.stopWatch.initTimer();
     }
 
     public void update(final Game game)
     {
-        if (!isEnable()) return;
+        if (shouldBeFinished())
+        {
+            this.makeAllDisappear();
+            this.setState(State.DISAPPEAR);
+            if (noTargets()) {
+                this.setState(State.FINISHED);
+                return;
+            }
+        }
+        if (! getState().isTargetMove) return;
 
         final InputEventManager eventManager = game.getEventManager();
         boolean isTouchingEntity = false;
@@ -46,17 +80,15 @@ public abstract class AbstractStage
         for (ListIterator<Target> it = targets.listIterator(); it.hasNext();)
         {
             final Target elem = it.next();
-            elem.update();
-            if (elem.getState() == Target.State.CREATED && stopWatch.getElapsed() >= elem.getDelay())
-            {
-                elem.setState(Target.State.ZOOM_UP);
-            }
+            elem.update(stopWatch.getElapsed());
 
             // マウスカーソルが的に触れていればフラグを立てる
             if (elem.isClickable() && elem.getBounds().isContain(eventManager.mouseX(), eventManager.mouseY()))
             {
                 isTouchingEntity = true;
             }
+
+//            System.out.println(elem);
 
             // 画面外になったら
             final int x = ((int) elem.getXdefault());
@@ -92,7 +124,7 @@ public abstract class AbstractStage
         this.setHitTarget(hitTarget);
         if (hitTarget != null)
         {
-            hitTarget.setState(Target.State.BREAK);
+            hitTarget.setState(Target.State.DISAPPEAR);
             game.getEffectManager().addEffect(
                     new HitEffect1(
                             eventManager.mouseReleasedX(),
@@ -111,6 +143,13 @@ public abstract class AbstractStage
         }
     }
 
+    public void makeAllDisappear()
+    {
+        for (final Target elem : getTargetList() ) {
+            elem.setState(Target.State.DISAPPEAR);
+        }
+    }
+
     public Target getHitTarget()
     {
         return hitTarget;
@@ -121,7 +160,7 @@ public abstract class AbstractStage
         this.hitTarget = hitTarget;
     }
 
-    public List<Target> getTargets()
+    public List<Target> getTargetList()
     {
         return targets;
     }
@@ -139,6 +178,11 @@ public abstract class AbstractStage
     public void setBackImage(BufferedImage backImage)
     {
         this.backImage = backImage;
+    }
+
+    public StopWatch getStopWatch()
+    {
+        return this.stopWatch;
     }
 
     private final Target checkHit(InputEventManager eventManager)
@@ -160,16 +204,18 @@ public abstract class AbstractStage
         return null;
     }
 
-    public boolean isEnable()
+    public State getState()
     {
-        return isEnable;
+        return state;
     }
 
-    public void setEnable(boolean enable)
+    public void setState(State state)
     {
-        this.isEnable = enable;
-        if (enable) {
+        System.out.println("Stage.setState=" + state);
+        this.state = state;
+        if (state == State.SHOOTING) {
             this.stopWatch.restartTimer();
+            System.out.println(stopWatch.isRunning());
         } else {
             this.stopWatch.stopTimer();
         }

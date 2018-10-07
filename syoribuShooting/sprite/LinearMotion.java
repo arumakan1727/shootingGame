@@ -5,35 +5,33 @@ import static java.lang.Math.abs;
 
 public class LinearMotion extends Motion
 {
-    private final int startX, startY, endX, endY;
-    private final double dist;
+    private int startX, startY, toX, toY;
+    private double dist;
     private double vx, vy;
 
-    public LinearMotion(Sprite sprite, double speed, int ex, int ey)
+    public LinearMotion(Sprite sprite, double speed)
     {
-        this(sprite, speed, (int)sprite.getXdefault(), (int)sprite.getYdefault(), ex, ey);
+        this(sprite, speed, 0, 0);
     }
 
-    public LinearMotion(Sprite sprite, double speed, int sx, int sy, int ex, int ey)
+    public LinearMotion(Sprite sprite, double speed, int tx, int ty)
     {
         super(sprite, speed);
-        this.startX = sx;
-        this.startY = sy;
-        this.endX   = ex;
-        this.endY   = ey;
-        this.dist   = Utils.dist(sx, sy, ex, ey);
-        calcVx();
-        calcVy();
+        this.setPoints(tx, ty);
     }
 
     @Override
-    public void move()
+    public void move(int elapsedTime)
     {
+        if (elapsedTime < this.getStartDelay()) return;
+
         if (! isArrivedEndX()) {
             sprite.addX(this.vx);
+            if (isArrivedEndX()) sprite.addX(vx);
         }
         if (! isArrivedEndY()) {
             sprite.addY(this.vy);
+            if (isArrivedEndY()) sprite.addY(vy);
         }
 
         // 加速度をスピードに加算
@@ -48,19 +46,25 @@ public class LinearMotion extends Motion
         calcVy();
     }
 
+    @Override
+    public String toString()
+    {
+        return super.toString() + "LinearMotion{" +
+                ", toX=" + toX +
+                ", toY=" + toY +
+                ", arrivedX=" + isArrivedEndX() +
+                ", arrivedY=" + isArrivedEndY() +
+                '}';
+    }
+
     public boolean isArrivedEndX()
     {
-        return abs(sprite.getXdefault() - this.getStartX()) >= abs(getEndX() - getStartX());
+        return abs(sprite.getXdefault() - this.getStartX()) > abs(getToX() - getStartX());
     }
 
     public boolean isArrivedEndY()
     {
-        return abs(sprite.getYdefault() - this.getStartY()) >= abs(getEndY() - getStartY());
-    }
-
-    public boolean isArrivedEndPoint()
-    {
-        return isArrivedEndX() && isArrivedEndY();
+        return abs(sprite.getYdefault() - this.getStartY()) > abs(getToY() - getStartY());
     }
 
     public int getStartX()
@@ -73,14 +77,35 @@ public class LinearMotion extends Motion
         return startY;
     }
 
-    public int getEndX()
+    public boolean isArrivedEndPoint()
     {
-        return endX;
+        return isArrivedEndX() && isArrivedEndY();
     }
 
-    public int getEndY()
+    public int getToX()
     {
-        return endY;
+        return toX;
+    }
+
+    public int getToY()
+    {
+        return toY;
+    }
+
+    public void setPoints(int startX, int startY, int toX, int toY)
+    {
+        this.startX = startX;
+        this.startY = startY;
+        this.toX = toX;
+        this.toY = toY;
+        this.dist   = Utils.dist(startX, startY, toX, toY);
+        calcVx();
+        calcVy();
+    }
+
+    public void setPoints(int toX, int toY)
+    {
+        setPoints(((int) sprite.getXdefault()), ((int) sprite.getYdefault()), toX, toY);
     }
 
     /**
@@ -91,12 +116,12 @@ public class LinearMotion extends Motion
     private double calcVx()
     {
         if (getSpeed() == 0) return this.vx = 0;
-        return this.vx = (this.getSpeed() / this.dist) * (endX - startX);
+        return this.vx = (this.getSpeed() / this.dist) * (toX - startX);
     }
 
     private double calcVy()
     {
         if (getSpeed() == 0) return this.vy = 0;
-        return this.vy = (this.getSpeed() / this.dist) * (endY - startY);
+        return this.vy = (this.getSpeed() / this.dist) * (toY - startY);
     }
 }

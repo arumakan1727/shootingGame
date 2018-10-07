@@ -1,8 +1,7 @@
 package syoribuShooting;
 
-import syoribuShooting.sprite.HitEffect1;
 import syoribuShooting.sprite.Target;
-import syoribuShooting.stage.AbstractStage;
+import syoribuShooting.stage.BaseStage;
 import syoribuShooting.system.StopWatch;
 
 import java.awt.Color;
@@ -28,7 +27,7 @@ public class ScoreManager
         setFever(false);
     }
 
-    public void update(final Game game, final AbstractStage stage)
+    public void update(final Game game, final BaseStage stage)
     {
         final InputEventManager eventManager = game.getEventManager();
 

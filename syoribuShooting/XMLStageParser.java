@@ -3,8 +3,10 @@ package syoribuShooting;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+import syoribuShooting.sprite.LinearMotion;
+import syoribuShooting.sprite.Motion;
 import syoribuShooting.sprite.Target;
-import syoribuShooting.stage.AbstractStage;
+import syoribuShooting.stage.BaseStage;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -16,24 +18,28 @@ import java.util.List;
 
 public class XMLStageParser extends DefaultHandler
 {
+    private static final String TAG_STAGE  = "stage";
     private static final String TAG_TARGET  = "target";
     private static final String TAG_APPEAR  = "appear";
-    private static final String TAG_MOTION  = "motion";
     private static final String TAG_LINEAR_MOTION  = "linearMotion";
     private static final String ATTR_TYPE   = "type";
     private static final String ATTR_X      = "x";
     private static final String ATTR_Y      = "y";
-    private static final String ATTR_SPEED  = "y";
+    private static final String ATTR_SPEED  = "speed";
     private static final String ATTR_DELAY  = "delay";
     private static final String ATTR_ACCELERATION  = "acceleration";
+    private static final String ATTR_BACK_ID = "backImageID";
+    private static final String ATTR_TIMELIMIT = "timeLimit";
+    private static final String ATTR_STAGE_ID = "stageID";
 
     private List<Target> list;
     private StringBuilder sb;
     private Target nowTarget;
-    private AbstractStage stage;
+    private BaseStage stage;
 
     public XMLStageParser(InputStream is)
     {
+        if (is == null) throw new IllegalArgumentException("InputStream is null!!!");
         this.list = new ArrayList<>();
         this.sb = new StringBuilder();
 
@@ -46,35 +52,44 @@ public class XMLStageParser extends DefaultHandler
         }
     }
 
+    public BaseStage getParsedStage()
+    {
+        return this.stage;
+    }
+
     private int parseValue(final String name, String val, int defaultVal)
     {
-        int ret = defaultVal;
+        int ret;
         if (val == null) return defaultVal;
 
-        if (val.charAt(0) == '$')
-        {
-            val = val.substring(1).toLowerCase();
-            switch (val) {
-                case "inf": ret = GameConfig.OUTER_WINDOW_PLUS; break;
-                case "minf": ret = GameConfig.OUTER_WINDOW_MINUS; break;
-                case "keep": ret = targetValueByName(this.nowTarget, name); break;
-
-                case "bottom":
-                case "top":
-                case "left":
-                case "right":
-                case "center":
-                    if (name.charAt(0) == 'x') {
-                        ret = GameConfig.randomX(GameConfig.Allocation.valueOf(val.toUpperCase()));
-                    } else {
-                        ret = GameConfig.randomY(GameConfig.Allocation.valueOf(val.toUpperCase()));
-                    }
-                    break;
-            }
+        if (val.charAt(0) == '$') {
+            val = val.substring(1);
         }
-        else
-        {
-            ret = Integer.parseInt(val);
+        val = val.toLowerCase();
+        switch (val) {
+            case "inf": ret = GameConfig.OUTER_WINDOW_PLUS; break;
+            case "minf": ret = GameConfig.OUTER_WINDOW_MINUS; break;
+            case "keep": ret = targetValueByName(this.nowTarget, name); break;
+
+            case "bottom":
+            case "top":
+            case "left":
+            case "right":
+            case "center":
+                if (name.charAt(0) == 'x') {
+                    ret = GameConfig.randomX(GameConfig.Allocation.valueOf(val.toUpperCase()));
+                } else {
+                    ret = GameConfig.randomY(GameConfig.Allocation.valueOf(val.toUpperCase()));
+                }
+                break;
+
+            default:
+                try {
+                    ret = Integer.parseInt(val);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    ret = defaultVal;
+                }
         }
 
         return ret;
@@ -93,40 +108,111 @@ public class XMLStageParser extends DefaultHandler
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
     {
+        System.out.println("\nstartElement: " + qName);
+        for (int i = 0; i < attributes.getLength(); i++) {
+            System.out.println("attr " + attributes.getQName(i) + " = " + attributes.getValue(i));
+        }
         switch (qName)
         {
+            case TAG_STAGE: tagStage(qName, attributes);
             case TAG_TARGET:
-            {
-                final String attrVal = attributes.getValue(ATTR_TYPE);
-                TargetFactory.TargetType type = TargetFactory.TargetType.rankC;
-                if(attrVal != null) {
-                    type = TargetFactory.TargetType.valueOf(attrVal);
-                }
-                nowTarget = TargetFactory.createTarget(type);
-            } break;
+                tagTarget(qName, attributes); break;
 
             case TAG_APPEAR:
-            {
-                int x=0, y=0, delay=0;
-                for (int i = 0; i < attributes.getLength(); i++) {
-                    final String name = attributes.getQName(i);
-                    final String value = attributes.getValue(i);
-                    switch (name) {
-                        case ATTR_X: x = parseValue(ATTR_X, value, 0); break;
-                        case ATTR_Y: y = parseValue(ATTR_Y, value, 0); break;
-                        case ATTR_DELAY: delay = parseValue(ATTR_DELAY, value, 0); break;
-                    }
-                }
-                this.nowTarget.setDelay(delay);
-                this.nowTarget.setXdefault(x);
-                this.nowTarget.setYdefault(y);
-            } break;
+                tagAppear(qName, attributes); break;
 
-            case TAG_MOTION:
-            {
-
-            } break;
+            case TAG_LINEAR_MOTION:
+                tagLinearMotion(qName, attributes); break;
         }
+    }
+
+    private void tagTarget(String qName, Attributes attr)
+    {
+        final String attrVal = attr.getValue(ATTR_TYPE);
+        TargetFactory.TargetType type = TargetFactory.TargetType.rankC;
+        if(attrVal != null) {
+            type = TargetFactory.TargetType.valueOf(attrVal);
+        }
+        nowTarget = TargetFactory.createTarget(type);
+    }
+
+    private void tagAppear(String qName, Attributes attr)
+    {
+        int x=0, y=0, delay=0;
+        for (int i = 0; i < attr.getLength(); i++) {
+            final String name = attr.getQName(i);
+            final String value = attr.getValue(i);
+            switch (name) {
+                case ATTR_X: x = parseValue(ATTR_X, value, 0); break;
+                case ATTR_Y: y = parseValue(ATTR_Y, value, 0); break;
+                case ATTR_DELAY: delay = parseValue(ATTR_DELAY, value, 0); break;
+            }
+        }
+        this.nowTarget.setZoomDelay(delay);
+        this.nowTarget.setXdefault(x);
+        this.nowTarget.setYdefault(y);
+    }
+
+    private void tagMotion(Motion motion, String qName, Attributes attr)
+    {
+        int delay=0;
+        double speed = 0.5, acceleration = 0.0;
+
+        for (int i = 0; i < attr.getLength(); i++)
+        {
+            final String value = attr.getValue(i);
+            switch (attr.getQName(i)) {
+                case ATTR_DELAY: delay = parseValue(ATTR_DELAY, value, 0); break;
+                case ATTR_SPEED: speed = Double.parseDouble(value); break;
+                case ATTR_ACCELERATION: acceleration = Double.parseDouble(value); break;
+            }
+        }
+        motion.setStartDelay(delay);
+        motion.setSpeed(speed);
+        motion.setAcceleration(acceleration);
+    }
+
+    private void tagLinearMotion(String qName, Attributes attr)
+    {
+        // Motionクラス共通の設定
+        LinearMotion motion = new LinearMotion(nowTarget, 1.0);
+        tagMotion(motion, qName, attr);
+
+        int toX=0, toY=0;
+
+        for (int i = 0; i < attr.getLength(); i++) {
+            final String value = attr.getValue(i);
+            switch (attr.getQName(i)) {
+                case ATTR_X: toX = parseValue(ATTR_X, value, 0); break;
+                case ATTR_Y: toY = parseValue(ATTR_Y, value, 0); break;
+            }
+        }
+        motion.setPoints(toX, toY);
+        nowTarget.setMotion(motion);
+    }
+
+    private void tagStage(String qName, Attributes attr) throws SAXException
+    {
+        int backImageID = parseValue(ATTR_BACK_ID, attr.getValue(ATTR_BACK_ID), 1);
+        final int timeLimit = parseValue(ATTR_TIMELIMIT, attr.getValue(ATTR_TIMELIMIT), 1000);
+        final int stageID = parseValue(ATTR_STAGE_ID, attr.getValue(ATTR_STAGE_ID), -1);
+
+        if (stageID < 0) throw new SAXException();
+
+        this.stage = new BaseStage(GameConfig.img_back[backImageID], stageID)
+        {
+            @Override
+            public int getTimeLimit()
+            {
+                return timeLimit;
+            }
+
+            @Override
+            public boolean shouldBeFinished()
+            {
+                return this.stopWatch.getElapsed() >= this.getTimeLimit() || noTargets();
+            }
+        };
     }
 
     @Override
@@ -135,10 +221,8 @@ public class XMLStageParser extends DefaultHandler
         switch (qName)
         {
             case TAG_TARGET:
-                break;
-            case TAG_APPEAR:
-                break;
-            case TAG_MOTION:
+                System.out.println("XMLstage.add: " + nowTarget);
+                stage.getTargetList().add(nowTarget);
                 break;
         }
     }
@@ -158,13 +242,13 @@ public class XMLStageParser extends DefaultHandler
     @Override
     public void startDocument() throws SAXException
     {
-        System.out.println("XML Document Start");
+        System.out.println("\n-------------------XML Document Start--------------------");
     }
 
     @Override
     public void endDocument() throws SAXException
     {
-        System.out.println("XML Document End");
+        System.out.println("----------------------XML Document End----------------------\n");
     }
 
 }

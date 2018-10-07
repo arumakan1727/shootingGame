@@ -3,6 +3,7 @@ package syoribuShooting.stage;
 import syoribuShooting.Game;
 import syoribuShooting.GameConfig;
 import syoribuShooting.ScoreManager;
+import syoribuShooting.XMLStageParser;
 import syoribuShooting.sprite.Target;
 import syoribuShooting.system.StopWatch;
 
@@ -13,13 +14,13 @@ import java.awt.event.KeyEvent;
 
 public class ShootingScene extends AbstractScene
 {
-    private static final int TIME_LIMIT = 15 * 1000;
+    private static final int TIME_LIMIT = 40 * 1000;
     private final StopWatch stopWatch;
-    private AbstractStage stage;
+    private BaseStage stage;
     private State state;
     private ScoreManager scoreManager;
 
-    public ShootingScene(AbstractStage stage)
+    public ShootingScene(BaseStage stage)
     {
         super(stage.getBackImage());
         this.stopWatch = new StopWatch();
@@ -41,18 +42,28 @@ public class ShootingScene extends AbstractScene
     @Override
     public void update(final Game game)
     {
-        if (game.getEventManager().isKeyPressed(KeyEvent.VK_SPACE)) {
-            stage.setEnable(false);
-            this.stopWatch.stopTimer();
-        } else {
-            stage.setEnable(true);
-            this.stopWatch.restartTimer();
+        if (stage.getState() == BaseStage.State.FINISHED)
+        {
+            changeStage();
         }
+//        else {
+//            if (game.getEventManager().isKeyPressed(KeyEvent.VK_SPACE)) {
+//                stage.setState(BaseStage.State.WAITING);
+//                this.stopWatch.stopTimer();
+//            } else {
+//                stage.setState(BaseStage.State.SHOOTING);
+//                this.stopWatch.restartTimer();
+//            }
+//        }
+        System.out.println("Scene: " + getState()
+                + ", stage: " + stage.getState()
+                + ", elem=" + stage.getTargetList().size()
+                + ", run=" + stage.getStopWatch().isRunning());
         switch (this.getState()) {
             case WAIT_SHOOTING:
                 this.stopWatch.startTimer();
                 this.setState(State.SHOOTING);
-                this.stage.setEnable(true);
+                this.stage.setState(BaseStage.State.SHOOTING);
                 break;
             case SHOOTING:
                 if (this.stopWatch.isOverTimeLimit())
@@ -60,10 +71,7 @@ public class ShootingScene extends AbstractScene
                     if (this.stage.noTargets()) {
                         this.setState(State.TIME_OVER);
                     } else {
-                        for (final Target elem : this.stage.getTargets())
-                        {
-                            elem.setState(Target.State.BREAK);
-                        }
+                        stage.makeAllDisappear();
                     }
                 }
                 this.stage.update(game);
@@ -85,7 +93,18 @@ public class ShootingScene extends AbstractScene
         g2d.drawString("Time: " + t/1000 + "." + t%1000 / 100, GameConfig.WINDOW_WIDTH - 500, 80);
 
         scoreManager.draw(g2d);
+    }
 
+    public void changeStage()
+    {
+        String fileName = GameConfig.getStageDataFileName((this.stage.STATE_ID + 2) % 2 + 1);
+        System.out.println(fileName);
+        XMLStageParser stageParser = new XMLStageParser(Game.class.getResourceAsStream(fileName));
+
+        BaseStage nextStage = stageParser.getParsedStage();
+        nextStage.initialize();
+        nextStage.setState(BaseStage.State.SHOOTING);
+        setStage(nextStage);
     }
 
     public State getState()
@@ -103,12 +122,12 @@ public class ShootingScene extends AbstractScene
         return this.stage.getHitTarget();
     }
 
-    public AbstractStage getStage()
+    public BaseStage getStage()
     {
         return stage;
     }
 
-    public void setStage(AbstractStage stage)
+    public void setStage(BaseStage stage)
     {
         this.stage = stage;
     }

@@ -1,8 +1,5 @@
 package syoribuShooting.sprite;
 
-import syoribuShooting.Game;
-import syoribuShooting.InputEventManager;
-
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
@@ -15,7 +12,7 @@ public abstract class Target extends Sprite
         CREATED,
         ZOOM_UP,
         FLY,
-        BREAK,
+        DISAPPEAR,
         DISPOSE
     }
 
@@ -23,7 +20,7 @@ public abstract class Target extends Sprite
     protected BufferedImage img;
     protected Motion motion;
     private State state;
-    private int delay;
+    private int zoomDelay;
 
     public Target(BufferedImage img, double centerX, double centerY, final Motion motion)
     {
@@ -33,7 +30,7 @@ public abstract class Target extends Sprite
         this.motion = motion;
         this.setState(State.CREATED);
         this.setZoom(0);
-        this.setDelay(0);
+        this.setZoomDelay(0);
         this.setCenterX(centerX);
         this.setCenterY(centerY);
     }
@@ -43,9 +40,16 @@ public abstract class Target extends Sprite
         this(img, centerX, centerY, Motion.NO_MOVE);
     }
 
-    public void update()
+    public void update(int elapsedTime)
     {
         switch (this.getState()) {
+            case CREATED:
+                if (this.getState() == Target.State.CREATED && elapsedTime >= this.getZoomDelay())
+                {
+                    this.setState(Target.State.ZOOM_UP);
+                }
+                break;
+
             case ZOOM_UP:
                 if (this.zoomUp(20) == false)
                 {
@@ -54,10 +58,10 @@ public abstract class Target extends Sprite
                 break;
 
             case FLY:
-                this.motion.move();
+                this.motion.move(elapsedTime);
                 break;
 
-            case BREAK:
+            case DISAPPEAR:
                 deflationBreak();
                 break;
         }
@@ -119,6 +123,13 @@ public abstract class Target extends Sprite
     }
 
     @Override
+    public String toString()
+    {
+        return String.format("Target(%d, %d) state:%s,  zoomDelay:%dms, motion: %s",
+                ((int) getXdefault()),((int) getYdefault()), getState().toString(), getZoomDelay(), getMotion());
+    }
+
+    @Override
     public double getXdefault()
     {
         return getCenterX();
@@ -162,13 +173,13 @@ public abstract class Target extends Sprite
         return this.motion;
     }
 
-    public int getDelay()
+    public int getZoomDelay()
     {
-        return delay;
+        return zoomDelay;
     }
 
-    public void setDelay(int delay)
+    public void setZoomDelay(int zoomDelay)
     {
-        this.delay = delay;
+        this.zoomDelay = zoomDelay;
     }
 }

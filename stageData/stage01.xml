@@ -3,15 +3,32 @@
 的の数:3個
 画面左縦に生成、右へ水平移動
  -->
-<stage>
+<stage backImageID="1" timeLimit="8000" stageID="1">
     <entity>
-
         <target type="rankC">
             <appear delay="0" x="$left" y="$left"/>
-            <motion type="linear" speed="5.0" acceleration="0.08" delay="0">
-                <linearMotion x="$inf" y="$keep"/>
-            </motion>
+            <linearMotion delay="0" speed="8.0" acceleration="0.1"
+                          x="$inf" y="$keep" />
         </target>
-
+        <target type="rankC">
+            <appear delay="150" x="$left" y="$left"/>
+            <linearMotion delay="0" speed="8.0" acceleration="0.1"
+                          x="$inf" y="$keep" />
+        </target>
+        <target type="rankC">
+            <appear delay="300" x="$left" y="$left"/>
+            <linearMotion delay="0" speed="8.0" acceleration="0.1"
+                          x="$inf" y="$keep" />
+        </target>
+        <target type="rankB">
+            <appear delay="450" x="$right" y="$right"/>
+            <linearMotion delay="0" speed="8.0" acceleration="0.1"
+                          x="$minf" y="$keep" />
+        </target>
+        <target type="rankC">
+            <appear delay="600" x="$right" y="$right"/>
+            <linearMotion delay="0" speed="8.0" acceleration="0.1"
+                          x="$minf" y="$keep" />
+        </target>
     </entity>
 </stage>

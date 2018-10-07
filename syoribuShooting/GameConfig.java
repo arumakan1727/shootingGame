@@ -28,15 +28,17 @@ public final class GameConfig
     public static final int WINDOW_HEIGHT;
     public static final int OUTER_WINDOW_PLUS;
     public static final int OUTER_WINDOW_MINUS;
+    public static final int NUM_BACK_IMAGE;
     public static final int FPS;
     public static final boolean isFullScreen;
-    public static final String PATH_IMAGE;
+    public static final String PATH_IMAGE, PATH_XML;
+    public static final String STAGEDATA_PREFIX;
     public static Cursor shootingCursor, shootingCursorGreen;
     public static BufferedImage
             img_shootingCursor,
             img_shootingCursorGreen,
             img_targetA, img_targetB, img_targetC,
-            img_back01;
+            img_back[];
     public static ArrayList<BufferedImage> anim_hit = new ArrayList<>();
 
     private GameConfig() {}
@@ -48,17 +50,24 @@ public final class GameConfig
         WINDOW_HEIGHT = (int) (toolkit.getScreenSize().getHeight());
         OUTER_WINDOW_PLUS = WINDOW_WIDTH + 500;
         OUTER_WINDOW_MINUS = -500;
+        NUM_BACK_IMAGE = 1;
         FPS = 50;
         isFullScreen = false;
         enableCursor = true;
-        PATH_IMAGE = "/images/";
+        PATH_IMAGE  = "/images/";
+        PATH_XML    = "/stageData/";
+        STAGEDATA_PREFIX = "stage";
+        img_back = new BufferedImage[NUM_BACK_IMAGE + 1];
 
         try {
             img_targetA = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "super_rare_target.png"));
             img_targetB = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "high_points_target.png"));
             img_targetC = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "normal_target.png"));
-            img_back01 = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "back01.jpg"));
             anim_hit = GifReader.readGif(Game.class.getResourceAsStream(PATH_IMAGE + "hit-animation.gif"));
+
+            for (int i = 1; i <= NUM_BACK_IMAGE; i++) {
+                img_back[i] = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "back0" + i + ".jpg"));
+            }
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
@@ -123,6 +132,13 @@ public final class GameConfig
             default:
                 return Utils.nextInt(0+Allocation.MARGIN, WINDOW_HEIGHT-Allocation.MARGIN);
         }
+    }
+
+    public static String getStageDataFileName(int num)
+    {
+        return GameConfig.PATH_XML
+                + GameConfig.STAGEDATA_PREFIX
+                + String.format("%02d.xml", num);
     }
 
 }
