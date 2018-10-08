@@ -215,11 +215,9 @@ public abstract class BaseStage
 
     public void setState(State state)
     {
-        System.out.println("Stage.setState=" + state);
         this.state = state;
         if (state == State.SHOOTING) {
             this.stopWatch.restartTimer();
-            System.out.println(stopWatch.isRunning());
         } else {
             this.stopWatch.stopTimer();
         }

@@ -51,7 +51,7 @@ public final class GameConfig
         OUTER_WINDOW_PLUS = WINDOW_WIDTH + 500;
         OUTER_WINDOW_MINUS = -500;
         NUM_BACK_IMAGE = 1;
-        FPS = 50;
+        FPS = 40;
         isFullScreen = false;
         enableCursor = true;
         PATH_IMAGE  = "/images/";
@@ -99,6 +99,7 @@ public final class GameConfig
         System.out.printf("targetA: %dx%d\n", img_targetA.getWidth(), img_targetA.getHeight());
         System.out.printf("targetB: %dx%d\n", img_targetB.getWidth(), img_targetB.getHeight());
         System.out.printf("targetC: %dx%d\n", img_targetC.getWidth(), img_targetC.getHeight());
+        System.out.println(toolkit.getBestCursorSize(64, 64));
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {}
