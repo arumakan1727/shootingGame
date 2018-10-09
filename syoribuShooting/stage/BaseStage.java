@@ -130,8 +130,8 @@ public abstract class BaseStage
             hitTarget.setState(Target.State.DISAPPEAR);
             game.getEffectManager().addEffect(
                     new HitEffect1(
-                            eventManager.mouseReleasedX(),
-                            eventManager.mouseReleasedY(),
+                            eventManager.mousePressedX(),
+                            eventManager.mousePressedY(),
                             false)
             );
         }
@@ -191,10 +191,10 @@ public abstract class BaseStage
 
     private final Target checkHit(InputEventManager eventManager)
     {
-        if (eventManager.isMouseReleased(MouseEvent.BUTTON1))
+        if (eventManager.isMousePressed(MouseEvent.BUTTON1))
         {
-            int px = eventManager.mouseX();
-            int py = eventManager.mouseY();
+            int px = eventManager.mousePressedX();
+            int py = eventManager.mousePressedY();
             for (ListIterator<Target> it = targets.listIterator(targets.size()); it.hasPrevious(); )
             {
                 final Target elem = it.previous();
