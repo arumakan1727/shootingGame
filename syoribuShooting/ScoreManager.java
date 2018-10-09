@@ -31,11 +31,11 @@ public class ScoreManager
     {
         final InputEventManager eventManager = game.getEventManager();
 
-        if (eventManager.isMouseReleased(MouseEvent.BUTTON1))
+        if (eventManager.isMousePressed(MouseEvent.BUTTON1))
         {
             checkHit(stage.getHitTarget(),
-                    eventManager.mouseReleasedX(),
-                    eventManager.mouseReleasedY());
+                    eventManager.mousePressedX(),
+                    eventManager.mousePressedY());
         }
 
         this.updateFeverState();
