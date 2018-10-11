@@ -10,7 +10,7 @@ public class TestStage extends BaseStage
 {
     public TestStage()
     {
-        super(0);
+        super(0, GameConfig.FIRST_STAGE_FILE_PATH);
     }
 
     @Override

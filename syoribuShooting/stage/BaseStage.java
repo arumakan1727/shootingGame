@@ -9,7 +9,6 @@ import syoribuShooting.system.StopWatch;
 
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,11 +23,12 @@ public abstract class BaseStage
     abstract protected void _init();
     abstract protected void _update(final Game game);
 
+    public final int STATE_ID;
+    protected final StopWatch stopWatch = new StopWatch();
+    private String nextStageFilePath;
     private List<Target> targets = new LinkedList<>();
     private Target hitTarget = null;
     private State state;
-    public final int STATE_ID;
-    protected final StopWatch stopWatch = new StopWatch();
 
     public enum State
     {
@@ -45,10 +45,11 @@ public abstract class BaseStage
         }
     }
 
-    public BaseStage(int stageID)
+    public BaseStage(int stageID, String nextStageFilePath)
     {
         this.STATE_ID = stageID;
         this.setState(State.WAITING);
+        this.nextStageFilePath = nextStageFilePath;
     }
 
     public void initialize()
@@ -209,5 +210,10 @@ public abstract class BaseStage
         } else {
             this.stopWatch.stopTimer();
         }
+    }
+    
+    public String getNextStageFilePath()
+    {
+        return this.nextStageFilePath;
     }
 }

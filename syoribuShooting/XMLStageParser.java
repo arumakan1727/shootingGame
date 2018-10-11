@@ -14,8 +14,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 public class XMLStageParser extends DefaultHandler
 {
@@ -30,19 +28,22 @@ public class XMLStageParser extends DefaultHandler
     private static final String ATTR_Y      = "y";
     private static final String ATTR_SPEED  = "speed";
     private static final String ATTR_DELAY  = "delay";
+    private static final String ATTR_NEXT = "next";
     private static final String ATTR_ACCELERATION  = "acceleration";
     private static final String ATTR_TIMELIMIT = "timeLimit";
     private static final String ATTR_STAGE_ID = "stageID";
 
-    private List<Target> list;
     private StringBuilder sb;
     private Target nowTarget;
     private BaseStage stage;
-
+    
+    public XMLStageParser(String filePath, Class c)
+    {
+        this(c.getResourceAsStream(filePath));
+    }
+    
     public XMLStageParser(InputStream is)
     {
-        if (is == null) throw new IllegalArgumentException("InputStream is null!!!");
-        this.list = new ArrayList<>();
         this.sb = new StringBuilder();
 
         try {
@@ -212,10 +213,11 @@ public class XMLStageParser extends DefaultHandler
     {
         final int timeLimit = parseValue(ATTR_TIMELIMIT, attr.getValue(ATTR_TIMELIMIT), 1000);
         final int stageID = parseValue(ATTR_STAGE_ID, attr.getValue(ATTR_STAGE_ID), -1);
+        final String nextStageFilePath = GameConfig.PATH_XML + attr.getValue(ATTR_NEXT);
 
         if (stageID < 0) throw new SAXException();
 
-        this.stage = new BaseStage(stageID)
+        this.stage = new BaseStage(stageID, nextStageFilePath)
         {
             @Override
             public int getTimeLimit()

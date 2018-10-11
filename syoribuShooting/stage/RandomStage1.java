@@ -16,7 +16,7 @@ public class RandomStage1 extends BaseStage
 
     public RandomStage1()
     {
-        super(1);
+        super(1, GameConfig.FIRST_STAGE_FILE_PATH);
     }
 
     @Override

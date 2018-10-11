@@ -1,9 +1,7 @@
 package syoribuShooting;
 
 import syoribuShooting.stage.AbstractScene;
-import syoribuShooting.stage.RandomStage1;
 import syoribuShooting.stage.ShootingScene;
-import syoribuShooting.system.BufferedCanvas;
 import syoribuShooting.system.BufferedPanel;
 import syoribuShooting.system.FPSTimer;
 import syoribuShooting.system.GameWindow;
@@ -108,7 +106,7 @@ public class Game extends FPSTimer
         this.window.setTitle("Syoribu-Shooting");
         this.eventManager = window.getEventManager();
 //        this.nowScene = new ShootingScene(new RandomStage1());
-        this.nowScene = new ShootingScene(new XMLStageParser(Game.class.getResourceAsStream(GameConfig.getStageDataFileName(0))).getParsedStage());
+        this.nowScene = new ShootingScene(new XMLStageParser(GameConfig.FIRST_STAGE_FILE_PATH, Game.class).getParsedStage());
         this.effectManager = new EffectManager();
 
         this.initialize();

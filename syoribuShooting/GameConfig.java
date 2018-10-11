@@ -35,6 +35,7 @@ public final class GameConfig
     public static final boolean isFullScreen;
     public static final String PATH_IMAGE, PATH_XML;
     public static final String STAGEDATA_PREFIX;
+    public static final String FIRST_STAGE_FILE_PATH;
     public static Cursor shootingCursor, shootingCursorGreen;
     public static BufferedImage
             img_shootingCursor,
@@ -61,6 +62,7 @@ public final class GameConfig
         PATH_IMAGE  = "/images/";
         PATH_XML    = "/stageData/";
         STAGEDATA_PREFIX = "stage";
+        FIRST_STAGE_FILE_PATH = PATH_XML + "stage-a01.xml";
         img_back = new BufferedImage[NUM_BACK_IMAGE + 1];
 
         try {

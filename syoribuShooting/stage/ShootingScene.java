@@ -11,7 +11,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 
 public class ShootingScene extends AbstractScene
 {
@@ -83,8 +82,9 @@ public class ShootingScene extends AbstractScene
 
     public void changeStage()
     {
-        String fileName = GameConfig.getStageDataFileName((this.stage.STATE_ID + 1) % 5);
+//        String fileName = GameConfig.getStageDataFileName((this.stage.STATE_ID + 1) % 5);
 //        String fileName = GameConfig.getStageDataFileName(4);
+        String fileName = getStage().getNextStageFilePath();
         System.out.println(fileName);
         XMLStageParser stageParser = new XMLStageParser(Game.class.getResourceAsStream(fileName));
 

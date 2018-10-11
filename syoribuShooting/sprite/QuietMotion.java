@@ -1,7 +1,5 @@
 package syoribuShooting.sprite;
 
-import syoribuShooting.system.StopWatch;
-
 public class QuietMotion extends Motion
 {
     private final long aliveTime;
