@@ -1,7 +1,5 @@
 package syoribuShooting.system;
 
-import syoribuShooting.system.BufferedCanvas;
-
 import javax.swing.JFrame;
 
 import java.awt.Component;

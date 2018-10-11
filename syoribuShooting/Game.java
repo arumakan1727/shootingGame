@@ -2,7 +2,9 @@ package syoribuShooting;
 
 import syoribuShooting.stage.AbstractScene;
 import syoribuShooting.stage.ShootingScene;
-import syoribuShooting.system.BufferedPanel;
+import syoribuShooting.system.BufferedJPanel;
+import syoribuShooting.system.BufferedRenderer;
+import syoribuShooting.system.BufferedResponsivePanel;
 import syoribuShooting.system.FPSTimer;
 import syoribuShooting.system.GameWindow;
 import syoribuShooting.system.InputEventManager;
@@ -11,6 +13,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.Cursor;
+
+import static syoribuShooting.GameConfig.*;
 
 public class Game extends FPSTimer
 {
@@ -35,6 +39,7 @@ public class Game extends FPSTimer
 
         nowScene.draw(g2d);
         effectManager.draw(g2d);
+        g2d.drawString("x:" + eventManager.mouseX() + "  y:" + eventManager.mouseY(), 30, 200);
     }
 
     private void initialize()
@@ -94,14 +99,20 @@ public class Game extends FPSTimer
     public Game()
     {
         super(GameConfig.FPS);
-//        this.window = new GameWindow(new BufferedCanvas(GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT), GameConfig.isFullScreen);
-        this.window = new GameWindow(
-                new BufferedPanel(
-                        GameConfig.VERTUAL_WIDTH,
-                        GameConfig.VERTUAL_HEIGHT,
-                        GameConfig.REAL_WIDTH,
-                        GameConfig.REAL_HEIGHT),
-                GameConfig.isFullScreen);
+//        this.window = new GameWindow(new BufferedJPanel(GameConfig.VIRTUAL_WIDTH, GameConfig.VIRTUAL_HEIGHT), GameConfig.isFullScreen);
+//        this.window = new GameWindow(new BufferedCanvas(GameConfig.VIRTUAL_WIDTH, GameConfig.VIRTUAL_HEIGHT), GameConfig.isFullScreen);
+
+        BufferedRenderer bufferedRenderer;
+        if (REAL_HEIGHT == VIRTUAL_HEIGHT) {
+            bufferedRenderer = new BufferedJPanel(REAL_WIDTH, REAL_HEIGHT);
+            System.out.println("BufferedRenderer: using BufferedJPanel");
+        } else {
+            bufferedRenderer = new BufferedResponsivePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
+            System.out.println("BufferedRenderer: using BufferedResponsivePanel");
+        }
+
+        this.window = new GameWindow(bufferedRenderer ,GameConfig.isFullScreen);
+        this.window.getEventManager().setCorrection(GameConfig.REAL_VIRTUAL_CORRECTION);
         
         this.window.setTitle("Syoribu-Shooting");
         this.eventManager = window.getEventManager();

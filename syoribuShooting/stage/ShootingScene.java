@@ -97,14 +97,14 @@ public class ShootingScene extends AbstractScene
     @Override
     public void draw(final Graphics2D g2d)
     {
-        g2d.drawImage(this.getBackImage(), 0, 0, GameConfig.VERTUAL_WIDTH, GameConfig.VERTUAL_HEIGHT, null);
+        g2d.drawImage(this.getBackImage(), 0, 0, GameConfig.VIRTUAL_WIDTH, GameConfig.VIRTUAL_HEIGHT, null);
         this.stage.draw(g2d);
 
         g2d.setFont(new Font(Font.MONOSPACED, Font.ITALIC, 70));
         g2d.setColor(Color.GREEN);
         int t = this.stopWatch.getRemainTime();
         if (t  < 0) t = 0;
-        g2d.drawString("Time: " + t/1000 + "." + t%1000 / 100, GameConfig.VERTUAL_WIDTH - 500, 80);
+        g2d.drawString("Time: " + t/1000 + "." + t%1000 / 100, GameConfig.VIRTUAL_WIDTH - 500, 80);
 
         scoreManager.draw(g2d);
     }

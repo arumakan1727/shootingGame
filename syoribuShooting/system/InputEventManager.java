@@ -18,12 +18,30 @@ public class InputEventManager
     private final boolean[] mousePressedState = new boolean[4];
     private final boolean[] mouseReleasedState = new boolean[4];
 
+    private double correction;
+
     public InputEventManager(Component component)
     {
+        this(component, 1.0);
+    }
+
+    public InputEventManager(Component component, double correction)
+    {
         this.component = component;
+        this.correction = correction;
         this.component.addKeyListener(this);
         this.component.addMouseListener(this);
         this.component.addMouseMotionListener(this);
+    }
+
+    public double getCorrection()
+    {
+        return correction;
+    }
+
+    public void setCorrection(double correction)
+    {
+        this.correction = correction;
     }
 
     public void update()
@@ -42,34 +60,34 @@ public class InputEventManager
 
     public int mouseX()
     {
-        return mouseX;
+        return ((int) (mouseX * correction));
     }
 
 
 
     public int mouseY()
     {
-        return mouseY;
+        return ((int) (mouseY * correction));
     }
 
     public int mouseReleasedX()
     {
-        return this.mouseReleasedX;
+        return ((int) (this.mouseReleasedX * correction));
     }
     
     public int mouseReleasedY()
     {
-        return this.mouseReleasedY;
+        return ((int) (this.mouseReleasedY * correction));
     }
     
     public int mousePressedX()
     {
-        return this.mousePressedX;
+        return ((int) (this.mousePressedX * correction));
     }
     
     public int mousePressedY()
     {
-        return this.mousePressedY;
+        return ((int) (this.mousePressedY * correction));
     }
 
     public boolean isKeyPressed(int keyCode)
