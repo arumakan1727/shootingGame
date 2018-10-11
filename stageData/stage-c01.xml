@@ -3,7 +3,7 @@
 的の数:4個
 画面下からポーン
  -->
-<stage timeLimit="5000" stageID="3">
+<stage timeLimit="5000" stageID="3" next="stage-a01.xml">
     <entity>
         <target type="rankC">
             <appear delay="0" x="$left" y="1200"/>

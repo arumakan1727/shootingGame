@@ -3,7 +3,7 @@
 的の数:6個
 画面下に横一列に生成、上へ移動
  -->
-<stage timeLimit="5000" stageID="2">
+<stage timeLimit="5000" stageID="2" next="stage-c01.xml">
     <entity>
         <target type="rankC">
             <appear delay="0" x="200" y="900"/>

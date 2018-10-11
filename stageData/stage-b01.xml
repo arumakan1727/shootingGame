@@ -3,7 +3,7 @@
 的の数:5個
 左右から挟み撃ち！w
  -->
-<stage timeLimit="8000" stageID="1">
+<stage timeLimit="8000" stageID="1" next="stage-b02.xml">
     <entity>
         <target type="rankC">
             <appear delay="0" x="$left" y="$left"/>

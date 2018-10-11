@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ -->
+<stage timeLimit="8000" stageID="4" next="stage-a02.xml">
+    <entity>
+        <target type="rankC">
+            <appear delay="0" x="300" y="500"/>
+            <quietMotion timeLimit="3000"/>
+        </target>
+        <target type="rankC">
+            <appear delay="0" x="500" y="500"/>
+            <quietMotion timeLimit="3000"/>
+        </target>
+        <target type="rankC">
+            <appear delay="0" x="800" y="500"/>
+            <quietMotion timeLimit="3000"/>
+        </target>
+    </entity>
+</stage>
