@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 
 public class ShootingScene extends AbstractScene
 {
@@ -22,7 +23,7 @@ public class ShootingScene extends AbstractScene
 
     public ShootingScene(BaseStage stage)
     {
-        super(stage.getBackImage());
+        super(GameConfig.readImage("back02.jpg"));
         this.stopWatch = new StopWatch();
         this.scoreManager = new ScoreManager();
         this.setStage(stage);
@@ -96,14 +97,14 @@ public class ShootingScene extends AbstractScene
     @Override
     public void draw(final Graphics2D g2d)
     {
-        g2d.drawImage(this.getBackImage(), 0, 0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT, null);
+        g2d.drawImage(this.getBackImage(), 0, 0, GameConfig.VERTUAL_WIDTH, GameConfig.VERTUAL_HEIGHT, null);
         this.stage.draw(g2d);
 
         g2d.setFont(new Font(Font.MONOSPACED, Font.ITALIC, 70));
         g2d.setColor(Color.GREEN);
         int t = this.stopWatch.getRemainTime();
         if (t  < 0) t = 0;
-        g2d.drawString("Time: " + t/1000 + "." + t%1000 / 100, GameConfig.WINDOW_WIDTH - 500, 80);
+        g2d.drawString("Time: " + t/1000 + "." + t%1000 / 100, GameConfig.VERTUAL_WIDTH - 500, 80);
 
         scoreManager.draw(g2d);
     }

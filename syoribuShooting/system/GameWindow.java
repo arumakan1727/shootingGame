@@ -1,26 +1,27 @@
 package syoribuShooting.system;
 
-import syoribuShooting.InputEventManager;
 import syoribuShooting.system.BufferedCanvas;
 
 import javax.swing.JFrame;
+
+import java.awt.Component;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
 public class GameWindow
 {
     private final JFrame window;
-    private final BufferedCanvas canvas;
+    private final BufferedRenderer canvas;
     private final InputEventManager eventManager;
 
-    public GameWindow(int width, int height, boolean isFullScreen)
+    public GameWindow(BufferedRenderer renderer, boolean isFullScreen)
     {
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.window = new JFrame(gd.getDefaultConfiguration());
-        this.canvas = new BufferedCanvas(width, height);
-        this.eventManager = new InputEventManager(canvas);
+        this.canvas = renderer;
+        this.eventManager = new InputEventManager((Component)canvas);
 
-        this.window.getContentPane().add(this.canvas);  // canvasを追加
+        this.window.getContentPane().add((Component)this.canvas);  // canvasを追加
 
         if (isFullScreen)
         {
@@ -35,15 +36,14 @@ public class GameWindow
         }
         else
         {
-            this.window.pack();                       // canvasの大きさにあわせる
+            this.window.pack();   // canvasの大きさにあわせる
         }
 
         this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.window.setLocationRelativeTo(null);
         this.window.setVisible(true);
 
-        this.canvas.setBuffering(2);
-        this.canvas.requestFocus();
+        this.canvas.setBuffering();
     }
 
     public JFrame getWindow()
@@ -51,9 +51,14 @@ public class GameWindow
         return window;
     }
 
-    public BufferedCanvas getCanvas()
+    public BufferedRenderer getCanvas()
     {
         return canvas;
+    }
+    
+    public Component getPane()
+    {
+        return (Component)canvas;
     }
 
     public InputEventManager getEventManager()

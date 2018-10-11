@@ -12,7 +12,7 @@ import java.awt.image.BufferStrategy;
  *
  */
 @SuppressWarnings("serial")
-public class BufferedCanvas extends Canvas
+public class BufferedCanvas extends Canvas implements BufferedRenderer
 {
 	/**
 	 * キャンバスを生成します。
@@ -31,13 +31,12 @@ public class BufferedCanvas extends Canvas
 	 * キャンバスをバッファリングします。
 	 * ただし、これを持っているJFrameはsetVisibe(true)した状態
 	 * でないと例外が発生します。(なぜなのかは不明)
-	 * @param numBuff バッファの数 : 2 を推奨
-	 * 
 	 */
-	public void setBuffering(int numBuff)
+	@Override
+	public void setBuffering()
 	{
 		try {
-			this.createBufferStrategy(numBuff);
+			this.createBufferStrategy(2);
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 			System.err.println("Error: window must be visble.");
@@ -49,6 +48,7 @@ public class BufferedCanvas extends Canvas
 	 *
 	 * @return
 	 */
+	@Override
 	public Graphics2D getRenderer()
 	{
 		final BufferStrategy strategy = this.getBufferStrategy();
@@ -61,7 +61,8 @@ public class BufferedCanvas extends Canvas
 		}
 	}
 	
-	public void showBuffer()
+	@Override
+	public void flipBuffer()
 	{
 		this.getBufferStrategy().show();
 		Toolkit.getDefaultToolkit().sync();

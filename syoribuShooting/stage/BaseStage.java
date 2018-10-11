@@ -2,9 +2,9 @@ package syoribuShooting.stage;
 
 import syoribuShooting.Game;
 import syoribuShooting.GameConfig;
-import syoribuShooting.InputEventManager;
 import syoribuShooting.sprite.HitEffect1;
 import syoribuShooting.sprite.Target;
+import syoribuShooting.system.InputEventManager;
 import syoribuShooting.system.StopWatch;
 
 import java.awt.Graphics2D;
@@ -26,7 +26,6 @@ public abstract class BaseStage
 
     private List<Target> targets = new LinkedList<>();
     private Target hitTarget = null;
-    private BufferedImage backImage;
     private State state;
     public final int STATE_ID;
     protected final StopWatch stopWatch = new StopWatch();
@@ -46,10 +45,9 @@ public abstract class BaseStage
         }
     }
 
-    public BaseStage(BufferedImage backImage, int stageID)
+    public BaseStage(int stageID)
     {
         this.STATE_ID = stageID;
-        this.setBackImage(backImage);
         this.setState(State.WAITING);
     }
 
@@ -172,16 +170,6 @@ public abstract class BaseStage
     public boolean noTargets()
     {
         return targets.isEmpty();
-    }
-
-    public BufferedImage getBackImage()
-    {
-        return backImage;
-    }
-
-    public void setBackImage(BufferedImage backImage)
-    {
-        this.backImage = backImage;
     }
 
     public StopWatch getStopWatch()

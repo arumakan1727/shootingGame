@@ -10,7 +10,7 @@ public class TestStage extends BaseStage
 {
     public TestStage()
     {
-        super(GameConfig.img_back[1], 0);
+        super(0);
     }
 
     @Override

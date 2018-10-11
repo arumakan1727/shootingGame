@@ -3,8 +3,11 @@ package syoribuShooting;
 import syoribuShooting.stage.AbstractScene;
 import syoribuShooting.stage.RandomStage1;
 import syoribuShooting.stage.ShootingScene;
+import syoribuShooting.system.BufferedCanvas;
+import syoribuShooting.system.BufferedPanel;
 import syoribuShooting.system.FPSTimer;
 import syoribuShooting.system.GameWindow;
+import syoribuShooting.system.InputEventManager;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -62,7 +65,7 @@ public class Game extends FPSTimer
         Graphics2D g2d = this.window.getCanvas().getRenderer();
         this.draw(g2d);
         g2d.dispose();
-        this.window.getCanvas().showBuffer();
+        this.window.getCanvas().flipBuffer();
     }
 
     public InputEventManager getEventManager()
@@ -87,13 +90,21 @@ public class Game extends FPSTimer
 
     public void setCursor(final Cursor cursor)
     {
-        this.window.getCanvas().setCursor(cursor);
+        this.window.getPane().setCursor(cursor);
     }
 
     public Game()
     {
         super(GameConfig.FPS);
-        this.window = new GameWindow( GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT, GameConfig.isFullScreen);
+//        this.window = new GameWindow(new BufferedCanvas(GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT), GameConfig.isFullScreen);
+        this.window = new GameWindow(
+                new BufferedPanel(
+                        GameConfig.VERTUAL_WIDTH,
+                        GameConfig.VERTUAL_HEIGHT,
+                        GameConfig.REAL_WIDTH,
+                        GameConfig.REAL_HEIGHT),
+                GameConfig.isFullScreen);
+        
         this.window.setTitle("Syoribu-Shooting");
         this.eventManager = window.getEventManager();
 //        this.nowScene = new ShootingScene(new RandomStage1());
@@ -102,5 +113,6 @@ public class Game extends FPSTimer
 
         this.initialize();
         this.start();
+        this.window.getPane().requestFocus();
     }
 }

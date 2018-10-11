@@ -17,15 +17,17 @@ public final class GameConfig
     public enum Allocation
     {
         TOP, BOTTOM, LEFT, RIGHT, CENTER, ALL;
-        public static final int BORDER_HEIGHT = WINDOW_HEIGHT / 3;
-        public static final int BORDER_WIDTH  = WINDOW_WIDTH / 4;
+        public static final int BORDER_HEIGHT = VERTUAL_HEIGHT / 3;
+        public static final int BORDER_WIDTH  = VERTUAL_WIDTH / 4;
         public static final int MARGIN = 100;
     }
 
     private static boolean enableCursor;
 
-    public static final int WINDOW_WIDTH;
-    public static final int WINDOW_HEIGHT;
+    public static final int VERTUAL_WIDTH;
+    public static final int VERTUAL_HEIGHT;
+    public static final int REAL_HEIGHT;
+    public static final int REAL_WIDTH;
     public static final int OUTER_WINDOW_PLUS;
     public static final int OUTER_WINDOW_MINUS;
     public static final int NUM_BACK_IMAGE;
@@ -46,9 +48,11 @@ public final class GameConfig
     static {
         final Toolkit toolkit = Toolkit.getDefaultToolkit();
 
-        WINDOW_WIDTH = (int) (toolkit.getScreenSize().getWidth());
-        WINDOW_HEIGHT = (int) (toolkit.getScreenSize().getHeight());
-        OUTER_WINDOW_PLUS = WINDOW_WIDTH + 500;
+        VERTUAL_WIDTH = 1920;
+        VERTUAL_HEIGHT = 1080;
+        REAL_WIDTH = (int) (toolkit.getScreenSize().getWidth());
+        REAL_HEIGHT = (int) (toolkit.getScreenSize().getHeight());
+        OUTER_WINDOW_PLUS = VERTUAL_WIDTH + 500;
         OUTER_WINDOW_MINUS = -500;
         NUM_BACK_IMAGE = 1;
         FPS = 40;
@@ -94,7 +98,8 @@ public final class GameConfig
         }
 
         System.out.println("GetResource: done");
-        System.out.println("Window: " + WINDOW_WIDTH + "x" + WINDOW_HEIGHT);
+        System.out.println("Vertual: " + VERTUAL_WIDTH + "x" + VERTUAL_HEIGHT);
+        System.out.println("Real:    " + REAL_WIDTH + "x" + REAL_HEIGHT);
         System.out.println("FPS: " + FPS);
         System.out.printf("targetA: %dx%d\n", img_targetA.getWidth(), img_targetA.getHeight());
         System.out.printf("targetB: %dx%d\n", img_targetB.getWidth(), img_targetB.getHeight());
@@ -118,13 +123,13 @@ public final class GameConfig
                 ret =  Utils.nextInt(0+Allocation.MARGIN, Allocation.BORDER_WIDTH);
                 break;
             case RIGHT:
-                ret =  Utils.nextInt(WINDOW_WIDTH - Allocation.BORDER_WIDTH, WINDOW_WIDTH - Allocation.MARGIN);
+                ret =  Utils.nextInt(VERTUAL_WIDTH - Allocation.BORDER_WIDTH, VERTUAL_WIDTH - Allocation.MARGIN);
                 break;
             case CENTER:
-                ret =  Utils.nextInt(Allocation.BORDER_WIDTH, WINDOW_WIDTH - Allocation.BORDER_WIDTH);
+                ret =  Utils.nextInt(Allocation.BORDER_WIDTH, VERTUAL_WIDTH - Allocation.BORDER_WIDTH);
                 break;
             default:
-                ret =  Utils.nextInt(0+Allocation.MARGIN, WINDOW_WIDTH-Allocation.MARGIN);
+                ret =  Utils.nextInt(0+Allocation.MARGIN, VERTUAL_WIDTH-Allocation.MARGIN);
         }
         if (Math.abs(ret - beforeRandX) < 100) return randomX(alloc);
 
@@ -140,13 +145,13 @@ public final class GameConfig
                 ret =  Utils.nextInt(0+Allocation.MARGIN, Allocation.BORDER_HEIGHT);
                 break;
             case BOTTOM:
-                ret =  Utils.nextInt(WINDOW_HEIGHT - Allocation.BORDER_HEIGHT, WINDOW_HEIGHT - Allocation.MARGIN);
+                ret =  Utils.nextInt(VERTUAL_HEIGHT - Allocation.BORDER_HEIGHT, VERTUAL_HEIGHT - Allocation.MARGIN);
                 break;
             case CENTER:
-                ret =  Utils.nextInt(Allocation.BORDER_HEIGHT, WINDOW_HEIGHT - Allocation.BORDER_HEIGHT);
+                ret =  Utils.nextInt(Allocation.BORDER_HEIGHT, VERTUAL_HEIGHT - Allocation.BORDER_HEIGHT);
                 break;
             default:
-                ret =  Utils.nextInt(0+Allocation.MARGIN, WINDOW_HEIGHT-Allocation.MARGIN);
+                ret =  Utils.nextInt(0+Allocation.MARGIN, VERTUAL_HEIGHT-Allocation.MARGIN);
         }
         if (Math.abs(ret - beforeRandY) < 50) return randomY(alloc);
 
@@ -168,5 +173,21 @@ public final class GameConfig
         if (rnd < 40) return TargetType.rankB;
         return TargetType.rankC;
     }
+    
+    public static BufferedImage readImage(final String fileName)
+    {
+        BufferedImage img = null;
+        try
+        {
+            img = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + fileName));
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        
+        return img;
+    }
+    
 
 }

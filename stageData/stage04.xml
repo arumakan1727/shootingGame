@@ -3,7 +3,7 @@
 的の数:4個
 画面下からポーン
  -->
-<stage backImageID="1" timeLimit="8000" stageID="4">
+<stage timeLimit="8000" stageID="4">
     <entity>
         <target type="rankC">
             <appear delay="0" x="$center" y="$center"/>

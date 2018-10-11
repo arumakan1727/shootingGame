@@ -31,7 +31,6 @@ public class XMLStageParser extends DefaultHandler
     private static final String ATTR_SPEED  = "speed";
     private static final String ATTR_DELAY  = "delay";
     private static final String ATTR_ACCELERATION  = "acceleration";
-    private static final String ATTR_BACK_ID = "backImageID";
     private static final String ATTR_TIMELIMIT = "timeLimit";
     private static final String ATTR_STAGE_ID = "stageID";
 
@@ -211,13 +210,12 @@ public class XMLStageParser extends DefaultHandler
 
     private void tagStage(String qName, Attributes attr) throws SAXException
     {
-        int backImageID = parseValue(ATTR_BACK_ID, attr.getValue(ATTR_BACK_ID), 1);
         final int timeLimit = parseValue(ATTR_TIMELIMIT, attr.getValue(ATTR_TIMELIMIT), 1000);
         final int stageID = parseValue(ATTR_STAGE_ID, attr.getValue(ATTR_STAGE_ID), -1);
 
         if (stageID < 0) throw new SAXException();
 
-        this.stage = new BaseStage(GameConfig.img_back[backImageID], stageID)
+        this.stage = new BaseStage(stageID)
         {
             @Override
             public int getTimeLimit()

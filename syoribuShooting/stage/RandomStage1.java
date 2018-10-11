@@ -14,10 +14,9 @@ public class RandomStage1 extends BaseStage
 {
     private static final int NUM_TARGETS = 6;
 
-
     public RandomStage1()
     {
-        super(GameConfig.img_back[1], 1);
+        super(1);
     }
 
     @Override
