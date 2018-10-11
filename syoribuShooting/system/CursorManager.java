@@ -62,8 +62,8 @@ public class CursorManager
         {
             g2d.drawImage(
                     currentCursor.img,
-                     mouseX + currentCursor.hotSpot.x,
-                    mouseY + currentCursor.hotSpot.y,
+                    mouseX - currentCursor.hotSpot.x,
+                    mouseY - currentCursor.hotSpot.y,
                     null );
         }
     }

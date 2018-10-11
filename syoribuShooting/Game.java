@@ -39,7 +39,6 @@ public class Game extends FPSTimer
 
         nowScene.draw(g2d);
         effectManager.draw(g2d);
-        g2d.drawString("x:" + eventManager.mouseX() + "  y:" + eventManager.mouseY(), 30, 200);
     }
 
     private void initialize()
@@ -99,9 +98,8 @@ public class Game extends FPSTimer
     public Game()
     {
         super(GameConfig.FPS);
-//        this.window = new GameWindow(new BufferedJPanel(GameConfig.VIRTUAL_WIDTH, GameConfig.VIRTUAL_HEIGHT), GameConfig.isFullScreen);
-//        this.window = new GameWindow(new BufferedCanvas(GameConfig.VIRTUAL_WIDTH, GameConfig.VIRTUAL_HEIGHT), GameConfig.isFullScreen);
 
+        // 描画に用いるインスタンスの選択
         BufferedRenderer bufferedRenderer;
         if (REAL_HEIGHT == VIRTUAL_HEIGHT) {
             bufferedRenderer = new BufferedJPanel(REAL_WIDTH, REAL_HEIGHT);
@@ -116,7 +114,6 @@ public class Game extends FPSTimer
         
         this.window.setTitle("Syoribu-Shooting");
         this.eventManager = window.getEventManager();
-//        this.nowScene = new ShootingScene(new RandomStage1());
         this.nowScene = new ShootingScene(new XMLStageParser(GameConfig.FIRST_STAGE_FILE_PATH, Game.class).getParsedStage());
         this.effectManager = new EffectManager();
 
