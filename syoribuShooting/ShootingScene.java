@@ -1,9 +1,5 @@
-package syoribuShooting.stage;
+package syoribuShooting;
 
-import syoribuShooting.Game;
-import syoribuShooting.GameConfig;
-import syoribuShooting.ScoreManager;
-import syoribuShooting.XMLStageParser;
 import syoribuShooting.sprite.Target;
 import syoribuShooting.system.StopWatch;
 

@@ -7,7 +7,8 @@ import syoribuShooting.sprite.LinearMotion;
 import syoribuShooting.sprite.Motion;
 import syoribuShooting.sprite.QuietMotion;
 import syoribuShooting.sprite.Target;
-import syoribuShooting.stage.BaseStage;
+import syoribuShooting.sprite.TargetFactory;
+import syoribuShooting.sprite.TargetType;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;

@@ -1,9 +1,6 @@
-package syoribuShooting;
+package syoribuShooting.sprite;
 
-import syoribuShooting.sprite.Bounds;
-import syoribuShooting.sprite.CircleBounds;
-import syoribuShooting.sprite.Motion;
-import syoribuShooting.sprite.Target;
+import syoribuShooting.GameConfig;
 
 public class TargetFactory
 {

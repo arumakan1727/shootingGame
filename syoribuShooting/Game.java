@@ -1,8 +1,6 @@
 package syoribuShooting;
 
-import syoribuShooting.stage.AbstractScene;
-import syoribuShooting.stage.ShootingScene;
-import syoribuShooting.system.BufferedJPanel;
+import syoribuShooting.sprite.AnimationProcessor;
 import syoribuShooting.system.BufferedRenderer;
 import syoribuShooting.system.BufferedResponsivePanel;
 import syoribuShooting.system.CursorManager;
@@ -10,7 +8,6 @@ import syoribuShooting.system.FPSTimer;
 import syoribuShooting.system.GameWindow;
 import syoribuShooting.system.InputEventManager;
 
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
@@ -24,13 +21,13 @@ public class Game extends FPSTimer
 {
     private final GameWindow window;
     private final InputEventManager eventManager;
-    private final EffectManager effectManager;
+    private final AnimationProcessor animationProcessor;
     private AbstractScene nowScene;
 
     private void update()
     {
         nowScene.update(this);
-        effectManager.update(this);
+        animationProcessor.update();
     }
 
     private void draw(Graphics2D g2d)
@@ -42,7 +39,7 @@ public class Game extends FPSTimer
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         nowScene.draw(g2d);
-        effectManager.draw(g2d);
+        animationProcessor.draw(g2d);
         window.getCursorManager().draw(g2d, eventManager.mouseX(), eventManager.mouseY());
         g2d.drawString("mousePress: " + eventManager.isMousePressed(MouseEvent.BUTTON1), 30, 200);
     }
@@ -96,9 +93,9 @@ public class Game extends FPSTimer
         return this.nowScene;
     }
 
-    public EffectManager getEffectManager()
+    public AnimationProcessor getAnimationProcessor()
     {
-        return this.effectManager;
+        return this.animationProcessor;
     }
 
     public void setCursor(final Cursor cursor)
@@ -126,7 +123,7 @@ public class Game extends FPSTimer
         this.window.setTitle("Syoribu-Shooting");
         this.eventManager = window.getEventManager();
         this.nowScene = new ShootingScene(new XMLStageParser(GameConfig.FIRST_STAGE_FILE_PATH, Game.class).getParsedStage());
-        this.effectManager = new EffectManager();
+        this.animationProcessor = new AnimationProcessor();
         
         // カスタムカーソルの設定
         CursorManager cursorManager = this.window.getCursorManager();

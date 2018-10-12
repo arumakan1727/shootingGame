@@ -2,7 +2,7 @@ package syoribuShooting.sprite;
 
 import syoribuShooting.GameConfig;
 
-public class HitEffect1 extends Effect
+public class HitEffect1 extends Animation
 {
     public HitEffect1(int x, int y, boolean isLoop)
     {

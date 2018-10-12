@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public abstract class Effect extends Sprite
+public abstract class Animation extends Sprite
 {
     abstract public void update();
 
@@ -13,12 +13,12 @@ public abstract class Effect extends Sprite
     private final boolean isLoop;
     private boolean disposed;
 
-    public Effect(List<BufferedImage> anim, int x, int y, boolean isLoop)
+    public Animation(List<BufferedImage> anim, int x, int y, boolean isLoop)
     {
         this(anim, x, y, anim.get(0).getWidth(), anim.get(0).getHeight(), isLoop);
     }
 
-    public Effect(List<BufferedImage> anim, int x, int y, int width, int height, boolean isLoop)
+    public Animation(List<BufferedImage> anim, int x, int y, int width, int height, boolean isLoop)
     {
         super(x, y, width, height);
         this.setDisposed(false);

@@ -1,6 +1,5 @@
-package syoribuShooting.stage;
+package syoribuShooting;
 
-import syoribuShooting.Game;
 import syoribuShooting.sprite.HitEffect1;
 import syoribuShooting.sprite.Target;
 import syoribuShooting.system.InputEventManager;
@@ -131,7 +130,7 @@ public abstract class BaseStage
         if (hitTarget != null)
         {
             hitTarget.setState(Target.State.DISAPPEAR);
-            game.getEffectManager().addEffect(
+            game.getAnimationProcessor().addEffect(
                     new HitEffect1(
                             eventManager.mousePressedX(),
                             eventManager.mousePressedY(),

@@ -1,11 +1,9 @@
-package syoribuShooting.stage;
+package syoribuShooting;
 
-import syoribuShooting.Game;
-import syoribuShooting.GameConfig;
-import syoribuShooting.TargetFactory;
-import syoribuShooting.TargetType;
 import syoribuShooting.sprite.LinearMotion;
 import syoribuShooting.sprite.Target;
+import syoribuShooting.sprite.TargetFactory;
+import syoribuShooting.sprite.TargetType;
 import syoribuShooting.system.Utils;
 
 import static syoribuShooting.GameConfig.*;

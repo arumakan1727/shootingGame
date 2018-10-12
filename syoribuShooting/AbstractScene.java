@@ -1,4 +1,4 @@
-package syoribuShooting.stage;
+package syoribuShooting;
 
 import syoribuShooting.Game;
 

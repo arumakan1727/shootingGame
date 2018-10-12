@@ -1,7 +1,6 @@
 package syoribuShooting;
 
 import syoribuShooting.sprite.Target;
-import syoribuShooting.stage.BaseStage;
 import syoribuShooting.system.InputEventManager;
 import syoribuShooting.system.StopWatch;
 

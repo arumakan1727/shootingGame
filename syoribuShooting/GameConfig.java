@@ -1,5 +1,6 @@
 package syoribuShooting;
 
+import syoribuShooting.sprite.TargetType;
 import syoribuShooting.system.GifReader;
 import syoribuShooting.system.Utils;
 
