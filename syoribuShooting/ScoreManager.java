@@ -32,7 +32,7 @@ public class ScoreManager
     {
         final InputEventManager eventManager = game.getEventManager();
 
-        if (eventManager.isMousePressed(MouseEvent.BUTTON1))
+        if (eventManager.justNowMousePressed(MouseEvent.BUTTON1))
         {
             checkHit(stage.getHitTarget(),
                     eventManager.mousePressedX(),

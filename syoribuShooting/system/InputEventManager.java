@@ -16,6 +16,7 @@ public class InputEventManager
     private int mousePressedX, mousePressedY;
     private final boolean[] keyState    = new boolean[525];
     private final boolean[] mousePressedState = new boolean[4];
+    private final boolean[] mousePressedBefore = new boolean[4];
 
     private double correction;
 
@@ -45,10 +46,15 @@ public class InputEventManager
 
     public void update()
     {
-//        mousePressedState[0] = false;
-//        mousePressedState[1] = false;
-//        mousePressedState[2] = false;
-//        mousePressedState[3] = false;
+        mousePressedBefore[0] = mousePressedState[0];
+        mousePressedBefore[1] = mousePressedState[1];
+        mousePressedBefore[2] = mousePressedState[2];
+        mousePressedBefore[3] = mousePressedState[3];
+    }
+
+    public boolean justNowMousePressed(int mouseCode)
+    {
+        return !mousePressedBefore[mouseCode] && mousePressedState[mouseCode];
     }
 
     public int mouseX()
@@ -96,20 +102,6 @@ public class InputEventManager
         return ! isMousePressed(mouseButtonCode);
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) { }
-
-    @Override
-    public void keyPressed(KeyEvent e)
-    {
-        keyState[e.getKeyCode()] = true;
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e)
-    {
-        keyState[e.getKeyCode()] = false;
-    }
 
     @Override
     public void mouseClicked(MouseEvent e)
@@ -154,4 +146,18 @@ public class InputEventManager
         this.mouseY = e.getY();
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) { }
+
+    @Override
+    public void keyPressed(KeyEvent e)
+    {
+        keyState[e.getKeyCode()] = true;
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e)
+    {
+        keyState[e.getKeyCode()] = false;
+    }
 }

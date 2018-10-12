@@ -186,9 +186,11 @@ public abstract class BaseStage
     private final Target checkHit(InputEventManager eventManager)
     {
         // beforeが押されてない && 現在押されたなら当たり判定
-        boolean nowMousePressed = eventManager.isMousePressed(MouseEvent.BUTTON1);
-        if (!beforeMousePressed && nowMousePressed)
+//        boolean nowMousePressed = eventManager.isMousePressed(MouseEvent.BUTTON1);
+//        if (!beforeMousePressed && nowMousePressed)
+        if (eventManager.justNowMousePressed(MouseEvent.BUTTON1))
         {
+            System.err.println("Edge!");
             int px = eventManager.mousePressedX();
             int py = eventManager.mousePressedY();
             for (ListIterator<Target> it = targets.listIterator(targets.size()); it.hasPrevious(); )
