@@ -5,13 +5,17 @@ import syoribuShooting.stage.ShootingScene;
 import syoribuShooting.system.BufferedJPanel;
 import syoribuShooting.system.BufferedRenderer;
 import syoribuShooting.system.BufferedResponsivePanel;
+import syoribuShooting.system.CursorManager;
 import syoribuShooting.system.FPSTimer;
 import syoribuShooting.system.GameWindow;
 import syoribuShooting.system.InputEventManager;
 
+import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.Cursor;
 
 import static syoribuShooting.GameConfig.*;
@@ -39,6 +43,8 @@ public class Game extends FPSTimer
 
         nowScene.draw(g2d);
         effectManager.draw(g2d);
+        window.getCursorManager().draw(g2d, eventManager.mouseX(), eventManager.mouseY());
+        g2d.drawString("mousePress: " + eventManager.isMousePressed(MouseEvent.BUTTON1), 30, 200);
     }
 
     private void initialize()
@@ -68,6 +74,11 @@ public class Game extends FPSTimer
         this.draw(g2d);
         g2d.dispose();
         this.window.getCanvas().flipBuffer();
+    }
+    
+    public GameWindow getWindow()
+    {
+        return this.window;
     }
 
     public InputEventManager getEventManager()
@@ -101,14 +112,14 @@ public class Game extends FPSTimer
 
         // 描画に用いるインスタンスの選択
         BufferedRenderer bufferedRenderer;
-        if (REAL_HEIGHT == VIRTUAL_HEIGHT) {
-            bufferedRenderer = new BufferedJPanel(REAL_WIDTH, REAL_HEIGHT);
-            System.out.println("BufferedRenderer: using BufferedJPanel");
-        } else {
-            bufferedRenderer = new BufferedResponsivePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
-            System.out.println("BufferedRenderer: using BufferedResponsivePanel");
-        }
-
+//        if (REAL_HEIGHT == VIRTUAL_HEIGHT) {
+//            bufferedRenderer = new BufferedJPanel(REAL_WIDTH, REAL_HEIGHT);
+//            System.out.println("BufferedRenderer: using BufferedJPanel");
+//        } else {
+//            bufferedRenderer = new BufferedResponsivePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
+//            System.out.println("BufferedRenderer: using BufferedResponsivePanel");
+//        }
+        bufferedRenderer = new BufferedResponsivePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
         this.window = new GameWindow(bufferedRenderer ,GameConfig.isFullScreen);
         this.window.getEventManager().setCorrection(GameConfig.REAL_VIRTUAL_CORRECTION);
         
@@ -116,7 +127,15 @@ public class Game extends FPSTimer
         this.eventManager = window.getEventManager();
         this.nowScene = new ShootingScene(new XMLStageParser(GameConfig.FIRST_STAGE_FILE_PATH, Game.class).getParsedStage());
         this.effectManager = new EffectManager();
-
+        
+        // カスタムカーソルの設定
+        CursorManager cursorManager = this.window.getCursorManager();
+        cursorManager.defineCursor(ID_SHOOTING_CURSOR_NORMAL, readImage("shooting_cursor.png"), new Point(32, 32));
+        cursorManager.defineCursor(ID_SHOOTING_CURSOR_GREEN, readImage("shooting_cursor_green.png"), new Point(32, 32));
+        cursorManager.defineCursor(Cursor.CROSSHAIR_CURSOR, new Cursor(Cursor.CROSSHAIR_CURSOR));
+        cursorManager.changeCurrentCursor(Cursor.CROSSHAIR_CURSOR);
+        
+        System.out.println("normalCursor: " + cursorManager.validCursor(ID_SHOOTING_CURSOR_NORMAL) + "\ngreenCursor: " + cursorManager.validCursor(ID_SHOOTING_CURSOR_GREEN));
         this.initialize();
         this.start();
         this.window.getPane().requestFocus();

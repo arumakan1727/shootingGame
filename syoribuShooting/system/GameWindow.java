@@ -11,6 +11,7 @@ public class GameWindow
     private final JFrame window;
     private final BufferedRenderer canvas;
     private final InputEventManager eventManager;
+    private final CursorManager cursorManager;
 
     public GameWindow(BufferedRenderer renderer, boolean isFullScreen)
     {
@@ -18,6 +19,7 @@ public class GameWindow
         this.window = new JFrame(gd.getDefaultConfiguration());
         this.canvas = renderer;
         this.eventManager = new InputEventManager((Component)canvas);
+        this.cursorManager = new CursorManager(this.getPane());
 
         this.window.getContentPane().add((Component)this.canvas);  // canvasを追加
 
@@ -67,5 +69,10 @@ public class GameWindow
     public void setTitle(String title)
     {
         this.window.setTitle(title);
+    }
+    
+    public CursorManager getCursorManager()
+    {
+        return this.cursorManager;
     }
 }

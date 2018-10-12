@@ -9,15 +9,21 @@ import java.awt.Toolkit;
 
 public class CursorManager
 {
-    private static final int NUM_CURSOR = 8;
+    private static final int NUM_CURSOR = 16;
     private final Component component;
     private CustomCursor cursorList[];
-    private CustomCursor currentCursor = new CustomCursor(new Cursor(Cursor.DEFAULT_CURSOR), null);
+    private CustomCursor currentCursor = new CustomCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
     public CursorManager(final Component component)
     {
         this.component = component;
         this.cursorList = new CustomCursor[NUM_CURSOR];
+    }
+    
+    public void defineCursor(int id, final Cursor cursor)
+    {
+        if (cursorList[id] != null) throw new IllegalStateException("cursorList[" + id + "] : Already exists");
+        cursorList[id] = new CustomCursor(cursor); 
     }
 
     public void defineCursor(int id, final Image img, final Point hotSpot)
@@ -42,23 +48,23 @@ public class CursorManager
         return cursorList[id].usableCursor();
     }
 
-    public void changeCurrentCursor(int id, boolean systemCursor)
+    public boolean changeCurrentCursor(int id)
     {
-        if (systemCursor) {
-            currentCursor = new CustomCursor(new Cursor(id), null);
-        }
-        else {
-            currentCursor = cursorList[id];
-        }
-    }
-
-    public void draw(Graphics2D g2d, int mouseX, int mouseY)
-    {
+        System.err.println(component.getCursor());
+        currentCursor = cursorList[id];
+        
         if (currentCursor.usableCursor())
         {
             component.setCursor(currentCursor.cursor);
         }
-        else
+        
+        return currentCursor.usableCursor();
+    }
+    
+
+    public void draw(Graphics2D g2d, int mouseX, int mouseY)
+    {
+        if (! currentCursor.usableCursor())
         {
             g2d.drawImage(
                     currentCursor.img,
@@ -77,6 +83,7 @@ public class CursorManager
         CustomCursor(final Image img, final Point hotSpot)
         {
             this.hotSpot = hotSpot;
+            this.img = img;
             try {
                 cursor = Toolkit.getDefaultToolkit().createCustomCursor(img, hotSpot, "CustomCursor");
             } catch (IndexOutOfBoundsException e) {
@@ -87,15 +94,20 @@ public class CursorManager
             }
         }
 
-        CustomCursor(final Cursor cursor, final Point hotSpot)
+        CustomCursor(final Cursor cursor)
         {
             this.cursor = cursor;
-            this.hotSpot = hotSpot;
         }
 
         public boolean usableCursor()
         {
             return cursor != null;
+        }
+        
+        @Override
+        public String toString()
+        {
+            return "CustomCursor:" + cursor + ", img:" + img + ", hotSpot:" + hotSpot; 
         }
     }
 }

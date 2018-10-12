@@ -16,7 +16,6 @@ public class InputEventManager
     private int mousePressedX, mousePressedY;
     private final boolean[] keyState    = new boolean[525];
     private final boolean[] mousePressedState = new boolean[4];
-    private final boolean[] mouseReleasedState = new boolean[4];
 
     private double correction;
 
@@ -46,24 +45,16 @@ public class InputEventManager
 
     public void update()
     {
-        mouseReleasedState[0] = false;
-        mouseReleasedState[1] = false;
-        mouseReleasedState[2] = false;
-        mouseReleasedState[3] = false;
-        
-        mousePressedState[0] = false;
-        mousePressedState[1] = false;
-        mousePressedState[2] = false;
-        mousePressedState[3] = false;
-
+//        mousePressedState[0] = false;
+//        mousePressedState[1] = false;
+//        mousePressedState[2] = false;
+//        mousePressedState[3] = false;
     }
 
     public int mouseX()
     {
         return ((int) (mouseX * correction));
     }
-
-
 
     public int mouseY()
     {
@@ -95,7 +86,6 @@ public class InputEventManager
         return keyState[keyCode];
     }
 
-
     public boolean isMousePressed(int mouseButtonCode)
     {
         return mousePressedState[mouseButtonCode];
@@ -103,7 +93,7 @@ public class InputEventManager
 
     public boolean isMouseReleased(int mouseButtonCode)
     {
-        return this.mouseReleasedState[mouseButtonCode];
+        return ! isMousePressed(mouseButtonCode);
     }
 
     @Override
@@ -124,7 +114,6 @@ public class InputEventManager
     @Override
     public void mouseClicked(MouseEvent e)
     {
-        this.mouseReleasedState[e.getButton()] = true;
     }
 
     @Override
@@ -132,7 +121,6 @@ public class InputEventManager
     {
         final int code = e.getButton();
         mousePressedState[code] = true;
-        mouseReleasedState[code] = false;
         this.mousePressedX = e.getX();
         this.mousePressedY = e.getY();
     }
@@ -141,7 +129,6 @@ public class InputEventManager
     public void mouseReleased(MouseEvent e)
     {
         final int code = e.getButton();
-        mouseReleasedState[code] = true;
         mousePressedState[code] = false;
         this.mouseReleasedX = e.getX();
         this.mouseReleasedY = e.getY();

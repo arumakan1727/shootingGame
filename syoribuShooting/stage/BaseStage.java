@@ -1,7 +1,6 @@
 package syoribuShooting.stage;
 
 import syoribuShooting.Game;
-import syoribuShooting.GameConfig;
 import syoribuShooting.sprite.HitEffect1;
 import syoribuShooting.sprite.Target;
 import syoribuShooting.system.InputEventManager;
@@ -29,6 +28,7 @@ public abstract class BaseStage
     private List<Target> targets = new LinkedList<>();
     private Target hitTarget = null;
     private State state;
+    private boolean beforeMousePressed;
 
     public enum State
     {
@@ -50,6 +50,7 @@ public abstract class BaseStage
         this.STATE_ID = stageID;
         this.setState(State.WAITING);
         this.nextStageFilePath = nextStageFilePath;
+        this.beforeMousePressed = false;
     }
 
     public void initialize()
@@ -78,6 +79,7 @@ public abstract class BaseStage
         final InputEventManager eventManager = game.getEventManager();
         boolean isTouchingEntity = false;
 
+
         // リスト中のターゲットを全てアップデートする
         for (ListIterator<Target> it = targets.listIterator(); it.hasNext();)
         {
@@ -89,8 +91,6 @@ public abstract class BaseStage
             {
                 isTouchingEntity = true;
             }
-
-//            System.out.println(elem);
 
             // 画面外になったら
             final int x = ((int) elem.getXdefault());
@@ -116,9 +116,13 @@ public abstract class BaseStage
 
         // 何らかにマウスカーソルが当たっていれば緑の照準カーソルに、そうでなければ通常の照準カーソルにする
         if (isTouchingEntity) {
-            game.setCursor(GameConfig.shootingCursorGreen);
+//            game.setCursor(GameConfig.shootingCursorGreen);
+            game.getWindow().getCursorManager().changeCurrentCursor(ID_SHOOTING_CURSOR_GREEN);
+
         } else {
-            game.setCursor(GameConfig.shootingCursor);
+//            game.setCursor(GameConfig.shootingCursor);
+            game.getWindow().getCursorManager().changeCurrentCursor(ID_SHOOTING_CURSOR_NORMAL);
+
         }
 
         // クリックされて的に当たっていればhitTargetをセットし、ヒットエフェクト
@@ -135,6 +139,7 @@ public abstract class BaseStage
             );
         }
 
+        beforeMousePressed = eventManager.isMousePressed(MouseEvent.BUTTON1);
         _update(game);
     }
 
@@ -180,7 +185,9 @@ public abstract class BaseStage
 
     private final Target checkHit(InputEventManager eventManager)
     {
-        if (eventManager.isMousePressed(MouseEvent.BUTTON1))
+        // beforeが押されてない && 現在押されたなら当たり判定
+        boolean nowMousePressed = eventManager.isMousePressed(MouseEvent.BUTTON1);
+        if (!beforeMousePressed && nowMousePressed)
         {
             int px = eventManager.mousePressedX();
             int py = eventManager.mousePressedY();

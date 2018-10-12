@@ -38,6 +38,8 @@ public final class GameConfig
     public static final String STAGEDATA_PREFIX;
     public static final String FIRST_STAGE_FILE_PATH;
     public static Cursor shootingCursor, shootingCursorGreen;
+    public static final int ID_SHOOTING_CURSOR_NORMAL;
+    public static final int ID_SHOOTING_CURSOR_GREEN;
     public static BufferedImage
             img_shootingCursor,
             img_shootingCursorGreen,
@@ -60,6 +62,9 @@ public final class GameConfig
         isFullScreen = false;
         enableCursor = true;
         REAL_VIRTUAL_CORRECTION = (double)VIRTUAL_HEIGHT / (double)REAL_HEIGHT;
+        
+        ID_SHOOTING_CURSOR_NORMAL = 10;
+        ID_SHOOTING_CURSOR_GREEN  = 11;
 
         NUM_BACK_IMAGE  = 1;
         PATH_IMAGE      = "/images/";
