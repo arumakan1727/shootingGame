@@ -56,6 +56,8 @@ public class XMLStageParser extends DefaultHandler
         }
     }
 
+    // TODO: setInputStream()を作成する
+
     public BaseStage getParsedStage()
     {
         return this.stage;

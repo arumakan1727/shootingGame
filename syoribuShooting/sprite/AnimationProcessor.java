@@ -1,7 +1,5 @@
 package syoribuShooting.sprite;
 
-import syoribuShooting.sprite.Animation;
-
 import java.awt.Graphics2D;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,7 +39,7 @@ public class AnimationProcessor
         }
     }
 
-    public void addEffect(Animation animation)
+    public void add(Animation animation)
     {
         this.animations.add(animation);
     }
