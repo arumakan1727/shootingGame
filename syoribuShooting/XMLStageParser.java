@@ -34,32 +34,41 @@ public class XMLStageParser extends DefaultHandler
     private static final String ATTR_TIMELIMIT = "timeLimit";
     private static final String ATTR_STAGE_ID = "stageID";
 
-    private StringBuilder sb;
     private Target nowTarget;
     private BaseStage stage;
+    private InputStream istream;
     
     public XMLStageParser(String filePath, Class c)
     {
         this(c.getResourceAsStream(filePath));
     }
     
-    public XMLStageParser(InputStream is)
+    public XMLStageParser(InputStream istream)
     {
-        this.sb = new StringBuilder();
+        this.setInputStream(istream);
+    }
 
+    public void parse()
+    {
         try {
             SAXParser xmlParser = SAXParserFactory.newInstance().newSAXParser();
-            xmlParser.parse(is, this);
-        } catch (ParserConfigurationException | SAXException | IOException e) {
+            xmlParser.parse(this.istream, this);
+        } catch (ParserConfigurationException | SAXException | IOException | NullPointerException e) {
             e.printStackTrace();
             System.exit(1);
         }
     }
 
-    // TODO: setInputStream()を作成する
+    public void setInputStream(InputStream istream)
+    {
+        this.istream = istream;
+        this.stage = null;
+        this.nowTarget = null;
+    }
 
     public BaseStage getParsedStage()
     {
+        if (this.stage == null) throw new NullPointerException("Not XML parsed");
         return this.stage;
     }
 
@@ -245,6 +254,7 @@ public class XMLStageParser extends DefaultHandler
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException
     {
+        System.out.println("endElement: " + qName);
         switch (qName)
         {
             case TAG_TARGET:

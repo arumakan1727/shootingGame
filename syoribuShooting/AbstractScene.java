@@ -1,7 +1,5 @@
 package syoribuShooting;
 
-import syoribuShooting.Game;
-
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 

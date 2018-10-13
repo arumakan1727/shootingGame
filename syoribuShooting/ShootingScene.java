@@ -1,6 +1,5 @@
 package syoribuShooting;
 
-import syoribuShooting.sprite.Target;
 import syoribuShooting.system.StopWatch;
 
 import java.awt.Color;
@@ -12,16 +11,24 @@ public class ShootingScene extends AbstractScene
 {
     private static final int TIME_LIMIT = 40 * 1000;
     private final StopWatch stopWatch;
-    private BaseStage stage;
+    private BaseStage nowStage;
     private State state;
     private ScoreManager scoreManager;
+    private XMLStageParser xmlStageParser;
+    private Class aClass;
+    private Thread readNextStageThread;
 
-    public ShootingScene(BaseStage stage)
+    public ShootingScene(final String filePath, Class c)
     {
         super(GameConfig.readImage("back02.jpg"));
         this.stopWatch = new StopWatch();
         this.scoreManager = new ScoreManager();
-        this.setStage(stage);
+        this.xmlStageParser = new XMLStageParser(filePath, c);
+        this.aClass = c;
+
+        this.xmlStageParser.parse();
+        this.setNowStage(xmlStageParser.getParsedStage());
+        this.readNextStage();
         this.setState(State.WAIT_SHOOTING);
 
         this.initialize();
@@ -30,7 +37,7 @@ public class ShootingScene extends AbstractScene
     @Override
     public void initialize()
     {
-        this.stage.initialize();
+        this.nowStage.initialize();
         this.setState(State.WAIT_SHOOTING);
         this.stopWatch.initTimer(TIME_LIMIT);
     }
@@ -38,63 +45,50 @@ public class ShootingScene extends AbstractScene
     @Override
     public void update(final Game game)
     {
-        if (stage.getState() == BaseStage.State.FINISHED)
+        if (nowStage.getState() == BaseStage.State.FINISHED)
         {
             changeStage();
         }
         else {
             if (game.getEventManager().isKeyPressed(KeyEvent.VK_SPACE)) {
-                stage.setState(BaseStage.State.WAITING);
+                nowStage.setState(BaseStage.State.WAITING);
                 this.stopWatch.stopTimer();
             } else {
-                stage.setState(BaseStage.State.SHOOTING);
+                nowStage.setState(BaseStage.State.SHOOTING);
                 this.stopWatch.restartTimer();
             }
         }
         System.out.println("Scene: " + getState()
-                + ", stage: " + stage.getState()
-                + ", elem=" + stage.getTargetList().size()
-                + ", run=" + stage.getStopWatch().isRunning());
+                + ", nowStage: " + nowStage.getState()
+                + ", elem=" + nowStage.getTargetList().size()
+                + ", run=" + nowStage.getStopWatch().isRunning());
+
         switch (this.getState()) {
             case WAIT_SHOOTING:
                 this.stopWatch.startTimer();
                 this.setState(State.SHOOTING);
-                this.stage.setState(BaseStage.State.SHOOTING);
+                this.nowStage.setState(BaseStage.State.SHOOTING);
                 break;
             case SHOOTING:
                 if (this.stopWatch.isOverTimeLimit())
                 {
-                    if (this.stage.noTargets()) {
+                    if (this.nowStage.noTargets()) {
                         this.setState(State.TIME_OVER);
                     } else {
-                        stage.makeAllDisappear();
+                        nowStage.makeAllDisappear();
                     }
                 }
-                this.stage.update(game);
+                this.nowStage.update(game);
+                this.scoreManager.update(game, this.getNowStage());
                 break;
         }
-        scoreManager.update(game, this.getStage());
-    }
-
-    public void changeStage()
-    {
-//        String fileName = GameConfig.getStageDataFileName((this.stage.STATE_ID + 1) % 5);
-//        String fileName = GameConfig.getStageDataFileName(4);
-        String fileName = getStage().getNextStageFilePath();
-        System.out.println(fileName);
-        XMLStageParser stageParser = new XMLStageParser(Game.class.getResourceAsStream(fileName));
-
-        BaseStage nextStage = stageParser.getParsedStage();
-        nextStage.initialize();
-        nextStage.setState(BaseStage.State.SHOOTING);
-        setStage(nextStage);
     }
 
     @Override
     public void draw(final Graphics2D g2d)
     {
         g2d.drawImage(this.getBackImage(), 0, 0, GameConfig.VIRTUAL_WIDTH, GameConfig.VIRTUAL_HEIGHT, null);
-        this.stage.draw(g2d);
+        this.nowStage.draw(g2d);
 
         g2d.setFont(new Font(Font.MONOSPACED, Font.ITALIC, 70));
         g2d.setColor(Color.GREEN);
@@ -115,19 +109,45 @@ public class ShootingScene extends AbstractScene
         this.state = state;
     }
 
-    public Target getHitTarget()
+    public BaseStage getNowStage()
     {
-        return this.stage.getHitTarget();
+        return nowStage;
     }
 
-    public BaseStage getStage()
+    public void setNowStage(BaseStage nowStage)
     {
-        return stage;
+        this.nowStage = nowStage;
     }
 
-    public void setStage(BaseStage stage)
+
+    private void changeStage()
     {
-        this.stage = stage;
+        try {
+            readNextStageThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        BaseStage nextStage = xmlStageParser.getParsedStage();
+        nextStage.initialize();
+        nextStage.setState(BaseStage.State.SHOOTING);
+        setNowStage(nextStage);
+
+        this.readNextStage();
     }
 
+    private void readNextStage()
+    {
+        readNextStageThread = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                final String filePath = getNowStage().getNextStageFilePath();
+                xmlStageParser.setInputStream(aClass.getResourceAsStream(filePath));
+                xmlStageParser.parse();
+            }
+        });
+
+        readNextStageThread.start();
+    }
 }

@@ -50,7 +50,6 @@ public class CursorManager
 
     public boolean changeCurrentCursor(int id)
     {
-        System.err.println(component.getCursor());
         currentCursor = cursorList[id];
         
         if (currentCursor.usableCursor())

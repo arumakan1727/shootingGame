@@ -27,7 +27,6 @@ public abstract class BaseStage
     private List<Target> targets = new LinkedList<>();
     private Target hitTarget = null;
     private State state;
-    private boolean beforeMousePressed;
 
     public enum State
     {
@@ -49,7 +48,6 @@ public abstract class BaseStage
         this.STATE_ID = stageID;
         this.setState(State.WAITING);
         this.nextStageFilePath = nextStageFilePath;
-        this.beforeMousePressed = false;
     }
 
     public void initialize()
@@ -115,11 +113,8 @@ public abstract class BaseStage
 
         // 何らかにマウスカーソルが当たっていれば緑の照準カーソルに、そうでなければ通常の照準カーソルにする
         if (isTouchingEntity) {
-//            game.setCursor(GameConfig.shootingCursorGreen);
             game.getWindow().getCursorManager().changeCurrentCursor(ID_SHOOTING_CURSOR_GREEN);
-
         } else {
-//            game.setCursor(GameConfig.shootingCursor);
             game.getWindow().getCursorManager().changeCurrentCursor(ID_SHOOTING_CURSOR_NORMAL);
 
         }
@@ -130,7 +125,7 @@ public abstract class BaseStage
         if (hitTarget != null)
         {
             hitTarget.setState(Target.State.DISAPPEAR);
-            game.getAnimationProcessor().addEffect(
+            game.getAnimationProcessor().add(
                     new HitEffect1(
                             eventManager.mousePressedX(),
                             eventManager.mousePressedY(),
@@ -138,7 +133,6 @@ public abstract class BaseStage
             );
         }
 
-        beforeMousePressed = eventManager.isMousePressed(MouseEvent.BUTTON1);
         _update(game);
     }
 
@@ -182,11 +176,8 @@ public abstract class BaseStage
         return this.stopWatch;
     }
 
-    private final Target checkHit(InputEventManager eventManager)
+    private Target checkHit(InputEventManager eventManager)
     {
-        // beforeが押されてない && 現在押されたなら当たり判定
-//        boolean nowMousePressed = eventManager.isMousePressed(MouseEvent.BUTTON1);
-//        if (!beforeMousePressed && nowMousePressed)
         if (eventManager.justNowMousePressed(MouseEvent.BUTTON1))
         {
             System.err.println("Edge!");

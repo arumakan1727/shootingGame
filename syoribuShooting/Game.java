@@ -98,11 +98,6 @@ public class Game extends FPSTimer
         return this.animationProcessor;
     }
 
-    public void setCursor(final Cursor cursor)
-    {
-        this.window.getPane().setCursor(cursor);
-    }
-
     public Game()
     {
         super(GameConfig.FPS);
@@ -122,7 +117,7 @@ public class Game extends FPSTimer
         
         this.window.setTitle("Syoribu-Shooting");
         this.eventManager = window.getEventManager();
-        this.nowScene = new ShootingScene(new XMLStageParser(GameConfig.FIRST_STAGE_FILE_PATH, Game.class).getParsedStage());
+        this.nowScene = new ShootingScene(GameConfig.FIRST_STAGE_FILE_PATH, Game.class);
         this.animationProcessor = new AnimationProcessor();
         
         // カスタムカーソルの設定
