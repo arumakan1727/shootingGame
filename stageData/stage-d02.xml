@@ -9,17 +9,19 @@
             <xyMotion delay="100" vx="14" vy="0" accelX="-0.75" accelY="0"/>
         </target>
         <target type="rankC">
-            <appear delay="900" x="170" y="250"/>
+            <appear delay="2700" x="170" y="250"/>
             <xyMotion delay="100" vx="-14" vy="0" accelX="0.75" accelY="0"/>
         </target>
+
         <target type="rank?">
             <appear delay="1800" x="1750" y="400"/>
             <xyMotion delay="100" vx="14" vy="0" accelX="-0.75" accelY="0"/>
         </target>
         <target type="rank?">
-            <appear delay="2700" x="170" y="550"/>
+            <appear delay="900" x="170" y="550"/>
             <xyMotion delay="100" vx="-14" vy="0" accelX="0.75" accelY="0"/>
         </target>
+
         <target type="rankB">
             <appear delay="3600" x="1750" y="700"/>
             <xyMotion delay="100" vx="14" vy="0" accelX="-0.75" accelY="0"/>
@@ -27,6 +29,23 @@
         <target type="rankA">
             <appear delay="4500" x="170" y="950"/>
             <xyMotion delay="100" vx="-14" vy="0" accelX="0.75" accelY="0"/>
+        </target>
+
+        <target type="rank?">
+            <appear delay="800" x="$center" y="$center"/>
+            <quietMotion timeLimit="2000"/>
+        </target>
+        <target type="rank?">
+            <appear delay="1800" x="$center" y="$center"/>
+            <quietMotion timeLimit="2000"/>
+        </target>
+        <target type="rank?">
+            <appear delay="2800" x="$center" y="$center"/>
+            <quietMotion timeLimit="2000"/>
+        </target>
+        <target type="rank?">
+            <appear delay="3800" x="$center" y="$center"/>
+            <quietMotion timeLimit="2000"/>
         </target>
     </entity>
 </stage>

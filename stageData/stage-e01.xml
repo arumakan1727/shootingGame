@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+的の数:6個
+上下から挟み撃ち！w
+ -->
+<stage timeLimit="40000" stageID="0" next="stage-a01.xml">
+    <entity>
+        <target type="rankC">
+            <appear delay="0" x="500" y="500"/>
+            <circleMotion delay="0" speed="0.03" acceleration="0"
+                x="500" y="500" radius="300" deg="90"/>
+        </target>
+    </entity>
+</stage>

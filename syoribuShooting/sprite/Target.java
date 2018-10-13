@@ -1,6 +1,7 @@
 package syoribuShooting.sprite;
 
 import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 public abstract class Target extends Sprite
@@ -51,6 +52,9 @@ public abstract class Target extends Sprite
             case CREATED:
                 if (this.getState() == Target.State.CREATED && elapsedTime >= this.getZoomDelay())
                 {
+                    Point2D.Double p = this.getMotion().getStartPosition();
+                    this.setXdefault(p.x);
+                    this.setYdefault(p.y);
                     this.setState(Target.State.ZOOM_UP);
                 }
                 break;

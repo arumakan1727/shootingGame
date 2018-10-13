@@ -3,6 +3,7 @@ package syoribuShooting;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+import syoribuShooting.sprite.CircleMotion;
 import syoribuShooting.sprite.LinearMotion;
 import syoribuShooting.sprite.Motion;
 import syoribuShooting.sprite.QuietMotion;
@@ -25,6 +26,7 @@ public class XMLStageParser extends DefaultHandler
     private static final String TAG_LINEAR_MOTION  = "linearMotion";
     private static final String TAG_QUIET_MOTION  = "quietMotion";
     private static final String TAG_XY_MOTION  = "xyMotion";
+    private static final String TAG_CIRCLE_MOTION  = "circleMotion";
 
     private static final String ATTR_TYPE   = "type";
     private static final String ATTR_X      = "x";
@@ -36,6 +38,8 @@ public class XMLStageParser extends DefaultHandler
     private static final String ATTR_VY         = "vy";
     private static final String ATTR_ACCEL_X    = "accelX";
     private static final String ATTR_ACCEL_Y    = "accelY";
+    private static final String ATTR_RADIUS     = "radius";
+    private static final String ATTR_DEG        = "deg";
     private static final String ATTR_ACCELERATION  = "acceleration";
     private static final String ATTR_TIMELIMIT = "timeLimit";
     private static final String ATTR_STAGE_ID = "stageID";
@@ -152,6 +156,9 @@ public class XMLStageParser extends DefaultHandler
 
             case TAG_XY_MOTION:
                 tagXYMotion(qName, attributes);
+
+            case TAG_CIRCLE_MOTION:
+                tagCircleMotion(qName, attributes);
         }
     }
 
@@ -242,6 +249,22 @@ public class XMLStageParser extends DefaultHandler
         accelY  = Double.parseDouble(attr.getValue(ATTR_ACCEL_Y));
         this.nowTarget.setMotion(new XYMotion(nowTarget, vx, vy, accelX, accelY));
         this.nowTarget.getMotion().setStartDelay(delay);
+    }
+
+    private void tagCircleMotion(String qName, Attributes attr)
+    {
+        double radius;
+        int centerX, centerY, degree;
+        CircleMotion motion;
+
+        radius = Double.parseDouble(attr.getValue(ATTR_RADIUS));
+        centerX = parseValue(ATTR_X, attr.getValue(ATTR_X), 0);
+        centerY = parseValue(ATTR_Y, attr.getValue(ATTR_Y), 0);
+        degree  = parseValue(ATTR_DEG, attr.getValue(ATTR_DEG), 0);
+        motion = new CircleMotion(nowTarget, radius, 0, centerX, centerY);
+        tagMotion(motion, qName, attr);
+        motion.setDeg(degree);
+        nowTarget.setMotion(motion);
     }
 
     private void tagStage(String qName, Attributes attr) throws SAXException

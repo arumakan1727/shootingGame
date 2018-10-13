@@ -173,15 +173,15 @@ class FeverGauge
     void draw(Graphics2D g2d)
     {
         Shape defaultShape = g2d.getClip();
-        Shape guageClip = new Rectangle(LEFT_TOP_X, LEFT_TOP_Y, WIDTH, HEIGHT);
+        Shape gaugeClip = new Rectangle(LEFT_TOP_X, LEFT_TOP_Y, WIDTH, HEIGHT);
 
-        g2d.setClip(guageClip);
+        g2d.setClip(gaugeClip);
         g2d.drawImage(back, LEFT_TOP_X, LEFT_TOP_Y, null);
 
         g2d.setClip(this.rectClip);
         g2d.drawImage(bar, LEFT_TOP_X, LEFT_TOP_Y, null);
 
-        g2d.setClip(guageClip);
+        g2d.setClip(gaugeClip);
         g2d.drawImage(frame, LEFT_TOP_X, LEFT_TOP_Y, null);
 
         g2d.setClip(defaultShape);

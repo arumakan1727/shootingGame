@@ -1,6 +1,7 @@
 package syoribuShooting;
 
 import syoribuShooting.sprite.AnimationProcessor;
+import syoribuShooting.system.BufferedJPanel;
 import syoribuShooting.system.BufferedRenderer;
 import syoribuShooting.system.BufferedResponsivePanel;
 import syoribuShooting.system.CursorManager;
@@ -103,14 +104,8 @@ public class Game extends FPSTimer
 
         // 描画に用いるインスタンスの選択
         BufferedRenderer bufferedRenderer;
-//        if (REAL_HEIGHT == VIRTUAL_HEIGHT) {
-//            bufferedRenderer = new BufferedJPanel(REAL_WIDTH, REAL_HEIGHT);
-//            System.out.println("BufferedRenderer: using BufferedJPanel");
-//        } else {
-//            bufferedRenderer = new BufferedResponsivePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
-//            System.out.println("BufferedRenderer: using BufferedResponsivePanel");
-//        }
         bufferedRenderer = new BufferedResponsivePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
+//        bufferedRenderer = new BufferedJPanel(VIRTUAL_WIDTH, VIRTUAL_WIDTH);
         this.window = new GameWindow(bufferedRenderer ,GameConfig.isFullScreen);
         this.window.getEventManager().setCorrection(GameConfig.REAL_VIRTUAL_CORRECTION);
         

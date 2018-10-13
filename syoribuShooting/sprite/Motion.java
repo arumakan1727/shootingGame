@@ -1,5 +1,7 @@
 package syoribuShooting.sprite;
 
+import java.awt.geom.Point2D;
+
 public abstract class Motion
 {
     abstract protected void onMove(long elapsedTime);
@@ -12,6 +14,12 @@ public abstract class Motion
 
     public static final Motion NO_MOVE = new Motion(null)
     {
+        @Override
+        public Point2D.Double getStartPosition()
+        {
+            throw new NullPointerException("Sprite's motion is Motion.NO_MOVE! null!!");
+        }
+
         @Override
         protected void onMove(long elapsedTime) {}
     };
@@ -43,6 +51,11 @@ public abstract class Motion
     {
         return String.format("Motion{speed=%.2f, acceleration=%.2f, startDelay=%d}",
                 speed, acceleration, startDelay);
+    }
+
+    public Point2D.Double getStartPosition()
+    {
+        return new Point2D.Double(sprite.getXdefault(), sprite.getYdefault());
     }
 
     public double getSpeed()

@@ -68,7 +68,7 @@ public final class GameConfig
         PATH_IMAGE      = "/images/";
         PATH_XML        = "/stageData/";
         STAGEDATA_PREFIX= "stage";
-        FIRST_STAGE_FILE_PATH = PATH_XML + "stage-a01.xml";
+        FIRST_STAGE_FILE_PATH = PATH_XML + "stage-e01.xml";
 
         try {
             img_targetA = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "super_rare_target.png"));
