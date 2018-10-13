@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 
 public class ShootingScene extends AbstractScene
 {
@@ -18,11 +19,28 @@ public class ShootingScene extends AbstractScene
     private Class aClass;
     private Thread readNextStageThread;
 
+    private final BufferedImage back_normal = GameConfig.readImage("back02.jpg");
+    private final BufferedImage back_fever  = GameConfig.readImage("back02-red.jpg");
+
     public ShootingScene(final String filePath, Class c)
     {
-        super(GameConfig.readImage("back02.jpg"));
+        super();
+        this.setBackImage(back_normal);
         this.stopWatch = new StopWatch();
-        this.scoreManager = new ScoreManager();
+        this.scoreManager = new ScoreManager()
+        {
+            @Override
+            public void intoFeverMode()
+            {
+                setBackImage(back_fever);
+            }
+
+            @Override
+            public void intoNormalMode()
+            {
+                setBackImage(back_normal);
+            }
+        };
         this.xmlStageParser = new XMLStageParser(filePath, c);
         this.aClass = c;
 

@@ -7,14 +7,18 @@ import syoribuShooting.system.StopWatch;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+
+import static syoribuShooting.GameConfig.readImage;
 
 public class ScoreManager
 {
-    private static final int FEVER_NEEDS_COMBO = 10;
     private static final int FEVER_TIME = 10 * 1000;
     private final StopWatch stopWatch;
-    private boolean isFever;
+    private FeverGuage feverGuage;
 
     private int score;
     private int comboCount;
@@ -22,10 +26,17 @@ public class ScoreManager
     public ScoreManager()
     {
         this.stopWatch = new StopWatch();
+        this.feverGuage = new FeverGuage(
+                readImage("fever_frame.png"),
+                readImage("fever_greenBar.png"),
+                readImage("fever_back.png")
+        );
         setScore(0);
         setComboCount(0);
-        setFever(false);
     }
+
+    public void intoFeverMode() {}
+    public void intoNormalMode() {}
 
     public void update(final Game game, final BaseStage stage)
     {
@@ -38,13 +49,14 @@ public class ScoreManager
                     eventManager.mousePressedY());
         }
 
+        this.feverGuage.update();
         this.updateFeverState();
     }
 
     public void draw(Graphics2D g2d)
     {
         this.drawScore(g2d);
-        this.drawFever(g2d);
+        this.feverGuage.draw(g2d);
     }
 
     int getScore()
@@ -78,12 +90,7 @@ public class ScoreManager
 
     public boolean isFever()
     {
-        return isFever;
-    }
-
-    public void setFever(boolean isFever)
-    {
-        this.isFever = isFever;
+        return feverGuage.isFever();
     }
 
     private void checkHit(final Target hitTarget, int px, int py)
@@ -94,7 +101,8 @@ public class ScoreManager
         }
         else {
             this.addComboCount(1);
-            this.addScore(hitTarget.getScore(px, py));
+            this.addScore(hitTarget.getScore(px, py) * (isFever()? 2 : 1));
+            this.feverGuage.addPoint(50 + 5 * comboCount);
         }
     }
 
@@ -102,18 +110,18 @@ public class ScoreManager
     {
         if (this.isFever())
         {
-            if (stopWatch.isOverTimeLimit())
+            if (!stopWatch.isRunning())
             {
-                this.setFever(false);
-            }
-        }
-        else
-        {
-            if (getComboCount() >= FEVER_NEEDS_COMBO)
-            {
-                this.setFever(true);
                 stopWatch.initTimer(FEVER_TIME);
                 stopWatch.startTimer();
+                intoFeverMode();
+            }
+
+            if (stopWatch.getElapsed() >= FEVER_TIME)
+            {
+                this.feverGuage.setPoint(0);
+                stopWatch.stopTimer();
+                intoNormalMode();
             }
         }
     }
@@ -126,14 +134,89 @@ public class ScoreManager
         g2d.drawString("Score: " + getScore(), 40, 60);
         g2d.drawString("Combo: " + getComboCount(), 40, 120);
     }
+}
 
-    private void drawFever(final Graphics2D g2d)
+class FeverGuage
+{
+    private static final int LEFT_TOP_X = 30;
+    private static final int LEFT_TOP_Y = 30;
+    private static final int WIDTH  = 700;
+    private static final int HEIGHT = 240;
+    private static final int BAR_LT_X = LEFT_TOP_X + 26;
+    private static final int BAR_WIDTH = 576;
+    private static final int FEVER_POINT = 1000;
+
+    private final BufferedImage frame, bar, back;
+    private int point;
+    private Rectangle rectClip;
+    private int barWidthTarget;
+    private int widthAddition;
+
+    FeverGuage(BufferedImage frame, BufferedImage bar, BufferedImage back)
     {
-        if (this.isFever())
-        {
-            g2d.setColor(Color.YELLOW);
-            g2d.drawString("FEVER!!", 30, 180);
-        }
+        this.frame  = frame;
+        this.bar    = bar;
+        this.back   = back;
+        this.point = 0;
+        this.rectClip = new Rectangle(BAR_LT_X, LEFT_TOP_Y, 0, HEIGHT);
+        this.barWidthTarget = 0;
+        this.widthAddition = 0;
+    }
+
+    void update()
+    {
+        rectClip.width += widthAddition;
+        if (widthAddition > 0 && rectClip.width > barWidthTarget) rectClip.width = barWidthTarget;
+        if (rectClip.width < 0) rectClip.width = 0;
+    }
+
+    void draw(Graphics2D g2d)
+    {
+        Shape defaultShape = g2d.getClip();
+        Shape guageClip = new Rectangle(LEFT_TOP_X, LEFT_TOP_Y, WIDTH, HEIGHT);
+
+        g2d.setClip(guageClip);
+        g2d.drawImage(back, LEFT_TOP_X, LEFT_TOP_Y, null);
+
+        g2d.setClip(this.rectClip);
+        g2d.drawImage(bar, LEFT_TOP_X, LEFT_TOP_Y, null);
+
+        g2d.setClip(guageClip);
+        g2d.drawImage(frame, LEFT_TOP_X, LEFT_TOP_Y, null);
+
+        g2d.setClip(defaultShape);
+    }
+
+    boolean isFever()
+    {
+        return getPoint() >= FEVER_POINT;
+    }
+
+    int getPoint()
+    {
+        return this.point;
+    }
+
+    void addPoint(int val)
+    {
+        setPoint(getPoint() + val);
+    }
+
+    void setPoint(int val)
+    {
+        this.point = val;
+        if (this.point > FEVER_POINT) this.point = FEVER_POINT;
+
+        this.barWidthTarget = (int)(BAR_WIDTH * ((double)point / FEVER_POINT));
+        if (barWidthTarget > FEVER_POINT) barWidthTarget = BAR_WIDTH;
+
+        widthAddition = (barWidthTarget - rectClip.width) / 8;
+        if (widthAddition < -15) widthAddition = -15;
+    }
+
+    int getFeverPoint()
+    {
+        return FEVER_POINT;
     }
 }
 

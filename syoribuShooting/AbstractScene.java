@@ -18,6 +18,8 @@ public abstract class AbstractScene
 
     private BufferedImage backImage;
 
+    public AbstractScene() {}
+
     public AbstractScene(final BufferedImage backImage)
     {
         this.setBackImage(backImage);

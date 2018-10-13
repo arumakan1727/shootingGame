@@ -41,7 +41,6 @@ public class Game extends FPSTimer
         nowScene.draw(g2d);
         animationProcessor.draw(g2d);
         window.getCursorManager().draw(g2d, eventManager.mouseX(), eventManager.mouseY());
-        g2d.drawString("mousePress: " + eventManager.isMousePressed(MouseEvent.BUTTON1), 30, 200);
     }
 
     private void initialize()
