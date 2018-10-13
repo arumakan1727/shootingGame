@@ -32,7 +32,6 @@ public final class GameConfig
     public static final double REAL_VIRTUAL_CORRECTION;
     public static final int OUTER_WINDOW_PLUS;
     public static final int OUTER_WINDOW_MINUS;
-    public static final int NUM_BACK_IMAGE;
     public static final int FPS;
     public static final boolean isFullScreen;
     public static final String PATH_IMAGE, PATH_XML;
@@ -44,8 +43,7 @@ public final class GameConfig
     public static BufferedImage
             img_shootingCursor,
             img_shootingCursorGreen,
-            img_targetA, img_targetB, img_targetC,
-            img_back[];
+            img_targetA, img_targetB, img_targetC;
     public static ArrayList<BufferedImage> anim_hit = new ArrayList<>();
 
     private GameConfig() {}
@@ -67,22 +65,16 @@ public final class GameConfig
         ID_SHOOTING_CURSOR_NORMAL = 10;
         ID_SHOOTING_CURSOR_GREEN  = 11;
 
-        NUM_BACK_IMAGE  = 1;
         PATH_IMAGE      = "/images/";
         PATH_XML        = "/stageData/";
         STAGEDATA_PREFIX= "stage";
         FIRST_STAGE_FILE_PATH = PATH_XML + "stage-a01.xml";
-        img_back = new BufferedImage[NUM_BACK_IMAGE + 1];
 
         try {
             img_targetA = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "super_rare_target.png"));
             img_targetB = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "high_points_target.png"));
             img_targetC = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "normal_target.png"));
             anim_hit = GifReader.readGif(Game.class.getResourceAsStream(PATH_IMAGE + "hit-animation.gif"));
-
-            for (int i = 1; i <= NUM_BACK_IMAGE; i++) {
-                img_back[i] = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "back0" + i + ".jpg"));
-            }
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);

@@ -28,7 +28,7 @@ public abstract class Motion
         this.setSpeed(0);
     }
 
-    public void move(int elapsedTime)
+    public final void move(int elapsedTime)
     {
         if (moveStartedTime < 0) {
             setMoveStartedTime(elapsedTime);

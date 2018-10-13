@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
+中央に横3つ
  -->
 <stage timeLimit="8000" stageID="4" next="stage-a02.xml">
     <entity>

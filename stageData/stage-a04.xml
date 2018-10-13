@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+的の数:6個
+画面下に横一列に生成、上へ移動
+ -->
+<stage timeLimit="5000" stageID="2" next="stage-b00.xml">
+    <entity>
+        <target type="rankC">
+            <appear delay="0" x="200" y="900"/>
+            <quietMotion timeLimit="4000"/>
+        </target>
+        <target type="rankC">
+            <appear delay="120" x="500" y="900"/>
+            <quietMotion timeLimit="4000"/>
+        </target>
+        <target type="rankC">
+            <appear delay="240" x="800" y="900"/>
+            <quietMotion timeLimit="4000"/>
+        </target>
+        <target type="rankC">
+            <appear delay="360" x="1100" y="900"/>
+            <quietMotion timeLimit="4000"/>
+        </target>
+        <target type="rankC">
+            <appear delay="480" x="1400" y="900"/>
+            <quietMotion timeLimit="4000"/>
+        </target>
+        <target type="rankB">
+            <appear delay="600" x="1700" y="900"/>
+            <quietMotion timeLimit="4000"/>
+        </target>
+
+        <target type="rankC">
+            <appear delay="0" x="1700" y="180"/>
+            <quietMotion timeLimit="4000"/>
+        </target>
+        <target type="rankC">
+            <appear delay="120" x="1400" y="180"/>
+            <quietMotion timeLimit="4000"/>
+        </target>
+        <target type="rankC">
+            <appear delay="240" x="1100" y="180"/>
+            <quietMotion timeLimit="4000"/>
+        </target>
+        <target type="rankC">
+            <appear delay="360" x="800" y="180"/>
+            <quietMotion timeLimit="4000"/>
+        </target>
+        <target type="rankC">
+            <appear delay="480" x="500" y="180"/>
+            <quietMotion timeLimit="4000"/>
+        </target>
+        <target type="rankB">
+            <appear delay="600" x="300" y="180"/>
+            <quietMotion timeLimit="4000"/>
+        </target>
+    </entity>
+</stage>

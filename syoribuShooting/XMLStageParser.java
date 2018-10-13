@@ -9,6 +9,7 @@ import syoribuShooting.sprite.QuietMotion;
 import syoribuShooting.sprite.Target;
 import syoribuShooting.sprite.TargetFactory;
 import syoribuShooting.sprite.TargetType;
+import syoribuShooting.sprite.XYMotion;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -23,13 +24,18 @@ public class XMLStageParser extends DefaultHandler
     private static final String TAG_APPEAR  = "appear";
     private static final String TAG_LINEAR_MOTION  = "linearMotion";
     private static final String TAG_QUIET_MOTION  = "quietMotion";
+    private static final String TAG_XY_MOTION  = "xyMotion";
 
     private static final String ATTR_TYPE   = "type";
     private static final String ATTR_X      = "x";
     private static final String ATTR_Y      = "y";
     private static final String ATTR_SPEED  = "speed";
     private static final String ATTR_DELAY  = "delay";
-    private static final String ATTR_NEXT = "next";
+    private static final String ATTR_NEXT   = "next";
+    private static final String ATTR_VX         = "vx";
+    private static final String ATTR_VY         = "vy";
+    private static final String ATTR_ACCEL_X    = "accelX";
+    private static final String ATTR_ACCEL_Y    = "accelY";
     private static final String ATTR_ACCELERATION  = "acceleration";
     private static final String ATTR_TIMELIMIT = "timeLimit";
     private static final String ATTR_STAGE_ID = "stageID";
@@ -143,6 +149,9 @@ public class XMLStageParser extends DefaultHandler
 
             case TAG_QUIET_MOTION:
                 tagQuietMotion(qName, attributes); break;
+
+            case TAG_XY_MOTION:
+                tagXYMotion(qName, attributes);
         }
     }
 
@@ -219,6 +228,20 @@ public class XMLStageParser extends DefaultHandler
         int aliveTime = parseValue(ATTR_TIMELIMIT, attr.getValue(ATTR_TIMELIMIT), -1);
         if (aliveTime < 0) throw new SAXException();
         this.nowTarget.setMotion(new QuietMotion(nowTarget, aliveTime));
+    }
+
+    private void tagXYMotion(String qName, Attributes attr)
+    {
+        int delay;
+        double vx, vy, accelX, accelY;
+
+        delay   = parseValue(ATTR_DELAY, attr.getValue(ATTR_DELAY), 0);
+        vx      = Double.parseDouble(attr.getValue(ATTR_VX));
+        vy      = Double.parseDouble(attr.getValue(ATTR_VY));
+        accelX  = Double.parseDouble(attr.getValue(ATTR_ACCEL_X));
+        accelY  = Double.parseDouble(attr.getValue(ATTR_ACCEL_Y));
+        this.nowTarget.setMotion(new XYMotion(nowTarget, vx, vy, accelX, accelY));
+        this.nowTarget.getMotion().setStartDelay(delay);
     }
 
     private void tagStage(String qName, Attributes attr) throws SAXException

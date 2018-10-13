@@ -18,7 +18,7 @@ public class ScoreManager
 {
     private static final int FEVER_TIME = 10 * 1000;
     private final StopWatch stopWatch;
-    private FeverGuage feverGuage;
+    private FeverGauge feverGauge;
 
     private int score;
     private int comboCount;
@@ -26,7 +26,7 @@ public class ScoreManager
     public ScoreManager()
     {
         this.stopWatch = new StopWatch();
-        this.feverGuage = new FeverGuage(
+        this.feverGauge = new FeverGauge(
                 readImage("fever_frame.png"),
                 readImage("fever_greenBar.png"),
                 readImage("fever_back.png")
@@ -49,14 +49,14 @@ public class ScoreManager
                     eventManager.mousePressedY());
         }
 
-        this.feverGuage.update();
+        this.feverGauge.update();
         this.updateFeverState();
     }
 
     public void draw(Graphics2D g2d)
     {
         this.drawScore(g2d);
-        this.feverGuage.draw(g2d);
+        this.feverGauge.draw(g2d);
     }
 
     int getScore()
@@ -90,7 +90,7 @@ public class ScoreManager
 
     public boolean isFever()
     {
-        return feverGuage.isFever();
+        return feverGauge.isFever();
     }
 
     private void checkHit(final Target hitTarget, int px, int py)
@@ -102,7 +102,7 @@ public class ScoreManager
         else {
             this.addComboCount(1);
             this.addScore(hitTarget.getScore(px, py) * (isFever()? 2 : 1));
-            this.feverGuage.addPoint(50 + 5 * comboCount);
+            this.feverGauge.addPoint(10 + 5 * comboCount);
         }
     }
 
@@ -119,7 +119,7 @@ public class ScoreManager
 
             if (stopWatch.getElapsed() >= FEVER_TIME)
             {
-                this.feverGuage.setPoint(0);
+                this.feverGauge.setPoint(0);
                 stopWatch.stopTimer();
                 intoNormalMode();
             }
@@ -136,7 +136,7 @@ public class ScoreManager
     }
 }
 
-class FeverGuage
+class FeverGauge
 {
     private static final int LEFT_TOP_X = 30;
     private static final int LEFT_TOP_Y = 30;
@@ -152,7 +152,7 @@ class FeverGuage
     private int barWidthTarget;
     private int widthAddition;
 
-    FeverGuage(BufferedImage frame, BufferedImage bar, BufferedImage back)
+    FeverGauge(BufferedImage frame, BufferedImage bar, BufferedImage back)
     {
         this.frame  = frame;
         this.bar    = bar;

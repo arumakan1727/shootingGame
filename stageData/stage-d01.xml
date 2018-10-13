@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+放物線
+ -->
+<stage timeLimit="8000" stageID="4" next="stage-d02.xml">
+    <entity>
+        <target type="rankC">
+            <appear delay="0" x="100" y="1250"/>
+            <xyMotion delay="0" vx="17" vy="-24" accelX="0" accelY="0.4"/>
+        </target>
+        <target type="rankC">
+            <appear delay="200" x="100" y="1250"/>
+            <xyMotion delay="0" vx="17" vy="-24" accelX="0" accelY="0.4"/>
+        </target>
+        <target type="rankC">
+            <appear delay="400" x="100" y="1250"/>
+            <xyMotion delay="0" vx="17" vy="-24" accelX="0" accelY="0.4"/>
+        </target>
+        <target type="rankC">
+            <appear delay="600" x="100" y="1250"/>
+            <xyMotion delay="0" vx="17" vy="-24" accelX="0" accelY="0.4"/>
+        </target>
+
+        <target type="rankC">
+            <appear delay="800" x="1820" y="1250"/>
+            <xyMotion delay="0" vx="-17" vy="-24" accelX="0" accelY="0.4"/>
+        </target>
+        <target type="rankC">
+            <appear delay="1000" x="1820" y="1250"/>
+            <xyMotion delay="0" vx="-17" vy="-24" accelX="0" accelY="0.4"/>
+        </target>
+        <target type="rankC">
+            <appear delay="1200" x="1820" y="1250"/>
+            <xyMotion delay="0" vx="-17" vy="-24" accelX="0" accelY="0.4"/>
+        </target>
+        <target type="rankC">
+            <appear delay="1400" x="1820" y="1250"/>
+            <xyMotion delay="0" vx="-17" vy="-24" accelX="0" accelY="0.4"/>
+        </target>
+    </entity>
+</stage>
