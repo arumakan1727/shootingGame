@@ -15,7 +15,7 @@ import java.awt.image.BufferedImage;
 import static syoribuShooting.GameConfig.readImage;
 import static java.lang.Math.min;
 
-public class ScoreManager
+public class ScoreManager_tmp
 {
     private static final int FEVER_TIME = 10 * 1000;
     private final StopWatch stopWatch;
@@ -24,7 +24,7 @@ public class ScoreManager
     private int score;
     private int comboCount;
 
-    public ScoreManager()
+    public ScoreManager_tmp()
     {
         this.stopWatch = new StopWatch();
         this.feverGauge = new FeverGauge();
@@ -144,7 +144,6 @@ public class ScoreManager
 
         private final BufferedImage img_frame, img_bar_normal, img_bar_fever, img_back;
         private int point;
-        private Rectangle rectClip;
         private int barWidthTarget;
         private int widthAddition;
 
@@ -162,9 +161,6 @@ public class ScoreManager
 
         void update()
         {
-            rectClip.width += widthAddition;
-            if (widthAddition > 0 && rectClip.width > barWidthTarget) rectClip.width = barWidthTarget;
-            if (rectClip.width < 0) rectClip.width = 0;
         }
 
         void draw(Graphics2D g2d)
