@@ -144,6 +144,7 @@ public class ScoreManager_tmp
 
         private final BufferedImage img_frame, img_bar_normal, img_bar_fever, img_back;
         private int point;
+        private Rectangle rectClip;
         private int barWidthTarget;
         private int widthAddition;
 
