@@ -7,7 +7,6 @@ public class QuietMotion extends Motion
     @Override
     protected void onMove(long elapsedTime)
     {
-        System.out.println("QuietMotion:" + aliveTime + " ,elapsed:" + (elapsedTime - getMoveStartedTime()));
         // 出現時間を過ぎた
         if (elapsedTime - getMoveStartedTime() >= aliveTime)
         {

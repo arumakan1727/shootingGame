@@ -59,7 +59,7 @@ public final class GameConfig
 //        REAL_HEIGHT = 768;
         OUTER_WINDOW_PLUS   = VIRTUAL_WIDTH + 500;
         OUTER_WINDOW_MINUS  = -500;
-        FPS          = 44;
+        FPS          = 50;
         isFullScreen = false;
         enableCursor = true;
         REAL_VIRTUAL_CORRECTION = (double)VIRTUAL_HEIGHT / (double)REAL_HEIGHT;

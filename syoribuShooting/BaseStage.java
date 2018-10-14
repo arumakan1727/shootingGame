@@ -180,7 +180,6 @@ public abstract class BaseStage
     {
         if (eventManager.justNowMousePressed(MouseEvent.BUTTON1))
         {
-            System.err.println("Edge!");
             int px = eventManager.mousePressedX();
             int py = eventManager.mousePressedY();
             for (ListIterator<Target> it = targets.listIterator(targets.size()); it.hasPrevious(); )

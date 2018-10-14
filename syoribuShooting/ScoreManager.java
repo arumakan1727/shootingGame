@@ -28,9 +28,10 @@ public class ScoreManager
     {
         this.stopWatch = new StopWatch();
         this.feverGauge = new FeverGauge(
-                readImage("fever_frame.png"),
-                readImage("fever_greenBar.png"),
-                readImage("fever_back.png")
+                readImage("fever-frame.png"),
+                readImage("fever-greenBar.png"),
+                readImage("fever-cyanBar.png"),
+                readImage("fever-back.png")
         );
         setScore(0);
         setComboCount(0);
@@ -129,39 +130,40 @@ public class ScoreManager
 
     private void drawScore(final Graphics2D g2d)
     {
-        g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 54));
+        g2d.setFont(new Font(Font.SERIF, Font.BOLD, 40));
 
         g2d.setColor(Color.RED);
-        g2d.drawString("Score: " + getScore(), 40, 60);
-        g2d.drawString("Combo: " + getComboCount(), 40, 120);
+        g2d.drawString("Score: " + getScore(), 25, 50);
+        g2d.drawString("Combo: " + getComboCount(), 25, 90);
     }
 }
 
 class FeverGauge
 {
-    private static final int LEFT_TOP_X = 30;
+    private static final int LEFT_TOP_X = 25;
     private static final int LEFT_TOP_Y = 30;
     private static final int WIDTH  = 700;
     private static final int HEIGHT = 240;
-    private static final int BAR_LT_X = LEFT_TOP_X + 26;
-    private static final int BAR_WIDTH = 576;
+    private static final int BAR_LT_X = LEFT_TOP_X + 20;
+    private static final int BAR_WIDTH = 445;
     private static final int FEVER_POINT = 1000;
 
-    private final BufferedImage frame, bar, back;
+    private final BufferedImage frame, bar_normal, bar_fever, back;
     private int point;
     private Rectangle rectClip;
     private int barWidthTarget;
     private int widthAddition;
 
-    FeverGauge(BufferedImage frame, BufferedImage bar, BufferedImage back)
+    FeverGauge(BufferedImage frame, BufferedImage bar_normal, BufferedImage bar_fever, BufferedImage back)
     {
-        this.frame  = frame;
-        this.bar    = bar;
-        this.back   = back;
-        this.point = 0;
-        this.rectClip = new Rectangle(BAR_LT_X, LEFT_TOP_Y, 0, HEIGHT);
+        this.frame      = frame;
+        this.bar_normal = bar_normal;
+        this.bar_fever  = bar_fever;
+        this.back       = back;
+        this.point      = 0;
+        this.rectClip   = new Rectangle(BAR_LT_X, LEFT_TOP_Y, 0, HEIGHT);
         this.barWidthTarget = 0;
-        this.widthAddition = 0;
+        this.widthAddition  = 0;
     }
 
     void update()
@@ -180,7 +182,11 @@ class FeverGauge
         g2d.drawImage(back, LEFT_TOP_X, LEFT_TOP_Y, null);
 
         g2d.setClip(this.rectClip);
-        g2d.drawImage(bar, LEFT_TOP_X, LEFT_TOP_Y, null);
+        if (isFever()) {
+            g2d.drawImage(bar_fever, LEFT_TOP_X, LEFT_TOP_Y, null);
+        } else {
+            g2d.drawImage(bar_normal, LEFT_TOP_X, LEFT_TOP_Y, null);
+        }
 
         g2d.setClip(gaugeClip);
         g2d.drawImage(frame, LEFT_TOP_X, LEFT_TOP_Y, null);
@@ -206,7 +212,7 @@ class FeverGauge
     void setPoint(int val)
     {
         this.point = val;
-        if (this.point > FEVER_POINT) this.point = FEVER_POINT;
+        if (this.point > FEVER_POINT-15) this.point = FEVER_POINT;
 
         this.barWidthTarget = (int)(BAR_WIDTH * ((double)point / FEVER_POINT));
         if (barWidthTarget > FEVER_POINT) barWidthTarget = BAR_WIDTH;
