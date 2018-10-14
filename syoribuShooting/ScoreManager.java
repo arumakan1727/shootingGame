@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import static syoribuShooting.GameConfig.readImage;
+import static java.lang.Math.min;
 
 public class ScoreManager
 {
@@ -102,7 +103,7 @@ public class ScoreManager
         else {
             this.addComboCount(1);
             this.addScore(hitTarget.getScore(px, py) * (isFever()? 2 : 1));
-            this.feverGauge.addPoint(10 + 5 * comboCount);
+            this.feverGauge.addPoint(15 + min(comboCount * comboCount / 3, 100));
         }
     }
 
@@ -211,7 +212,7 @@ class FeverGauge
         if (barWidthTarget > FEVER_POINT) barWidthTarget = BAR_WIDTH;
 
         widthAddition = (barWidthTarget - rectClip.width) / 8;
-        if (widthAddition < -15) widthAddition = -15;
+        if (widthAddition < -25) widthAddition = -25;
     }
 
     int getFeverPoint()

@@ -55,6 +55,8 @@ public final class GameConfig
         VIRTUAL_HEIGHT  = 1080;
         REAL_WIDTH      = (int) (toolkit.getScreenSize().getWidth());
         REAL_HEIGHT     = (int) (toolkit.getScreenSize().getHeight());
+//        REAL_WIDTH = 1366;
+//        REAL_HEIGHT = 768;
         OUTER_WINDOW_PLUS   = VIRTUAL_WIDTH + 500;
         OUTER_WINDOW_MINUS  = -500;
         FPS          = 44;

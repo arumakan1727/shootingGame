@@ -3,7 +3,7 @@ package syoribuShooting;
 import syoribuShooting.sprite.AnimationProcessor;
 import syoribuShooting.system.BufferedJPanel;
 import syoribuShooting.system.BufferedRenderer;
-import syoribuShooting.system.BufferedResponsivePanel;
+import syoribuShooting.system.BufferedVolatilePanel;
 import syoribuShooting.system.CursorManager;
 import syoribuShooting.system.FPSTimer;
 import syoribuShooting.system.GameWindow;
@@ -13,7 +13,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.Cursor;
 
 import static syoribuShooting.GameConfig.*;
@@ -23,6 +22,7 @@ public class Game extends FPSTimer
     private final GameWindow window;
     private final InputEventManager eventManager;
     private final AnimationProcessor animationProcessor;
+    private final DrawTask drawTask = new DrawTask();
     private AbstractScene nowScene;
 
     private void update()
@@ -31,18 +31,6 @@ public class Game extends FPSTimer
         animationProcessor.update();
     }
 
-    private void draw(Graphics2D g2d)
-    {
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_DEFAULT);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT);
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-
-        nowScene.draw(g2d);
-        animationProcessor.draw(g2d);
-        window.getCursorManager().draw(g2d, eventManager.mouseX(), eventManager.mouseY());
-    }
 
     private void initialize()
     {
@@ -66,11 +54,12 @@ public class Game extends FPSTimer
 
         this.update();
         eventManager.update();
+        this.window.getCanvas().draw(drawTask);
 
-        Graphics2D g2d = this.window.getCanvas().getRenderer();
-        this.draw(g2d);
-        g2d.dispose();
-        this.window.getCanvas().flipBuffer();
+//        Graphics2D g2d = this.window.getCanvas().getRenderer();
+//        this.draw(g2d);
+//        g2d.dispose();
+//        this.window.getCanvas().flipBuffer();
     }
     
     public GameWindow getWindow()
@@ -104,8 +93,9 @@ public class Game extends FPSTimer
 
         // 描画に用いるインスタンスの選択
         BufferedRenderer bufferedRenderer;
-        bufferedRenderer = new BufferedResponsivePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
+//        bufferedRenderer = new BufferedResponsivePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
 //        bufferedRenderer = new BufferedJPanel(VIRTUAL_WIDTH, VIRTUAL_WIDTH);
+        bufferedRenderer = new BufferedVolatilePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
         this.window = new GameWindow(bufferedRenderer ,GameConfig.isFullScreen);
         this.window.getEventManager().setCorrection(GameConfig.REAL_VIRTUAL_CORRECTION);
         
@@ -126,4 +116,22 @@ public class Game extends FPSTimer
         this.start();
         this.window.getPane().requestFocus();
     }
+
+    private class DrawTask implements BufferedRenderer.DrawTask
+    {
+        @Override
+        public void draw(Graphics2D g2d)
+        {
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_DEFAULT);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+
+            nowScene.draw(g2d);
+            animationProcessor.draw(g2d);
+            window.getCursorManager().draw(g2d, eventManager.mouseX(), eventManager.mouseY());
+        }
+    }
 }
+

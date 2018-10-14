@@ -14,6 +14,7 @@ public class BufferedJPanel extends JPanel implements BufferedRenderer
         this.setPreferredSize(dimension);
         this.setSize(dimension);
     }
+
     @Override
     public void setBuffering()
     {
@@ -22,14 +23,11 @@ public class BufferedJPanel extends JPanel implements BufferedRenderer
     }
 
     @Override
-    public Graphics2D getRenderer()
+    public void draw(DrawTask drawTask)
     {
-        return (Graphics2D)this.getGraphics();
-    }
-
-    @Override
-    public void flipBuffer()
-    {
+        final Graphics2D g2d = (Graphics2D)this.getGraphics();
+        drawTask.draw(g2d);
+        g2d.dispose();
         Toolkit.getDefaultToolkit().sync();
     }
 }

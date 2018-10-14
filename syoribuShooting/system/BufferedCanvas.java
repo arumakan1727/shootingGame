@@ -43,16 +43,19 @@ public class BufferedCanvas extends Canvas implements BufferedRenderer
 			System.exit(1);
 		}
 	}
-	
-	/**
-	 *
-	 * @return
-	 */
+
 	@Override
-	public Graphics2D getRenderer()
+	public void draw(DrawTask drawTask)
+	{
+		Graphics2D g2d = getRenderer();
+		drawTask.draw(g2d);
+		g2d.dispose();
+		this.flipBuffer();
+	}
+
+	private Graphics2D getRenderer()
 	{
 		final BufferStrategy strategy = this.getBufferStrategy();
-		
 		if (strategy.contentsLost()) {
 			System.err.println("BufferStrategy lost");
 			return null;
@@ -61,7 +64,6 @@ public class BufferedCanvas extends Canvas implements BufferedRenderer
 		}
 	}
 	
-	@Override
 	public void flipBuffer()
 	{
 		this.getBufferStrategy().show();

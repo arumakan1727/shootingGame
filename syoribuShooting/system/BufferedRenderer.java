@@ -5,6 +5,11 @@ import java.awt.Graphics2D;
 public interface BufferedRenderer
 {
     void setBuffering();
-    Graphics2D getRenderer();
-    void flipBuffer();
+
+    void draw(final DrawTask drawTask);
+
+    interface DrawTask
+    {
+        void draw(Graphics2D g2d);
+    }
 }

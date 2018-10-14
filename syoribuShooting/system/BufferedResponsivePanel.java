@@ -2,8 +2,6 @@ package syoribuShooting.system;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -11,11 +9,10 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class BufferedResponsivePanel extends JPanel implements BufferedRenderer
 {
-    private final Image buffer;
+    private final BufferedImage buffer;
     private final int realHeight, realWidth;
     private final int virtualHeight, virtualWidth;
-    private Graphics2D g2d;
-    
+
     public BufferedResponsivePanel(int virtualWidth, int virtualHeight, int realWidth, int realHeight)
     {
         super(false);
@@ -36,19 +33,14 @@ public class BufferedResponsivePanel extends JPanel implements BufferedRenderer
     @Override
     public void setBuffering()
     {
-        
     }
 
     @Override
-    public Graphics2D getRenderer()
+    public void draw(final DrawTask drawTask)
     {
-        this.g2d = ((Graphics2D) this.buffer.getGraphics());
-        return g2d;
-    }
-
-    @Override
-    public void flipBuffer()
-    {
+        Graphics2D g2d = buffer.createGraphics();
+        drawTask.draw(g2d);
+        g2d.dispose();
         this.getGraphics().drawImage(buffer, 0, 0, realWidth, realHeight, null);
 //        Toolkit.getDefaultToolkit().sync();
     }

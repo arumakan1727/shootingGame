@@ -155,10 +155,10 @@ public class XMLStageParser extends DefaultHandler
                 tagQuietMotion(qName, attributes); break;
 
             case TAG_XY_MOTION:
-                tagXYMotion(qName, attributes);
+                tagXYMotion(qName, attributes); break;
 
             case TAG_CIRCLE_MOTION:
-                tagCircleMotion(qName, attributes);
+                tagCircleMotion(qName, attributes); break;
         }
     }
 
