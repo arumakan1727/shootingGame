@@ -1,8 +1,10 @@
 package syoribuShooting;
 
 import syoribuShooting.sprite.Target;
+import syoribuShooting.system.FlagState;
 import syoribuShooting.system.InputEventManager;
 import syoribuShooting.system.StopWatch;
+import syoribuShooting.system.Transition;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -143,10 +145,9 @@ public class ScoreManager_tmp
         private static final int FEVER_POINT = 1000;
 
         private final BufferedImage img_frame, img_bar_normal, img_bar_fever, img_back;
-        private int point;
-        private Rectangle rectClip;
-        private int barWidthTarget;
-        private int widthAddition;
+        private Transition point;
+        private FlagState feverState;
+        private double addition;
 
         FeverGauge()
         {
@@ -154,10 +155,8 @@ public class ScoreManager_tmp
             img_bar_normal  = readImage("fever-greenBar.png");
             img_bar_fever   = readImage("fever-cyanBar.png");
             img_back        = readImage("fever-back.png");
-            this.point      = 0;
-            this.rectClip   = new Rectangle(BAR_LT_X, LT_Y, 0, HEIGHT);
-            this.barWidthTarget = 0;
-            this.widthAddition  = 0;
+            this.point      = new Transition(0, 0, GameConfig.FPS);
+            this.feverState = FlagState.FALSE;
         }
 
         void update()
@@ -169,10 +168,12 @@ public class ScoreManager_tmp
             Shape defaultShape = g2d.getClip();
             Shape gaugeClip = new Rectangle(LT_X, LT_Y, WIDTH, HEIGHT);
 
+            // バックの描画
             g2d.setClip(gaugeClip);
             g2d.drawImage(img_back, LT_X, LT_Y, null);
 
-            g2d.setClip(this.rectClip);
+            // バーの描画
+            g2d.setClip(getBarClip(point.getNowVal()));
             if (isFever()) {
                 g2d.drawImage(img_bar_fever, LT_X, LT_Y, null);
             } else {
@@ -187,29 +188,35 @@ public class ScoreManager_tmp
 
         boolean isFever()
         {
-            return getPoint() >= FEVER_POINT;
+            return point.getTargetVal() >= FEVER_POINT;
         }
 
-        int getPoint()
+        double getPoint()
         {
-            return this.point;
+            return this.point.getNowVal();
         }
 
-        void addPoint(int val)
+        void addPoint(double val)
         {
             setPoint(getPoint() + val);
         }
 
-        void setPoint(int val)
+        void setPoint(double val)
         {
-            this.point = val;
-            if (this.point > FEVER_POINT-15) this.point = FEVER_POINT;
-
-            this.barWidthTarget = (int)(BAR_WIDTH * ((double)point / FEVER_POINT));
-            if (barWidthTarget > FEVER_POINT) barWidthTarget = BAR_WIDTH;
-
-            widthAddition = (barWidthTarget - rectClip.width) / 8;
-            if (widthAddition < -25) widthAddition = -25;
+            // この更新でフィーバになる
+            // TODO ここで JUST_NOW_TRUE は危険
+            if (val + 15 >= FEVER_POINT)
+            {
+                val = FEVER_POINT;
+                feverState = FlagState.JUST_NOW_TRUE;
+                point.setNextValue(0, FEVER_TIME);
+                addition = point.getAddition();
+            }
+            else
+            {
+                // 300ミリ秒で val にする
+                point.setNextValue(val, 300);
+            }
         }
 
         int getFeverPoint()
