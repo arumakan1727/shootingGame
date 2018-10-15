@@ -7,35 +7,17 @@ public class Transition
 {
     private double nowVal, targetVal;
     private double addition;
-    private int fps;
-    private int time;
 
-    public Transition(double nowVal, double targetVal, int fps)
-    {
-        this(nowVal, targetVal, fps, 0);
-    }
-
-    /**
-     * ` milliTime`秒で `nowVal`から`targetVal`へ変化する
-     */
-    public Transition(double nowVal, double targetVal, int fps, int milliTime)
+    public Transition(double nowVal, double targetVal)
     {
         this.nowVal = nowVal;
         this.targetVal = targetVal;
-        this.fps = fps;
-        this.time = milliTime;
-
-        calcAddition();
     }
 
     public void update()
     {
-        // nowVal と targetVal を比較し、等しいならreturn
-        if (Double.compare(nowVal, targetVal) == 0)
-        {
-            return;
-        }
-
+        if (this.isDone()) return ;
+        
         nowVal += addition;
 
         // 増加量が正のとき、targetValueを上回っているかチェック
@@ -48,22 +30,12 @@ public class Transition
         }
     }
 
-    // 変化量を決める
-    private void calcAddition()
+    public boolean isDone()
     {
-        // 変化量 / (秒 * fps)
-        // 変化量 / (ミリ秒/1000 * fps)
-        // 変化量 / fps * 1000 / ミリ秒
-        this.addition = (targetVal - nowVal) / fps * 1000 / time;
+        // nowVal と targetVal を比較し、等しいならreturn
+        return (Double.compare(nowVal, targetVal) == 0);
     }
-
-    public void setNextValue(double nextVal, int milliTime)
-    {
-        this.targetVal = nextVal;
-        this.time = milliTime;
-        calcAddition();
-    }
-
+    
     public double getNowVal()
     {
         return nowVal;
@@ -73,21 +45,10 @@ public class Transition
     {
         return targetVal;
     }
-
-    public int getFps()
+    
+    public void setTargetVal(double tVal)
     {
-        return fps;
-    }
-
-    public void setFps(int fps)
-    {
-        this.fps = fps;
-        calcAddition();
-    }
-
-    public int getTime()
-    {
-        return time;
+        this.targetVal = tVal;
     }
 
     public double getAddition()
@@ -107,8 +68,11 @@ public class Transition
                 "nowVal=" + nowVal +
                 ", targetVal=" + targetVal +
                 ", addition=" + addition +
-                ", fps=" + fps +
-                ", time=" + time +
                 '}';
+    }
+    
+    public static double calcAddition(double nowVal, double targetVal, int fps, int milliTime)
+    {
+        return (targetVal - nowVal) / fps * 1000 / milliTime;
     }
 }

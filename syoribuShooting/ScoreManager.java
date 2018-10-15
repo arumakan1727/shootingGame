@@ -215,11 +215,6 @@ public class ScoreManager
             if (widthAddition < -25) widthAddition = -25;
         }
 
-        int getFeverPoint()
-        {
-            return FEVER_POINT;
-        }
-
         private Rectangle getBarClip(double nowPoint)
         {
             return new Rectangle(LT_X, LT_Y, (int)(BAR_WIDTH * (nowPoint / FEVER_POINT)), HEIGHT);

@@ -27,12 +27,23 @@ public class BufferedVolatilePanel extends JPanel implements BufferedRenderer
         this.virtualHeight = virtualHeight;
 
         initVolatileImage();
+
     }
 
     private void initVolatileImage()
     {
         if (buffer == null) {
             buffer = createVolatileImage(virtualWidth, virtualHeight);
+            try
+            {
+                System.err.println(buffer.getCapabilities().isAccelerated());
+                System.err.println("ImageCapabiritys" + buffer.getCapabilities().isTrueVolatile());
+                System.exit(0);
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
         }
     }
 
