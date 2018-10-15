@@ -9,7 +9,7 @@ import java.awt.image.VolatileImage;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class BufferedVolatilePanel extends JPanel implements BufferedRenderer
+public class BufferedVolatilePanel extends JPanel implements ScreenBuffer
 {
     private VolatileImage buffer = null;
     private final int realHeight, realWidth;
@@ -25,38 +25,26 @@ public class BufferedVolatilePanel extends JPanel implements BufferedRenderer
         this.realWidth  = realWidth;
         this.virtualWidth = virtualWidth;
         this.virtualHeight = virtualHeight;
-
-        initVolatileImage();
-
     }
 
     private void initVolatileImage()
     {
         if (buffer == null) {
-            buffer = createVolatileImage(virtualWidth, virtualHeight);
-            try
-            {
-                System.err.println(buffer.getCapabilities().isAccelerated());
-                System.err.println("ImageCapabiritys" + buffer.getCapabilities().isTrueVolatile());
-                System.exit(0);
-            } catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-
+            buffer = this.getGraphicsConfiguration().createCompatibleVolatileImage(virtualWidth, virtualHeight);
         }
     }
 
     @Override
     public void setBuffering()
     {
+        initVolatileImage();
     }
 
     private void validateVolatileImage() {
         GraphicsConfiguration gc = this.getGraphicsConfiguration();
 
         if (buffer.validate(gc) == VolatileImage.IMAGE_INCOMPATIBLE) {
-            buffer = createVolatileImage(virtualWidth, virtualHeight);
+            buffer = this.getGraphicsConfiguration().createCompatibleVolatileImage(virtualWidth, virtualHeight);
         }
     }
 

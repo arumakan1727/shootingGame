@@ -9,11 +9,11 @@ import java.awt.GraphicsEnvironment;
 public class GameWindow
 {
     private final JFrame window;
-    private final BufferedRenderer canvas;
+    private final ScreenBuffer canvas;
     private final InputEventManager eventManager;
     private final CursorManager cursorManager;
 
-    public GameWindow(BufferedRenderer renderer, boolean isFullScreen)
+    public GameWindow(ScreenBuffer renderer, boolean isFullScreen)
     {
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.window = new JFrame(gd.getDefaultConfiguration());
@@ -51,7 +51,7 @@ public class GameWindow
         return window;
     }
 
-    public BufferedRenderer getCanvas()
+    public ScreenBuffer getCanvas()
     {
         return canvas;
     }

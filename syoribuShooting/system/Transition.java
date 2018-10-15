@@ -70,6 +70,11 @@ public class Transition
                 ", addition=" + addition +
                 '}';
     }
+
+    public static double calcAddition(final Transition transition, int fps, int milliTime)
+    {
+        return calcAddition(transition.getNowVal(), transition.getTargetVal(), fps, milliTime);
+    }
     
     public static double calcAddition(double nowVal, double targetVal, int fps, int milliTime)
     {

@@ -2,7 +2,7 @@ package syoribuShooting.system;
 
 import java.awt.Graphics2D;
 
-public interface BufferedRenderer
+public interface ScreenBuffer
 {
     void setBuffering();
 

@@ -12,7 +12,7 @@ import java.awt.image.BufferStrategy;
  *
  */
 @SuppressWarnings("serial")
-public class BufferedCanvas extends Canvas implements BufferedRenderer
+public class BufferedCanvas extends Canvas implements ScreenBuffer
 {
 	/**
 	 * キャンバスを生成します。

@@ -23,7 +23,7 @@ public enum FlagState
         return states[nextID];
     }
     
-    private FlagState(int id)
+    FlagState(int id)
     {
         this.ID = id;
     }

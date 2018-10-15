@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class BufferedResponsivePanel extends JPanel implements BufferedRenderer
+public class BufferedResponsivePanel extends JPanel implements ScreenBuffer
 {
     private final BufferedImage buffer;
     private final int realHeight, realWidth;

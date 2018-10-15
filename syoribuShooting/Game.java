@@ -1,9 +1,7 @@
 package syoribuShooting;
 
 import syoribuShooting.sprite.AnimationProcessor;
-import syoribuShooting.system.BufferedJPanel;
-import syoribuShooting.system.BufferedRenderer;
-import syoribuShooting.system.BufferedResponsivePanel;
+import syoribuShooting.system.ScreenBuffer;
 import syoribuShooting.system.BufferedVolatilePanel;
 import syoribuShooting.system.CursorManager;
 import syoribuShooting.system.FPSTimer;
@@ -56,19 +54,14 @@ public class Game extends FPSTimer
         this.update();
         eventManager.update();
         this.window.getCanvas().draw(drawTask);
-
-//        Graphics2D g2d = this.window.getCanvas().getRenderer();
-//        this.draw(g2d);
-//        g2d.dispose();
-//        this.window.getCanvas().flipBuffer();
     }
     
-    public GameWindow getWindow()
+    GameWindow getWindow()
     {
         return this.window;
     }
 
-    public InputEventManager getEventManager()
+    InputEventManager getEventManager()
     {
         return this.eventManager;
     }
@@ -83,20 +76,20 @@ public class Game extends FPSTimer
         return this.nowScene;
     }
 
-    public AnimationProcessor getAnimationProcessor()
+    AnimationProcessor getAnimationProcessor()
     {
         return this.animationProcessor;
     }
 
-    public Game()
+    Game()
     {
         super(GameConfig.FPS);
 
         // 描画に用いるインスタンスの選択
-        BufferedRenderer bufferedRenderer;
-        bufferedRenderer = new BufferedResponsivePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
-//        bufferedRenderer = new BufferedVolatilePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
-        this.window = new GameWindow(bufferedRenderer ,GameConfig.isFullScreen);
+        ScreenBuffer screenBuffer;
+//        screenBuffer = new BufferedResponsivePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
+        screenBuffer = new BufferedVolatilePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
+        this.window = new GameWindow(screenBuffer,GameConfig.isFullScreen);
         this.window.getEventManager().setCorrection(GameConfig.REAL_VIRTUAL_CORRECTION);
         
         this.window.setTitle("Syoribu-Shooting");
@@ -117,7 +110,7 @@ public class Game extends FPSTimer
         this.window.getPane().requestFocus();
     }
 
-    private class DrawTask implements BufferedRenderer.DrawTask
+    private class DrawTask implements ScreenBuffer.DrawTask
     {
         @Override
         public void draw(Graphics2D g2d)

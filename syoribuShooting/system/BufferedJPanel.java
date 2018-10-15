@@ -5,7 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 
-public class BufferedJPanel extends JPanel implements BufferedRenderer
+public class BufferedJPanel extends JPanel implements ScreenBuffer
 {
     public BufferedJPanel(int width, int height)
     {
