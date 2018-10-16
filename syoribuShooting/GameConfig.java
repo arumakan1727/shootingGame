@@ -112,7 +112,7 @@ public final class GameConfig
         System.out.printf("targetC: %dx%d\n", img_targetC.getWidth(), img_targetC.getHeight());
         System.out.println(toolkit.getBestCursorSize(64, 64));
         try {
-            Thread.sleep(300);
+            Thread.sleep(100);
         } catch (InterruptedException e) {}
     }
 

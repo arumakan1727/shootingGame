@@ -44,10 +44,14 @@ public class NumberImage extends Sprite
     {
         return num;
     }
+    public int getDigitLen()
+    {
+        return digits.length;
+    }
     public void setNum(int num)
     {
         this.num = num;
-        final byte[] digits = getDigitArray(getNum());
+        this.digits = getDigitArray(getNum());
 
     }
     
