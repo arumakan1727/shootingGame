@@ -3,6 +3,7 @@ package syoribuShooting.system;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.VolatileImage;
 
@@ -58,7 +59,7 @@ public class BufferedVolatilePanel extends JPanel implements ScreenBuffer
             g2d.dispose();
             this.getGraphics().drawImage(buffer, 0, 0, realWidth, realHeight, this);
         } while (buffer.contentsLost());
-
+        
         Toolkit.getDefaultToolkit().sync();
     }
 

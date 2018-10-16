@@ -11,11 +11,12 @@ public abstract class FPSTimer implements Runnable
 {
     public abstract void callBack();
 
-
     private boolean running    = false;
     private int fps = -1;
     private long period;
     private Thread thread;
+
+    private final DebugOut debugger = new DebugOut(0, 60);
     
     public FPSTimer(int fps)
     {
@@ -72,7 +73,7 @@ public abstract class FPSTimer implements Runnable
             // 前回のフレームの休止時間誤差も引いておく
             sleepTime = (this.period - timeDiff) - overSleepTime;
 
-            System.out.println("sleepTime: " + sleepTime / 1_000_000 + "\t runTime: " + (period - sleepTime)/ 1_000_000);
+            debugger.println("sleepTime: " + sleepTime / 1_000_000 + "\t runTime: " + (period - sleepTime)/ 1_000_000, System.out);
 
             if (sleepTime > 0) { // 休止時間が取れる場合
                 try {

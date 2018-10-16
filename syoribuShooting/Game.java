@@ -1,6 +1,8 @@
 package syoribuShooting;
 
 import syoribuShooting.sprite.AnimationProcessor;
+import syoribuShooting.sprite.NumberImage;
+import syoribuShooting.system.BufferedResponsivePanel;
 import syoribuShooting.system.ScreenBuffer;
 import syoribuShooting.system.BufferedVolatilePanel;
 import syoribuShooting.system.CursorManager;
@@ -29,7 +31,6 @@ public class Game extends FPSTimer
         nowScene.update(this);
         animationProcessor.update();
     }
-
 
     private void initialize()
     {
@@ -87,8 +88,8 @@ public class Game extends FPSTimer
 
         // 描画に用いるインスタンスの選択
         ScreenBuffer screenBuffer;
-//        screenBuffer = new BufferedResponsivePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
-        screenBuffer = new BufferedVolatilePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
+        screenBuffer = new BufferedResponsivePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
+//        screenBuffer = new BufferedVolatilePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
         this.window = new GameWindow(screenBuffer,GameConfig.isFullScreen);
         this.window.getEventManager().setCorrection(GameConfig.REAL_VIRTUAL_CORRECTION);
         
@@ -108,6 +109,7 @@ public class Game extends FPSTimer
         this.initialize();
         this.start();
         this.window.getPane().requestFocus();
+
     }
 
     private class DrawTask implements ScreenBuffer.DrawTask

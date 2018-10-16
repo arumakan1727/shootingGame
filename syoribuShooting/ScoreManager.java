@@ -102,10 +102,11 @@ public class ScoreManager
 
             int feverAddPoint;
             if (feverGauge.isFever()) {
-                feverAddPoint = min(comboCount * targetScore / 80, 30);
+                feverAddPoint = min(comboCount * targetScore / 80, 20);
             } else {
                 feverAddPoint = BASE_FEVER_POINT + min(comboCount * targetScore / 80, 100);
             }
+            System.err.println("feverAdd: " + feverAddPoint);
             this.feverGauge.addPoint(feverAddPoint);
         }
     }
@@ -142,9 +143,9 @@ class FeverGauge
     private static final int BAR_LT_X = LT_X + 20;
     private static final int BAR_WIDTH = 445;
     private static final int MAX_FEVER_POINT = 1000;
-    private static final int FEVER_TIME = 10 * 1000;
+    private static final int FEVER_TIME = 8 * 1000;
     private static final int TRANSITION_TIME_NORMAL = 250;
-    private static final int TRANSITION_TIME_FEVER = 150;
+    private static final int TRANSITION_TIME_FEVER = 50;
     private static final double ADDITION_FEVER_STATE = Transition.calcAddition(MAX_FEVER_POINT, 0, GameConfig.FPS, FEVER_TIME);
 
     private final BufferedImage img_frame, img_bar_normal, img_bar_fever, img_back;

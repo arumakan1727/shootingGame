@@ -76,10 +76,6 @@ public class ShootingScene extends AbstractScene
                 this.stopWatch.restartTimer();
             }
         }
-        System.out.println("Scene: " + getState()
-                + ", nowStage: " + nowStage.getState()
-                + ", elem=" + nowStage.getTargetList().size()
-                + ", run=" + nowStage.getStopWatch().isRunning());
 
         switch (this.getState()) {
             case WAIT_SHOOTING:
