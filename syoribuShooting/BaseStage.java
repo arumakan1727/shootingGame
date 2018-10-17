@@ -89,7 +89,7 @@ public abstract class BaseStage
                 isTouchingEntity = true;
             }
 
-            // 画面外になったら
+            // 画面外になったらstateをDISPOSEに変更
             final int x = ((int) elem.getXdefault());
             final int y = ((int) elem.getYdefault());
             if (x < OUTER_WINDOW_MINUS

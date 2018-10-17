@@ -11,23 +11,33 @@ public abstract class Target extends Sprite
 
     public enum State
     {
-        CREATED,
-        ZOOM_UP,
-        FLY,
-        DISAPPEAR,
-        DISPOSE
+        CREATED(false),
+        ZOOM_UP(true),
+        FLY(true),
+        DISAPPEAR(true),
+        DISPOSE(false);
+
+        private final boolean clickable;
+
+        State(boolean clickable) {
+            this.clickable = clickable;
+        }
+
+        public boolean isClickable() { return this.clickable; }
     }
 
-    protected static final int MAX_ZOOM_UP = 100;
-    protected BufferedImage img;
-    protected Motion motion;
+    private static final int MAX_ZOOM_UP = 100;
+    private final TargetType type;
+    private BufferedImage img;
+    private Motion motion;
     private State state;
     private int zoomDelay;
 
-    public Target(BufferedImage img, double centerX, double centerY, final Motion motion)
+    public Target(TargetType type, BufferedImage img, double centerX, double centerY, final Motion motion)
     {
         super(img.getWidth(), img.getHeight());
 
+        this.type = type;
         this.img = img;
         this.motion = motion;
         this.setState(State.CREATED);
@@ -37,9 +47,9 @@ public abstract class Target extends Sprite
         this.setCenterY(centerY);
     }
 
-    public Target(BufferedImage img, double centerX, double centerY)
+    public Target(TargetType type, BufferedImage img, double centerX, double centerY)
     {
-        this(img, centerX, centerY, Motion.NO_MOVE);
+        this(type, img, centerX, centerY, Motion.NO_MOVE);
     }
 
     public void update(int elapsedTime)
@@ -84,7 +94,7 @@ public abstract class Target extends Sprite
 
     public boolean isClickable()
     {
-        return getState() == State.FLY || getState() == State.ZOOM_UP;
+        return getState().isClickable();
     }
 
     protected boolean zoomUp(int addition)
@@ -161,6 +171,11 @@ public abstract class Target extends Sprite
     public void setYdefault(double y)
     {
         this.setCenterY(y);
+    }
+
+    public TargetType getType()
+    {
+        return this.type;
     }
 
     public State getState()

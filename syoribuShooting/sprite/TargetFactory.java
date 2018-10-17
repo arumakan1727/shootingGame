@@ -2,6 +2,8 @@ package syoribuShooting.sprite;
 
 import syoribuShooting.GameConfig;
 
+import static syoribuShooting.sprite.TargetType.*;
+
 public class TargetFactory
 {
     private TargetFactory() {}
@@ -21,7 +23,7 @@ public class TargetFactory
         switch (type)
         {
             case rankA:
-                return new Target(GameConfig.img_targetA, centerX, centerY, motion)
+                return new Target(rankA, GameConfig.img_targetA, centerX, centerY, motion)
                 {
                     @Override
                     public int getScore(int screenX, int screenY)
@@ -38,7 +40,7 @@ public class TargetFactory
                 };
 
             case rankB:
-                return new Target(GameConfig.img_targetB, centerX, centerY, motion)
+                return new Target(rankB, GameConfig.img_targetB, centerX, centerY, motion)
                 {
                     @Override
                     public int getScore(int screenX, int screenY)
@@ -53,7 +55,7 @@ public class TargetFactory
                 };
 
             case rankC:
-                return new Target(GameConfig.img_targetC, centerX, centerY, motion)
+                return new Target(rankC, GameConfig.img_targetC, centerX, centerY, motion)
                 {
                     @Override
                     public int getScore(int screenX, int screenY)
@@ -66,6 +68,12 @@ public class TargetFactory
                     {
                     }
                 };
+
+            case ITEM_SCORE_UP:
+                return new Item(ITEM_SCORE_UP, GameConfig.img_scoreUP, centerX, centerY, motion);
+
+            case ITEM_TIME_DECREASE:
+                return new Item(ITEM_TIME_DECREASE, GameConfig.img_timeDecrease, centerX, centerY, motion);
 
             default:
                 return null;

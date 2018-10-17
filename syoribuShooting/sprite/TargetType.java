@@ -4,7 +4,9 @@ public enum TargetType
 {
     rankA,
     rankB,
-    rankC;
+    rankC,
+    ITEM_SCORE_UP,
+    ITEM_TIME_DECREASE;
 
     public static TargetType getTypeByID(int id)
     {

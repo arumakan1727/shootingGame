@@ -43,7 +43,8 @@ public final class GameConfig
     public static BufferedImage
             img_shootingCursor,
             img_shootingCursorGreen,
-            img_targetA, img_targetB, img_targetC;
+            img_targetA, img_targetB, img_targetC,
+            img_scoreUP, img_timeDecrease;
     public static ArrayList<BufferedImage> anim_hit = new ArrayList<>();
 
     private GameConfig() {}
@@ -72,10 +73,12 @@ public final class GameConfig
         STAGEDATA_PREFIX= "stage";
         FIRST_STAGE_FILE_PATH = PATH_XML + "stage-e01.xml";
 
+        img_targetA = readImage("super_rare_target.png");
+        img_targetB = readImage("high_points_target.png");
+        img_targetC = readImage("normal_target.png");
+        img_scoreUP = readImage("scoreUp.png");
+        img_timeDecrease = readImage("timeDown.png");
         try {
-            img_targetA = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "super_rare_target.png"));
-            img_targetB = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "high_points_target.png"));
-            img_targetC = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "normal_target.png"));
             anim_hit = GifReader.readGif(Game.class.getResourceAsStream(PATH_IMAGE + "hit-animation.gif"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -84,14 +87,10 @@ public final class GameConfig
 
         if (enableCursor) {
             try {
-                img_shootingCursor = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "shooting_cursor.png"));
-                img_shootingCursorGreen = ImageIO.read(Game.class.getResourceAsStream(PATH_IMAGE + "shooting_cursor_green.png"));
+                img_shootingCursor      = readImage("shooting_cursor.png");
+                img_shootingCursorGreen = readImage("shooting_cursor_green.png");
                 shootingCursor = toolkit.createCustomCursor(img_shootingCursor, new Point(32, 32), "Shooting-Cursor");
                 shootingCursorGreen = toolkit.createCustomCursor(img_shootingCursorGreen, new Point(32, 32), "Shooting-Cursor-Green");
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-                System.exit(1);
             }
             catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();

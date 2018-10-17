@@ -17,6 +17,10 @@ public class NumberImage extends Sprite
         setImages(imgs);
         setNum(num);
     }
+
+    public void update()
+    {
+    }
     
     public void draw(Graphics2D g2d)
     {
@@ -54,7 +58,24 @@ public class NumberImage extends Sprite
         this.digits = getDigitArray(getNum());
 
     }
-    
+
+    public int getAllWidth()
+    {
+        return getWidth() * digits.length;
+    }
+
+    @Override
+    public double getCenterX()
+    {
+        return getAllWidth() / 2;
+    }
+
+    @Override
+    public void setCenterX(double centerX)
+    {
+        setX(centerX - getAllWidth() / 2);
+    }
+
     public static byte[] getDigitArray(int n)
     {
         byte[] digits = new byte[digitCount(n)];

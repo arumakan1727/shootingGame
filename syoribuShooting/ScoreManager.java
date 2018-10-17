@@ -1,5 +1,6 @@
 package syoribuShooting;
 
+import syoribuShooting.sprite.FadeOutNumberImage;
 import syoribuShooting.sprite.NumberImage;
 import syoribuShooting.sprite.Target;
 import syoribuShooting.system.InputEventManager;
@@ -9,6 +10,10 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import static syoribuShooting.GameConfig.readImage;
 import static java.lang.Math.min;
@@ -26,17 +31,21 @@ public class ScoreManager
     private FeverGauge feverGauge;
     private NumberImage comboValueImg;
     private BufferedImage img_combo;
+    private List<NumberImage> hitPointImages;
     private int score;
     private int comboCount;
 
     public ScoreManager()
     {
         this.feverGauge = new FeverGauge();
+
         for (int i = 0; i < 10; i++) {
             img_num[i] = readImage("num" + i + "-red.png");
         }
-        img_combo = readImage("combo.png");
-        comboValueImg = new NumberImage(img_num, 0);
+        img_combo       = readImage("combo.png");
+
+        comboValueImg   = new NumberImage(img_num, 0);
+        hitPointImages  = new LinkedList<>();
         setScore(0);
         setComboCount(0);
 
@@ -59,6 +68,19 @@ public class ScoreManager
                     eventManager.mousePressedY());
         }
 
+        for(Iterator<NumberImage> itr = hitPointImages.listIterator(); itr.hasNext();)
+        {
+            NumberImage elem = itr.next();
+            if (elem.isDisposed()) {
+                try {
+                    itr.remove();
+                } catch (ConcurrentModificationException e) {
+                    e.printStackTrace();
+                }
+            }
+            elem.update();
+        }
+
         this.feverGauge.update();
         this.updateFeverState();
     }
@@ -67,6 +89,11 @@ public class ScoreManager
     {
         this.drawScore(g2d);
         this.feverGauge.draw(g2d);
+
+        for (NumberImage elem : hitPointImages)
+        {
+            elem.draw(g2d);
+        }
     }
 
     int getScore()
@@ -106,14 +133,14 @@ public class ScoreManager
 
     private void checkHit(final Target hitTarget, int px, int py)
     {
-
         if (hitTarget == null) {
             this.setComboCount(0);
         }
         else {
             int targetScore = hitTarget.getScore(px, py);
+            targetScore = targetScore * (isFever()? 2 : 1);
             addComboCount(1);
-            addScore(targetScore * (isFever()? 2 : 1));
+            addScore(targetScore);
 
             int feverAddPoint;
             if (feverGauge.isFever()) {
@@ -122,6 +149,14 @@ public class ScoreManager
                 feverAddPoint = BASE_FEVER_POINT + min(comboCount * targetScore / 80, 100);
             }
             this.feverGauge.addPoint(feverAddPoint);
+
+            FadeOutNumberImage pointImg = new FadeOutNumberImage(img_num, targetScore, 400);
+
+            // zoom と setCenterX,Y() の順番注意
+            pointImg.zoomWithHeight(40);
+            pointImg.setCenterY(py);
+            pointImg.setCenterX(px);
+            hitPointImages.add(pointImg);
         }
     }
 

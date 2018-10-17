@@ -42,7 +42,17 @@ public abstract class Sprite
         this.setWidth(this.getDefaultWidth() * zoom / 100);
         this.setHeight(this.getDefaultHeight() * zoom / 100);
     }
-    
+
+    public void zoomWithWidth(int w)
+    {
+        setZoom(100 * w / getDefaultWidth());
+    }
+
+    public void zoomWithHeight(int h)
+    {
+        setZoom(100 * h / getDefaultHeight());
+    }
+
     public int getWidth()
     {
         return width;
