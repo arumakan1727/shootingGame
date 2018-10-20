@@ -20,7 +20,7 @@ public class FadeOutNumberImage extends NumberImage
     public FadeOutNumberImage(BufferedImage[] imgs, int num, int time, int x, int y, int zoom)
     {
         super(imgs, num);
-        this.opacity = new Transition(1.0, 0);
+        this.opacity = new Transition(1.5, 0);
         opacity.setAddition(Transition.calcAddition(opacity, GameConfig.FPS, time));
         setX(x);
         setY(y);
@@ -48,7 +48,7 @@ public class FadeOutNumberImage extends NumberImage
 
         newComposite = AlphaComposite.getInstance(
                 AlphaComposite.SRC_OVER,
-                (float) opacity.getNowVal());
+                (float) Math.min(1.0, opacity.getNowVal()) );
 
         g2d.setComposite(newComposite);
         super.draw(g2d);

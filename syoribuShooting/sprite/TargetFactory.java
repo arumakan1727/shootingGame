@@ -26,12 +26,6 @@ public class TargetFactory
                 return new Target(rankA, GameConfig.img_targetA, centerX, centerY, motion)
                 {
                     @Override
-                    public int getScore(int screenX, int screenY)
-                    {
-                        return 500;
-                    }
-
-                    @Override
                     protected void _update()
                     { }
 
@@ -43,12 +37,6 @@ public class TargetFactory
                 return new Target(rankB, GameConfig.img_targetB, centerX, centerY, motion)
                 {
                     @Override
-                    public int getScore(int screenX, int screenY)
-                    {
-                        return 300;
-                    }
-
-                    @Override
                     protected void _update()
                     {
                     }
@@ -57,12 +45,6 @@ public class TargetFactory
             case rankC:
                 return new Target(rankC, GameConfig.img_targetC, centerX, centerY, motion)
                 {
-                    @Override
-                    public int getScore(int screenX, int screenY)
-                    {
-                        return 100;
-                    }
-
                     @Override
                     protected void _update()
                     {

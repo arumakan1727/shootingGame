@@ -178,11 +178,15 @@ public class ScoreManager
 
         g2d.setColor(Color.RED);
         g2d.drawString("Score: " + getScore(), LT_X_SCORE, LT_Y_SCORE);
-        comboValueImg.draw(g2d);
-        g2d.drawImage(img_combo,
-                LT_X_COMBO + comboValueImg.getWidth() * max(2, comboValueImg.getDigitLen()) + 15,
-                LT_Y_COMBO + comboValueImg.getHeight()-img_combo.getHeight(),
-                null);
+
+        // コンボ数が2以上の時だけコンボ数を描画
+        if (getComboCount() >= 2) {
+            comboValueImg.draw(g2d);
+            g2d.drawImage(img_combo,
+                    LT_X_COMBO + comboValueImg.getWidth() * max(2, comboValueImg.getDigitLen()) + 15,
+                    LT_Y_COMBO + comboValueImg.getHeight() - img_combo.getHeight(),
+                    null);
+        }
     }
 
 }

@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 
 public abstract class Target extends Sprite
 {
-    abstract public int getScore(int screenX, int screenY);
     abstract protected void _update();
 
     public enum State
@@ -90,6 +89,17 @@ public abstract class Target extends Sprite
     public Bounds getBounds()
     {
         return new CircleBounds(this.getCenterX(), this.getCenterY(), this.getWidth() / 2 + 10);
+    }
+
+    public Bounds getCriticalBounds()
+    {
+        return new CircleBounds(getCenterX(), getCenterY(), getWidth() / 5);
+    }
+
+    public int getScore(int mouseX, int mouseY)
+    {
+        int score = getType().getDefaultScore();
+        return (int)(score * (getCriticalBounds().isContain(mouseX, mouseY)? 1.5 : 1));
     }
 
     public boolean isClickable()
@@ -191,6 +201,7 @@ public abstract class Target extends Sprite
     public void setMotion(final Motion motion)
     {
         this.motion = motion;
+        motion.setSprite(this);
     }
 
     public Motion getMotion()

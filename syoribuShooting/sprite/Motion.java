@@ -6,23 +6,22 @@ public abstract class Motion
 {
     abstract protected void onMove(long elapsedTime);
 
-    private double speed;
-    private double acceleration;
-    private int startDelay;
-    protected final Sprite sprite;
-    private long moveStartedTime = -1;
+    protected Sprite sprite;
+    private double  speed;
+    private double  acceleration;
+    private int     startDelay;
+    private long    moveStartedTime = -1;
 
-    public static final Motion NO_MOVE = new Motion(null)
+    public static final Motion NO_MOVE = new Motion()
     {
-        @Override
-        public Point2D.Double getStartPosition()
-        {
-            throw new NullPointerException("Sprite's motion is Motion.NO_MOVE! null!!");
-        }
-
         @Override
         protected void onMove(long elapsedTime) {}
     };
+
+    public Motion()
+    {
+        this(null, 0);
+    }
 
     public Motion(final Sprite sprite)
     {
@@ -56,6 +55,16 @@ public abstract class Motion
     public Point2D.Double getStartPosition()
     {
         return new Point2D.Double(sprite.getXdefault(), sprite.getYdefault());
+    }
+
+    public Sprite getSprite()
+    {
+        return sprite;
+    }
+
+    public void setSprite(Sprite sprite)
+    {
+        this.sprite = sprite;
     }
 
     public double getSpeed()

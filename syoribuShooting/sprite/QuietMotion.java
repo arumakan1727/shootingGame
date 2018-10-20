@@ -2,7 +2,17 @@ package syoribuShooting.sprite;
 
 public class QuietMotion extends Motion
 {
-    private final long aliveTime;
+    private final int aliveTime;
+
+    public QuietMotion(int aliveTime)
+    {
+        this(null, aliveTime);
+    }
+    public QuietMotion(Sprite sprite, int aliveTime)
+    {
+        super(sprite);
+        this.aliveTime = aliveTime;
+    }
 
     @Override
     protected void onMove(long elapsedTime)
@@ -14,9 +24,4 @@ public class QuietMotion extends Motion
         }
     }
 
-    public QuietMotion(Sprite sprite, int aliveTime)
-    {
-        super(sprite);
-        this.aliveTime = aliveTime;
-    }
 }

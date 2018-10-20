@@ -9,6 +9,11 @@ public class LinearMotion extends Motion
     private double dist;
     private double vx, vy;
 
+    public LinearMotion()
+    {
+        this(null, 0);
+    }
+
     public LinearMotion(Sprite sprite, double speed)
     {
         this(sprite, speed, 0, 0);

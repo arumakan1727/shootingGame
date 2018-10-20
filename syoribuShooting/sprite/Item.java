@@ -20,10 +20,12 @@ public class Item extends Target
         final int prevCX = (int)getCenterX();
         final int prevCY = (int)getCenterY();
         int zoom = getZoom();
-        if (zoom < 1) {
+        if (zoom < 5) {
             this.setState(State.DISPOSE);
         }
-        setZoom(zoom - 5);
+        zoom -= 20;
+        if (zoom < 0) zoom = 0;
+        setZoom(zoom);
         setCenterX(prevCX);
         setCenterY(prevCY);
     }

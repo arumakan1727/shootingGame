@@ -13,6 +13,11 @@ public class CircleMotion extends Motion
     private double theta;
     private int centerX, centerY;
 
+    public CircleMotion(double radius, double speed, int centerX, int centerY)
+    {
+        this(null, radius, speed, centerX, centerY);
+    }
+
     public CircleMotion(Sprite sprite, double radius, double speed, int centerX, int centerY)
     {
         super(sprite, speed);

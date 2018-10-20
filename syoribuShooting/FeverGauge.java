@@ -20,7 +20,7 @@ class FeverGauge
     private static final int BAR_LT_X = LT_X + 20;
     private static final int BAR_WIDTH = 445;
     private static final int MAX_FEVER_POINT = 1000;
-    private static final int FEVER_TIME = 8 * 1000;
+    private static final int FEVER_TIME = 6 * 1000;
     private static final int TRANSITION_TIME_NORMAL = 250;
     private static final int TRANSITION_TIME_FEVER = 50;
     private static final double ADDITION_FEVER_STATE = Transition.calcAddition(MAX_FEVER_POINT, 0, GameConfig.FPS, FEVER_TIME);
