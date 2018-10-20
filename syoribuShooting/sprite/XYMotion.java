@@ -4,9 +4,9 @@ public class XYMotion extends Motion
 {
     private double vx, vy, accelX, accelY;
 
-    public XYMotion(double accelX, double accelY)
+    public XYMotion(double vx, double vy, double accelX, double accelY)
     {
-        this(null, accelX, accelY);
+        this(null, vx, vy, accelX, accelY);
     }
 
     public XYMotion(Sprite sprite, double accelX, double accelY)

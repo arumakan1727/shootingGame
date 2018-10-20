@@ -1,8 +1,6 @@
 package syoribuShooting;
 
 import syoribuShooting.sprite.AnimationProcessor;
-import syoribuShooting.sprite.NumberImage;
-import syoribuShooting.system.BufferedResponsivePanel;
 import syoribuShooting.system.ScreenBuffer;
 import syoribuShooting.system.BufferedVolatilePanel;
 import syoribuShooting.system.CursorManager;
@@ -24,12 +22,13 @@ public class Game extends FPSTimer
     private final InputEventManager eventManager;
     private final AnimationProcessor animationProcessor;
     private final DrawTask drawTask = new DrawTask();
-    private AbstractScene nowScene;
+    private SceneManager sceneManager;
 
     private void update()
     {
-        nowScene.update(this);
+        sceneManager.update(this);
         animationProcessor.update();
+        eventManager.update();
     }
 
     private void initialize()
@@ -53,7 +52,6 @@ public class Game extends FPSTimer
         checkCloseTrigger();
 
         this.update();
-        eventManager.update();
         this.window.getCanvas().draw(drawTask);
     }
     
@@ -65,16 +63,6 @@ public class Game extends FPSTimer
     InputEventManager getEventManager()
     {
         return this.eventManager;
-    }
-
-    public void setNowScene(final AbstractScene scene)
-    {
-        this.nowScene = scene;
-    }
-
-    public AbstractScene getNowScene()
-    {
-        return this.nowScene;
     }
 
     AnimationProcessor getAnimationProcessor()
@@ -95,7 +83,7 @@ public class Game extends FPSTimer
         
         this.window.setTitle("Syoribu-Shooting");
         this.eventManager = window.getEventManager();
-        this.nowScene = new ShootingScene(GameConfig.FIRST_STAGE_FILE_PATH, Game.class);
+        this.sceneManager = new SceneManager(new TitleScene());
         this.animationProcessor = new AnimationProcessor();
         
         // カスタムカーソルの設定
@@ -123,7 +111,7 @@ public class Game extends FPSTimer
             g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT);
             g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
-            nowScene.draw(g2d);
+            sceneManager.draw(g2d);
             animationProcessor.draw(g2d);
             window.getCursorManager().draw(g2d, eventManager.mouseX(), eventManager.mouseY());
         }

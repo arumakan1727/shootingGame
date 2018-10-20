@@ -6,7 +6,8 @@ import java.awt.image.BufferedImage;
 public abstract class AbstractScene
 {
     abstract public void initialize();
-    abstract public void update(final Game game);
+    abstract public void finish();
+    abstract public void update(final Game game, SceneManager.SceneChanger sceneChanger);
     abstract public void draw(final Graphics2D g2d);
 
     public enum State

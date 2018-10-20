@@ -30,7 +30,7 @@ public abstract class Motion
 
     public Motion(final Sprite sprite, double speed)
     {
-        this.sprite = sprite;
+        setSprite(sprite);
         this.setSpeed(speed);
         this.setSpeed(0);
     }
@@ -64,7 +64,9 @@ public abstract class Motion
 
     public void setSprite(Sprite sprite)
     {
-        this.sprite = sprite;
+        if (sprite != null) {
+            this.sprite = sprite;
+        }
     }
 
     public double getSpeed()

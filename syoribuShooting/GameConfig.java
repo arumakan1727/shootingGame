@@ -9,7 +9,10 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -162,6 +165,20 @@ public final class GameConfig
 
         beforeRandY = ret;
         return ret;
+    }
+
+    public static List<BufferedImage> readNumberedImages(String fileFormat, int from, int to)
+    {
+        List<BufferedImage> list = new LinkedList<>();
+        for (int i = from; i <= to; ++i) {
+            list.add(readImage(String.format(fileFormat, i)));
+        }
+        return list;
+    }
+
+    public static InputStream getResourceAsStream(String filePath)
+    {
+        return Main.class.getResourceAsStream(filePath);
     }
 
     public static String getStageDataFileName(int num)

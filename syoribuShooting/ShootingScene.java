@@ -1,5 +1,6 @@
 package syoribuShooting;
 
+import syoribuShooting.sprite.Animation;
 import syoribuShooting.system.StopWatch;
 
 import java.awt.Color;
@@ -16,13 +17,30 @@ public class ShootingScene extends AbstractScene
     private State state;
     private ScoreManager scoreManager;
     private XMLStageParser xmlStageParser;
-    private Class aClass;
     private Thread readNextStageThread;
+    private Animation fireFrameAnim = new Animation(GameConfig.readNumberedImages("flame%02d.png", 0, 3), 0, 0, true)
+    {
+        private static final int WAIT_CYCLE = 4;
+        private int cycle = 0;
+        @Override
+        public void update()
+        {
+            if(!scoreManager.isFever()) {
+                this.setDisposed(true);
+                return;
+            }
+            if (cycle == 0) {
+                addIndex(1);
+            }
+            ++cycle;
+            if (cycle >= WAIT_CYCLE) cycle = 0;
+        }
+    };
 
     private final BufferedImage back_normal = GameConfig.readImage("back02.jpg");
     private final BufferedImage back_fever  = GameConfig.readImage("back02-red.jpg");
 
-    public ShootingScene(final String filePath, Class c)
+    public ShootingScene(final String filePath)
     {
         super();
         this.setBackImage(back_normal);
@@ -41,8 +59,7 @@ public class ShootingScene extends AbstractScene
                 setBackImage(back_normal);
             }
         };
-        this.xmlStageParser = new XMLStageParser(filePath, c);
-        this.aClass = c;
+        this.xmlStageParser = new XMLStageParser(GameConfig.getResourceAsStream(filePath));
 
         this.xmlStageParser.parse();
         this.setNowStage(xmlStageParser.getParsedStage());
@@ -61,7 +78,12 @@ public class ShootingScene extends AbstractScene
     }
 
     @Override
-    public void update(final Game game)
+    public void finish()
+    {
+    }
+
+    @Override
+    public void update(final Game game, SceneManager.SceneChanger sceneChanger)
     {
         if (nowStage.getState() == BaseStage.State.FINISHED)
         {
@@ -96,12 +118,21 @@ public class ShootingScene extends AbstractScene
                 this.scoreManager.update(game, this.getNowStage());
                 break;
         }
+
+        if (scoreManager.isFever()) {
+            fireFrameAnim.update();
+        }
     }
 
     @Override
     public void draw(final Graphics2D g2d)
     {
         g2d.drawImage(this.getBackImage(), 0, 0, GameConfig.VIRTUAL_WIDTH, GameConfig.VIRTUAL_HEIGHT, null);
+
+        if (scoreManager.isFever()) {
+            fireFrameAnim.draw(g2d);
+        }
+
         this.nowStage.draw(g2d);
 
         g2d.setFont(new Font(Font.MONOSPACED, Font.ITALIC, 70));
@@ -157,7 +188,7 @@ public class ShootingScene extends AbstractScene
             public void run()
             {
                 final String filePath = getNowStage().getNextStageFilePath();
-                xmlStageParser.setInputStream(aClass.getResourceAsStream(filePath));
+                xmlStageParser.setInputStream(GameConfig.getResourceAsStream(filePath));
                 xmlStageParser.parse();
             }
         });

@@ -11,7 +11,6 @@ public abstract class Animation extends Sprite
     protected final List<BufferedImage> anim;
     private int index;
     private final boolean isLoop;
-    private boolean disposed;
 
     public Animation(List<BufferedImage> anim, int x, int y, boolean isLoop)
     {
@@ -33,6 +32,11 @@ public abstract class Animation extends Sprite
                 this.getWidth(), this.getHeight(), null);
     }
 
+    public int getFrameCount()
+    {
+        return anim.size();
+    }
+
     public int getIndex()
     {
         return index;
@@ -47,7 +51,14 @@ public abstract class Animation extends Sprite
     {
         int idx = this.getIndex();
         idx += plus;
-        if (idx >= anim.size()) idx = anim.size() - 1;
+
+        if (idx >= anim.size()) {
+            if (isLoop()) {
+               idx = 0;
+            } else {
+                idx = anim.size() - 1;
+            }
+        }
 
         this.setIndex(idx);
     }
@@ -55,15 +66,5 @@ public abstract class Animation extends Sprite
     public boolean isLoop()
     {
         return this.isLoop;
-    }
-
-    public boolean isDisposed()
-    {
-        return disposed;
-    }
-
-    public void setDisposed(boolean disposed)
-    {
-        this.disposed = disposed;
     }
 }

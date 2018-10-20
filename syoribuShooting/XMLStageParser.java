@@ -214,7 +214,7 @@ public class XMLStageParser extends DefaultHandler
     private void tagLinearMotion(String qName, Attributes attr)
     {
         // Motionクラス共通の設定
-        LinearMotion motion = new LinearMotion(nowTarget, 1.0);
+        LinearMotion motion = new LinearMotion();
         tagMotion(motion, qName, attr);
 
         int toX=0, toY=0;
@@ -226,7 +226,7 @@ public class XMLStageParser extends DefaultHandler
                 case ATTR_Y: toY = parseValue(ATTR_Y, value, 0); break;
             }
         }
-        motion.setPoints(toX, toY);
+        motion.setToPoint(toX, toY);
         nowTarget.setMotion(motion);
     }
 
@@ -234,7 +234,7 @@ public class XMLStageParser extends DefaultHandler
     {
         int aliveTime = parseValue(ATTR_TIMELIMIT, attr.getValue(ATTR_TIMELIMIT), -1);
         if (aliveTime < 0) throw new SAXException();
-        this.nowTarget.setMotion(new QuietMotion(nowTarget, aliveTime));
+        this.nowTarget.setMotion(new QuietMotion(aliveTime));
     }
 
     private void tagXYMotion(String qName, Attributes attr)
@@ -247,7 +247,7 @@ public class XMLStageParser extends DefaultHandler
         vy      = Double.parseDouble(attr.getValue(ATTR_VY));
         accelX  = Double.parseDouble(attr.getValue(ATTR_ACCEL_X));
         accelY  = Double.parseDouble(attr.getValue(ATTR_ACCEL_Y));
-        this.nowTarget.setMotion(new XYMotion(nowTarget, vx, vy, accelX, accelY));
+        this.nowTarget.setMotion(new XYMotion(vx, vy, accelX, accelY));
         this.nowTarget.getMotion().setStartDelay(delay);
     }
 

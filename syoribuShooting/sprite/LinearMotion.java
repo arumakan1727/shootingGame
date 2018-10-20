@@ -22,7 +22,16 @@ public class LinearMotion extends Motion
     public LinearMotion(Sprite sprite, double speed, int tx, int ty)
     {
         super(sprite, speed);
-        this.setPoints(tx, ty);
+        setToPoint(tx, ty);
+    }
+
+    @Override
+    public void setSprite(Sprite sprite)
+    {
+        super.setSprite(sprite);
+        if (sprite != null) {
+            setStartPoint((int) sprite.getXdefault(), (int) sprite.getYdefault());
+        }
     }
 
     @Override
@@ -95,6 +104,24 @@ public class LinearMotion extends Motion
         return toY;
     }
 
+    public void setStartPoint(int startX, int startY)
+    {
+        this.startX = startX;
+        this.startY = startY;
+        this.dist   = Utils.dist(startX, startY, toX, toY);
+        calcVx();
+        calcVy();
+    }
+
+    public void setToPoint(int toX, int toY)
+    {
+        this.toX = toX;
+        this.toY = toY;
+        this.dist   = Utils.dist(startX, startY, toX, toY);
+        calcVx();
+        calcVy();
+    }
+
     public void setPoints(int startX, int startY, int toX, int toY)
     {
         this.startX = startX;
@@ -104,11 +131,6 @@ public class LinearMotion extends Motion
         this.dist   = Utils.dist(startX, startY, toX, toY);
         calcVx();
         calcVy();
-    }
-
-    public void setPoints(int toX, int toY)
-    {
-        setPoints(((int) sprite.getXdefault()), ((int) sprite.getYdefault()), toX, toY);
     }
 
     /**
