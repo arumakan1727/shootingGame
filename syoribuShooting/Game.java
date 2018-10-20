@@ -91,6 +91,8 @@ public class Game extends FPSTimer
         cursorManager.defineCursor(ID_SHOOTING_CURSOR_NORMAL, readImage("shooting_cursor.png"), new Point(32, 32));
         cursorManager.defineCursor(ID_SHOOTING_CURSOR_GREEN, readImage("shooting_cursor_green.png"), new Point(32, 32));
         cursorManager.defineCursor(Cursor.CROSSHAIR_CURSOR, new Cursor(Cursor.CROSSHAIR_CURSOR));
+        cursorManager.defineCursor(Cursor.DEFAULT_CURSOR, new Cursor(Cursor.DEFAULT_CURSOR));
+        cursorManager.defineCursor(Cursor.HAND_CURSOR, new Cursor(Cursor.HAND_CURSOR));
         cursorManager.changeCurrentCursor(Cursor.CROSSHAIR_CURSOR);
         
         System.out.println("normalCursor: " + cursorManager.validCursor(ID_SHOOTING_CURSOR_NORMAL) + "\ngreenCursor: " + cursorManager.validCursor(ID_SHOOTING_CURSOR_GREEN));

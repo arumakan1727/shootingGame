@@ -25,7 +25,7 @@ public class ScoreManager
     private static final int LT_Y_SCORE = 50;
     private static final int LT_X_COMBO = LT_X_SCORE;
     private static final int LT_Y_COMBO = 200;
-    private static final int BASE_FEVER_POINT = 30;
+    private static final int BASE_FEVER_POINT = 500;
     private static BufferedImage img_num[] = new BufferedImage[10];
 
     private FeverGauge feverGauge;

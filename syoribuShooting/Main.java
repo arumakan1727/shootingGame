@@ -2,11 +2,18 @@ package syoribuShooting;
 
 public class Main {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new Game();
-	}
+    private static Game game;
+
+    public static Game getGame()
+    {
+        return game;
+    }
+
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        game = new Game();
+    }
 
 }

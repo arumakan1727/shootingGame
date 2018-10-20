@@ -81,12 +81,7 @@ public final class GameConfig
         img_targetC = readImage("normal_target.png");
         img_scoreUP = readImage("scoreUp.png");
         img_timeDecrease = readImage("timeDown.png");
-        try {
-            anim_hit = GifReader.readGif(Game.class.getResourceAsStream(PATH_IMAGE + "hit-animation.gif"));
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+        anim_hit = GifReader.readGif(Game.class.getResourceAsStream(PATH_IMAGE + "hit-animation.gif"));
 
         if (enableCursor) {
             try {

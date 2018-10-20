@@ -142,6 +142,7 @@ public abstract class BaseStage
         {
             elem.draw(g2d);
         }
+        g2d.drawString("elapsed:" + stopWatch.getElapsed() / 100, 500, 500);
     }
 
     public void makeAllDisappear()

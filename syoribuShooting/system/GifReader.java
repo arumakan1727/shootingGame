@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 public class GifReader
 {
-    public static ArrayList<BufferedImage> readGif(InputStream is) throws IOException
+    public static ArrayList<BufferedImage> readGif(InputStream is)
     {
         ArrayList<BufferedImage> images = new ArrayList<>();
         Iterator<ImageReader> iter = ImageIO.getImageReadersByFormatName("gif");
@@ -19,12 +19,17 @@ public class GifReader
         if (iter.hasNext()) reader = iter.next();
         else throw new RuntimeException();
 
-        reader.setInput(ImageIO.createImageInputStream(is));
+        try {
+            reader.setInput(ImageIO.createImageInputStream(is));
 
-        int count = reader.getNumImages(true);
-        for (int i = 0; i < count ; ++i)
-        {
-            images.add(reader.read(i));
+            int count = reader.getNumImages(true);
+            for (int i = 0; i < count ; ++i)
+            {
+                images.add(reader.read(i));
+            }
+        } catch (IOException | IllegalArgumentException e) {
+            e.printStackTrace();
+            System.exit(1);
         }
 
         return images;

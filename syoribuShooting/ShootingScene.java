@@ -6,8 +6,17 @@ import syoribuShooting.system.StopWatch;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.image.BufferedImage;
+
+enum State
+{
+    WAIT_SHOOTING,
+    SHOOTING,
+    INTO_FEVER,
+    TIME_OVER,
+}
 
 public class ShootingScene extends AbstractScene
 {
@@ -35,6 +44,33 @@ public class ShootingScene extends AbstractScene
             ++cycle;
             if (cycle >= WAIT_CYCLE) cycle = 0;
         }
+
+        @Override
+        public void draw(Graphics2D g2d)
+        {
+            final Shape defaultShape = g2d.getClip();
+            g2d.setClip(new Rectangle(0, 500, GameConfig.VIRTUAL_WIDTH, GameConfig.VIRTUAL_HEIGHT));
+            super.draw(g2d);
+            g2d.setClip(defaultShape);
+        }
+    };
+//    private Animation intoOverHeatAnim = new Animation(GifReader.readGif(GameConfig.getResourceAsStream(GameConfig.PATH_IMAGE + "overheat.gif")), 0, 0, false)
+    private Animation intoOverHeatAnim = new Animation(GameConfig.readNumberedImages("overheat_png/effect%04d.png", 0, 32), 0, 0, false)
+    {
+        private static final int WAIT_CYCLE = 1;
+        private int cycle = 0;
+        @Override
+        public void update()
+        {
+            if (cycle == 0) {
+                addIndex(1);
+            }
+            if(getIndex() >= getFrameCount()-1) {
+                setDisposed(true);
+            }
+            ++cycle;
+            if (cycle >= WAIT_CYCLE) cycle = 0;
+        }
     };
 
     private final BufferedImage back_normal = GameConfig.readImage("back02.jpg");
@@ -50,7 +86,8 @@ public class ShootingScene extends AbstractScene
             @Override
             public void intoFeverMode()
             {
-                setBackImage(back_fever);
+                setState(State.INTO_FEVER);
+                stop();
             }
 
             @Override
@@ -65,20 +102,19 @@ public class ShootingScene extends AbstractScene
         this.setNowStage(xmlStageParser.getParsedStage());
         this.readNextStage();
         this.setState(State.WAIT_SHOOTING);
-
-        this.initialize();
     }
 
     @Override
-    public void initialize()
+    public void initialize(Game game)
     {
         this.nowStage.initialize();
         this.setState(State.WAIT_SHOOTING);
         this.stopWatch.initTimer(TIME_LIMIT);
+        this.fireFrameAnim.setY(120);
     }
 
     @Override
-    public void finish()
+    public void finish(Game game)
     {
     }
 
@@ -89,15 +125,13 @@ public class ShootingScene extends AbstractScene
         {
             changeStage();
         }
-        else {
-            if (game.getEventManager().isKeyPressed(KeyEvent.VK_SPACE)) {
-                nowStage.setState(BaseStage.State.WAITING);
-                this.stopWatch.stopTimer();
-            } else {
-                nowStage.setState(BaseStage.State.SHOOTING);
-                this.stopWatch.restartTimer();
-            }
-        }
+//        else {
+//            if (game.getEventManager().isKeyPressed(KeyEvent.VK_SPACE)) {
+//                stop();
+//            } else {
+//                restart();
+//            }
+//        }
 
         switch (this.getState()) {
             case WAIT_SHOOTING:
@@ -115,9 +149,23 @@ public class ShootingScene extends AbstractScene
                     }
                 }
                 this.nowStage.update(game);
-                this.scoreManager.update(game, this.getNowStage());
+                break;
+
+            case INTO_FEVER:
+                if (intoOverHeatAnim.isDisposed()) {
+                    intoOverHeatAnim.setIndex(0);
+                    intoOverHeatAnim.setDisposed(false);
+                    setState(State.SHOOTING);
+                    restart();
+                } else {
+                    intoOverHeatAnim.update();
+                    if (intoOverHeatAnim.getIndex() == 16) {
+                        setBackImage(back_fever);
+                    }
+                }
                 break;
         }
+        this.scoreManager.update(game, this.getNowStage());
 
         if (scoreManager.isFever()) {
             fireFrameAnim.update();
@@ -142,6 +190,9 @@ public class ShootingScene extends AbstractScene
         g2d.drawString("Time: " + t/1000 + "." + t%1000 / 100, GameConfig.VIRTUAL_WIDTH - 500, 80);
 
         scoreManager.draw(g2d);
+        if (getState() == State.INTO_FEVER) {
+            intoOverHeatAnim.draw(g2d);
+        }
     }
 
     public State getState()
@@ -194,5 +245,17 @@ public class ShootingScene extends AbstractScene
         });
 
         readNextStageThread.start();
+    }
+
+    private void stop()
+    {
+        nowStage.setState(BaseStage.State.WAITING);
+        this.stopWatch.stopTimer();
+    }
+
+    private void restart()
+    {
+        nowStage.setState(BaseStage.State.SHOOTING);
+        this.stopWatch.restartTimer();
     }
 }

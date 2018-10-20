@@ -21,16 +21,17 @@ public class SceneManager
 
     public SceneManager(AbstractScene scene)
     {
-        this.nowScene = scene;
-        nowScene.initialize();
+        this.nextScene = scene;
     }
 
     public void update(Game game)
     {
         if (nextScene != null)
         {
-            nowScene.finish();
-            nextScene.initialize();
+            if (nowScene != null) {
+                nowScene.finish(game);
+            }
+            nextScene.initialize(game);
 
             nowScene = nextScene;
             nextScene = null;

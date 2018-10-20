@@ -5,17 +5,10 @@ import java.awt.image.BufferedImage;
 
 public abstract class AbstractScene
 {
-    abstract public void initialize();
-    abstract public void finish();
+    abstract public void initialize(Game game);
+    abstract public void finish(Game game);
     abstract public void update(final Game game, SceneManager.SceneChanger sceneChanger);
     abstract public void draw(final Graphics2D g2d);
-
-    public enum State
-    {
-        WAIT_SHOOTING,
-        SHOOTING,
-        TIME_OVER,
-    }
 
     private BufferedImage backImage;
 

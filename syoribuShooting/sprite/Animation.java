@@ -19,7 +19,7 @@ public abstract class Animation extends Sprite
 
     public Animation(List<BufferedImage> anim, int x, int y, int width, int height, boolean isLoop)
     {
-        super(x, y, width, height);
+        super(width, height);
         this.setDisposed(false);
         this.setIndex(0);
         this.anim = anim;

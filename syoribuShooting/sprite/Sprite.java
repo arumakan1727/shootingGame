@@ -22,13 +22,7 @@ public abstract class Sprite
         this.setZoom(100);
         this.setDisposed(false);
     }
-    
-    public Sprite(int x, int y, int width, int height)
-    {
-        this(width, height);
-    }
 
-    
     public final int getZoom()
     {
         return zoom;
