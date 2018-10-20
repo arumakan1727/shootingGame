@@ -13,6 +13,7 @@ public abstract class Target extends Sprite
         CREATED(false),
         ZOOM_UP(true),
         FLY(true),
+        CLICKED(false),
         DISAPPEAR(true),
         DISPOSE(false);
 
@@ -79,8 +80,12 @@ public abstract class Target extends Sprite
                 this.motion.move(elapsedTime);
                 break;
 
+            case CLICKED:
+                this.disappearClicked();
+                break;
+
             case DISAPPEAR:
-                deflationBreak();
+                disappearMinimize();
                 break;
         }
         _update();
@@ -128,7 +133,12 @@ public abstract class Target extends Sprite
         return canZoom;
     }
 
-    protected void deflationBreak()
+    protected void disappearClicked()
+    {
+        disappearMinimize();
+    }
+
+    protected void disappearMinimize()
     {
         int prevCX = (int)this.getCenterX();
         int prevCY = (int)this.getCenterY();

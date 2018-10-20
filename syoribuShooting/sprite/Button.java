@@ -45,13 +45,21 @@ public class Button extends Sprite
         }
 
         final int mouseCode = MouseEvent.BUTTON1;
-        if (isContain) {
+        if (isContain)
+        {
             if (eventManager.justNowMousePressed(mouseCode)) {
                 actionListener.justNowPressed();
                 isMousePress = true;
             } else if (isMousePress && eventManager.isMouseReleased(mouseCode)){
                 isMousePress = false;
                 actionListener.justNowReleased();
+            }
+        }
+        else
+        {
+            if (isMousePress) {
+                isMousePress = false;
+                actionListener.mouseExited();
             }
         }
     }

@@ -19,7 +19,6 @@ public abstract class AbstractScene
         this.setBackImage(backImage);
     }
 
-
     public BufferedImage getBackImage()
     {
         return backImage;

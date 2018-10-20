@@ -15,7 +15,7 @@ public class Item extends Target
     }
 
     @Override
-    protected void deflationBreak()
+    protected void disappearClicked()
     {
         final int prevCX = (int)getCenterX();
         final int prevCY = (int)getCenterY();

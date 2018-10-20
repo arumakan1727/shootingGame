@@ -1,6 +1,7 @@
 package syoribuShooting;
 
 import syoribuShooting.sprite.Animation;
+import syoribuShooting.system.GifReader;
 import syoribuShooting.system.StopWatch;
 
 import java.awt.Color;
@@ -54,8 +55,7 @@ public class ShootingScene extends AbstractScene
             g2d.setClip(defaultShape);
         }
     };
-//    private Animation intoOverHeatAnim = new Animation(GifReader.readGif(GameConfig.getResourceAsStream(GameConfig.PATH_IMAGE + "overheat.gif")), 0, 0, false)
-    private Animation intoOverHeatAnim = new Animation(GameConfig.readNumberedImages("overheat_png/effect%04d.png", 0, 32), 0, 0, false)
+    private Animation intoOverHeatAnim = new Animation(GifReader.readGif(GameConfig.getResourceAsStream(GameConfig.PATH_IMAGE + "overheat.gif")), 0, 0, false)
     {
         private static final int WAIT_CYCLE = 1;
         private int cycle = 0;
@@ -165,7 +165,7 @@ public class ShootingScene extends AbstractScene
                 }
                 break;
         }
-        this.scoreManager.update(game, this.getNowStage());
+        this.scoreManager.update(game, this);
 
         if (scoreManager.isFever()) {
             fireFrameAnim.update();
@@ -193,6 +193,7 @@ public class ShootingScene extends AbstractScene
         if (getState() == State.INTO_FEVER) {
             intoOverHeatAnim.draw(g2d);
         }
+        g2d.drawString(state.toString(), 500, 500);
     }
 
     public State getState()

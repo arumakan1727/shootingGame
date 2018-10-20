@@ -78,10 +78,23 @@ public class TitleScene extends AbstractScene implements ActionListener
     {
         btn_startPlay.setImage(img_normalBtn);
         Main.getGame().getWindow().getCursorManager().changeCurrentCursor(Cursor.DEFAULT_CURSOR);
+        setUnPushed();
     }
 
     @Override
     public void justNowPressed()
+    {
+        setPushed();
+    }
+
+    @Override
+    public void justNowReleased()
+    {
+        setUnPushed();
+        changeSceneFlag = true;
+    }
+
+    private void setPushed()
     {
         int prevCX = (int)btn_startPlay.getCenterX();
         int prevCY = (int)btn_startPlay.getCenterY();
@@ -90,14 +103,12 @@ public class TitleScene extends AbstractScene implements ActionListener
         btn_startPlay.setCenterY(prevCY);
     }
 
-    @Override
-    public void justNowReleased()
+    private void setUnPushed()
     {
         int prevCX = (int)btn_startPlay.getCenterX();
         int prevCY = (int)btn_startPlay.getCenterY();
         btn_startPlay.setZoom(100);
         btn_startPlay.setCenterX(prevCX);
         btn_startPlay.setCenterY(prevCY);
-        changeSceneFlag = true;
     }
 }

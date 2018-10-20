@@ -25,7 +25,7 @@ public class ScoreManager
     private static final int LT_Y_SCORE = 50;
     private static final int LT_X_COMBO = LT_X_SCORE;
     private static final int LT_Y_COMBO = 200;
-    private static final int BASE_FEVER_POINT = 500;
+    private static final int BASE_FEVER_POINT = 300;
     private static BufferedImage img_num[] = new BufferedImage[10];
 
     private FeverGauge feverGauge;
@@ -57,13 +57,13 @@ public class ScoreManager
     public void intoFeverMode() {}
     public void intoNormalMode() {}
 
-    public void update(final Game game, final BaseStage stage)
+    public void update(final Game game, final ShootingScene scene)
     {
         final InputEventManager eventManager = game.getEventManager();
 
-        if (eventManager.justNowMousePressed(MouseEvent.BUTTON1))
+        if (scene.getState() == State.SHOOTING && eventManager.justNowMousePressed(MouseEvent.BUTTON1))
         {
-            checkHit(stage.getHitTarget(),
+            checkHit(scene.getNowStage().getHitTarget(),
                     eventManager.mousePressedX(),
                     eventManager.mousePressedY());
         }
@@ -177,7 +177,6 @@ public class ScoreManager
         g2d.setFont(new Font(Font.SERIF, Font.BOLD, 40));
 
         g2d.setColor(Color.RED);
-        g2d.drawString("Score: " + getScore(), LT_X_SCORE, LT_Y_SCORE);
 
         // コンボ数が2以上の時だけコンボ数を描画
         if (getComboCount() >= 2) {
