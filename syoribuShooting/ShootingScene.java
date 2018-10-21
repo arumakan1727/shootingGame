@@ -27,7 +27,7 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
 {
     private static final int TIME_LIMIT = 40 * 1000;
     private final StopWatch stopWatch;
-    private long time_stageStarted;
+    private int time_stageStarted;
     private BaseStage nowStage;
     private State state;
     private ScoreManager scoreManager;
@@ -142,21 +142,15 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
 //        }
 
         switch (this.getState()) {
+            // TODO time_stageStartedの更新
             case WAIT_SHOOTING:
                 this.stopWatch.startTimer();
                 this.setState(State.SHOOTING);
                 this.nowStage.setState(BaseStage.State.SHOOTING);
                 break;
+
             case SHOOTING:
-                if (this.stopWatch.isOverTimeLimit())
-                {
-                    if (this.nowStage.noTargets()) {
-                        this.setState(State.TIME_OVER);
-                    } else {
-                        nowStage.makeAllDisappear();
-                    }
-                }
-                this.nowStage.update(game);
+                updateShooting();
                 break;
 
             case INTO_FEVER:
@@ -178,6 +172,27 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
         if (scoreManager.isFever()) {
             fireFrameAnim.update();
         }
+    }
+
+    private void updateShooting()
+    {
+        if (this.stopWatch.isOverTimeLimit())
+        {
+            if (this.nowStage.noTargets()) {
+                this.setState(State.TIME_OVER);
+            } else {
+                nowStage.makeAllDisappear();
+            }
+        }
+        // TODO write `BaseStage#update()` here
+        //this.nowStage.update(game);
+        if (mustFinishStage()) {
+            targetManager.setAllState(Target.State.DISAPPEAR);
+            if (targetManager.isEmpty(TargetManager.ALL_LIST)) {
+                // TODO stageFinished, changeStage
+            }
+        }
+        targetManager.update(getStageElapsedTime());
     }
 
     @Override
@@ -267,7 +282,7 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
         this.stopWatch.restartTimer();
     }
 
-    private long getStageElapsedTime()
+    private int getStageElapsedTime()
     {
         return stopWatch.getElapsed() - this.time_stageStarted;
     }

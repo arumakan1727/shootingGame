@@ -112,7 +112,7 @@ public class TargetManager
         targetList[GLOBAL_LIST] = list;
     }
 
-    private void setAllState(Target.State state)
+    public void setAllState(Target.State state)
     {
         for (TargetList list : targetList) {
             for (Target target : list) {
