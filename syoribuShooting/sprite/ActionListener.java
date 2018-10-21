@@ -1,6 +1,8 @@
 package syoribuShooting.sprite;
 
-public interface ActionListener
+import java.util.EventListener;
+
+public interface ActionListener extends EventListener
 {
     void mouseEntered();
     void mouseExited();

@@ -28,6 +28,7 @@ public class ShootingScene extends AbstractScene
     private ScoreManager scoreManager;
     private XMLStageParser xmlStageParser;
     private Thread readNextStageThread;
+
     private Animation fireFrameAnim = new Animation(GameConfig.readNumberedImages("flame%02d.png", 0, 3), 0, 0, true)
     {
         private static final int WAIT_CYCLE = 4;
