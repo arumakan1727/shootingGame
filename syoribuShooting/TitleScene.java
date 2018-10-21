@@ -70,14 +70,14 @@ public class TitleScene extends AbstractScene implements ActionListener
     public void mouseEntered()
     {
         btn_startPlay.setImage(img_hoverBtn);
-        Main.getGame().getWindow().getCursorManager().changeCurrentCursor(Cursor.HAND_CURSOR);
+        Main.getCursorManager().changeCurrentCursor(Cursor.HAND_CURSOR);
     }
 
     @Override
     public void mouseExited()
     {
         btn_startPlay.setImage(img_normalBtn);
-        Main.getGame().getWindow().getCursorManager().changeCurrentCursor(Cursor.DEFAULT_CURSOR);
+        Main.getCursorManager().changeCurrentCursor(Cursor.DEFAULT_CURSOR);
         setUnPushed();
     }
 

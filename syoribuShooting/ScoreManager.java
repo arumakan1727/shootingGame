@@ -25,7 +25,7 @@ public class ScoreManager
     private static final int LT_Y_SCORE = 50;
     private static final int LT_X_COMBO = LT_X_SCORE;
     private static final int LT_Y_COMBO = 200;
-    private static final int BASE_FEVER_POINT = 300;
+    private static final int BASE_FEVER_POINT = 20;
     private static BufferedImage img_num[] = new BufferedImage[10];
 
     private FeverGauge feverGauge;
@@ -177,6 +177,7 @@ public class ScoreManager
         g2d.setFont(new Font(Font.SERIF, Font.BOLD, 40));
 
         g2d.setColor(Color.RED);
+        g2d.drawString("SCORE: " + getScore(), LT_X_SCORE, LT_Y_SCORE);
 
         // コンボ数が2以上の時だけコンボ数を描画
         if (getComboCount() >= 2) {

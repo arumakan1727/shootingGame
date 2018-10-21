@@ -193,7 +193,6 @@ public class ShootingScene extends AbstractScene
         if (getState() == State.INTO_FEVER) {
             intoOverHeatAnim.draw(g2d);
         }
-        g2d.drawString(state.toString(), 500, 500);
     }
 
     public State getState()
