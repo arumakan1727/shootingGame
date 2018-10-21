@@ -1,6 +1,8 @@
 package syoribuShooting;
 
 import syoribuShooting.sprite.Animation;
+import syoribuShooting.sprite.HitEffect1;
+import syoribuShooting.sprite.Target;
 import syoribuShooting.system.GifReader;
 import syoribuShooting.system.StopWatch;
 
@@ -11,6 +13,8 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
 
+import static syoribuShooting.GameConfig.*;
+
 enum State
 {
     WAIT_SHOOTING,
@@ -19,13 +23,15 @@ enum State
     TIME_OVER,
 }
 
-public class ShootingScene extends AbstractScene
+public class ShootingScene extends AbstractScene implements TargetEventListener
 {
     private static final int TIME_LIMIT = 40 * 1000;
     private final StopWatch stopWatch;
+    private long time_stageStarted;
     private BaseStage nowStage;
     private State state;
     private ScoreManager scoreManager;
+    private TargetManager targetManager;
     private XMLStageParser xmlStageParser;
     private Thread readNextStageThread;
 
@@ -82,6 +88,7 @@ public class ShootingScene extends AbstractScene
         super();
         this.setBackImage(back_normal);
         this.stopWatch = new StopWatch();
+        this.targetManager = new TargetManager(this, getNowStage().getLocalTargetList());
         this.scoreManager = new ScoreManager()
         {
             @Override
@@ -166,7 +173,7 @@ public class ShootingScene extends AbstractScene
                 }
                 break;
         }
-        this.scoreManager.update(game, this);
+        this.scoreManager.update();
 
         if (scoreManager.isFever()) {
             fireFrameAnim.update();
@@ -258,5 +265,39 @@ public class ShootingScene extends AbstractScene
     {
         nowStage.setState(BaseStage.State.SHOOTING);
         this.stopWatch.restartTimer();
+    }
+
+    private long getStageElapsedTime()
+    {
+        return stopWatch.getElapsed() - this.time_stageStarted;
+    }
+
+    private boolean mustFinishStage()
+    {
+        return targetManager.isEmpty(TargetManager.ALL_LIST) ||
+                getStageElapsedTime() >= getNowStage().getTimeLimit();
+    }
+
+    @Override
+    public void cursorEnteredTarget()
+    {
+        Main.getCursorManager().changeCurrentCursor(ID_SHOOTING_CURSOR_GREEN);
+    }
+
+    @Override
+    public void cursorExitedTarget()
+    {
+        Main.getCursorManager().changeCurrentCursor(ID_SHOOTING_CURSOR_NORMAL);
+    }
+
+    @Override
+    public void clickedTarget(TargetEvent e)
+    {
+        scoreManager.notifyHitTarget(e);
+        final Target target = e.getTarget();
+        target.setState(Target.State.DISAPPEAR);
+        Main.getAnimationProcessor().add(
+                new HitEffect1(e.getMouseX(), e.getMouseY(), false)
+        );
     }
 }

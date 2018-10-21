@@ -57,16 +57,21 @@ public class ScoreManager
     public void intoFeverMode() {}
     public void intoNormalMode() {}
 
-    public void update(final Game game, final ShootingScene scene)
+    public void notifyHitTarget(TargetEvent e)
     {
-        final InputEventManager eventManager = game.getEventManager();
+        checkHit(e.getTarget(), e.getMouseX(), e.getMouseY());
+    }
 
-        if (scene.getState() == State.SHOOTING && eventManager.justNowMousePressed(MouseEvent.BUTTON1))
-        {
-            checkHit(scene.getNowStage().getHitTarget(),
-                    eventManager.mousePressedX(),
-                    eventManager.mousePressedY());
-        }
+    public void update()
+    {
+//        final InputEventManager eventManager = game.getEventManager();
+
+//        if (scene.getState() == State.SHOOTING && eventManager.justNowMousePressed(MouseEvent.BUTTON1))
+//        {
+//            checkHit(scene.getNowStage().getHitTarget(),
+//                    eventManager.mousePressedX(),
+//                    eventManager.mousePressedY());
+//        }
 
         for(Iterator<NumberImage> itr = hitPointImages.listIterator(); itr.hasNext();)
         {

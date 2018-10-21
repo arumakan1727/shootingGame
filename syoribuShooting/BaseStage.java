@@ -8,7 +8,6 @@ import syoribuShooting.system.StopWatch;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.util.ConcurrentModificationException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -17,15 +16,10 @@ import static syoribuShooting.GameConfig.*;
 public abstract class BaseStage
 {
     abstract public int getTimeLimit();
-    abstract public boolean shouldBeFinished();
-    abstract protected void _init();
-    abstract protected void _update(final Game game);
 
-    public final int STATE_ID;
-    protected final StopWatch stopWatch = new StopWatch();
+    private TargetList localTargetList, globalTargetList;
+
     private String nextStageFilePath;
-    private List<Target> targets = new LinkedList<>();
-    private Target hitTarget = null;
     private State state;
 
     public enum State
@@ -136,6 +130,16 @@ public abstract class BaseStage
         _update(game);
     }
 
+    public TargetList getLocalTargetList()
+    {
+        return localTargetList;
+    }
+
+    public TargetList getGlobalTargetList()
+    {
+        return globalTargetList;
+    }
+
     public void draw(final Graphics2D g2d)
     {
         for (final Target elem : this.targets)
@@ -150,51 +154,6 @@ public abstract class BaseStage
             elem.setState(Target.State.DISAPPEAR);
         }
     }
-
-    public Target getHitTarget()
-    {
-        return hitTarget;
-    }
-
-    public void setHitTarget(Target hitTarget)
-    {
-        this.hitTarget = hitTarget;
-    }
-
-    public List<Target> getTargetList()
-    {
-        return targets;
-    }
-
-    public boolean noTargets()
-    {
-        return targets.isEmpty();
-    }
-
-    public StopWatch getStopWatch()
-    {
-        return this.stopWatch;
-    }
-
-    private Target checkHit(InputEventManager eventManager)
-    {
-        if (eventManager.justNowMousePressed(MouseEvent.BUTTON1))
-        {
-            int px = eventManager.mousePressedX();
-            int py = eventManager.mousePressedY();
-            for (ListIterator<Target> it = targets.listIterator(targets.size()); it.hasPrevious(); )
-            {
-                final Target elem = it.previous();
-                if (elem.isClickable() && elem.getBounds().isContain(px, py))
-                {
-                    return elem;
-                }
-            }
-        }
-
-        return null;
-    }
-
     public State getState()
     {
         return state;
@@ -209,6 +168,7 @@ public abstract class BaseStage
             this.stopWatch.stopTimer();
         }
     }
+
     
     public String getNextStageFilePath()
     {

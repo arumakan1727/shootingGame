@@ -1,6 +1,7 @@
 package syoribuShooting;
 
 import syoribuShooting.sprite.Target;
+import syoribuShooting.system.Function;
 import syoribuShooting.system.InputEventManager;
 import syoribuShooting.system.TemporallyBool;
 
@@ -13,11 +14,11 @@ import static syoribuShooting.GameConfig.*;
 
 public class TargetManager
 {
-    private static final int LOCAL_ID = 0;
-    private static final int GLOBAL_ID = 1;
-    private static final int LEN_LIST = 2;
+    public static final int LOCAL_LIST     = 0;
+    public static final int GLOBAL_LIST    = 1;
+    public static final int ALL_LIST       = 2;
 
-    private TargetList[] targetList = new TargetList[LEN_LIST];
+    private TargetList[] targetList = new TargetList[ALL_LIST];
 
     private TargetEventListener targetEventListener;
 
@@ -93,22 +94,22 @@ public class TargetManager
 
     public TargetList getLocalList()
     {
-        return targetList[LOCAL_ID];
+        return targetList[LOCAL_LIST];
     }
 
     public TargetList getGlobalList()
     {
-        return targetList[GLOBAL_ID];
+        return targetList[GLOBAL_LIST];
     }
 
     public void setLocalList(TargetList list)
     {
-        targetList[LOCAL_ID] = list;
+        targetList[LOCAL_LIST] = list;
     }
 
     private void setGlobalList(TargetList list)
     {
-        targetList[GLOBAL_ID] = list;
+        targetList[GLOBAL_LIST] = list;
     }
 
     private void setAllState(Target.State state)
@@ -117,6 +118,52 @@ public class TargetManager
             for (Target target : list) {
                 target.setState(state);
             }
+        }
+    }
+
+    public void forEach(final int listType, Function<? extends Target> func)
+    {
+        switch (listType) {
+            case LOCAL_LIST:
+                for(Target t : targetList[LOCAL_LIST]) {
+                    func.task(t);
+                }
+                break;
+
+            case GLOBAL_LIST:
+                for(Target t : targetList[GLOBAL_LIST]) {
+                    func.task(t);
+                }
+                break;
+
+            case ALL_LIST:
+                for(Target t : targetList[LOCAL_LIST]) {
+                    func.task(t);
+                }
+                for(Target t : targetList[LOCAL_LIST]) {
+                    func.task(t);
+                }
+                break;
+
+            default:
+                throw new IllegalArgumentException("Argument " + listType + " is Illegal");
+        }
+    }
+
+    public boolean isEmpty(final int listType)
+    {
+        switch (listType) {
+            case LOCAL_LIST:
+                return getLocalList().isEmpty();
+
+            case GLOBAL_LIST:
+                return getGlobalList().isEmpty();
+
+            case ALL_LIST:
+                return getLocalList().isEmpty() && getGlobalList().isEmpty();
+
+            default:
+                throw new IllegalArgumentException("Argument " + listType + " is Illegal");
         }
     }
 
