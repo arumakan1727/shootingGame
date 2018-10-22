@@ -3,7 +3,7 @@
 放物線
  -->
 <stage timeLimit="8000" stageID="4" next="stage-d02.xml">
-    <entity>
+    <local>
         <target type="rankC">
             <appear delay="0" x="100" y="1250"/>
             <xyMotion delay="0" vx="17" vy="-24" accelX="0" accelY="0.4"/>
@@ -37,5 +37,5 @@
             <appear delay="1400" x="1820" y="1250"/>
             <xyMotion delay="0" vx="-17" vy="-24" accelX="0" accelY="0.4"/>
         </target>
-    </entity>
+    </local>
 </stage>

@@ -3,7 +3,7 @@
 ランダムに6つ
  -->
 <stage timeLimit="8000" stageID="4" next="stage-a04.xml">
-    <entity>
+    <local>
         <target type="rankC">
             <appear delay="0" x="$center" y="$center"/>
             <quietMotion timeLimit="2000"/>
@@ -28,5 +28,5 @@
             <appear delay="750" x="$right" y="$left"/>
             <quietMotion timeLimit="2000"/>
         </target>
-    </entity>
+    </local>
 </stage>

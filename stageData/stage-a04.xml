@@ -4,7 +4,7 @@
 画面下に横一列に生成、上へ移動
  -->
 <stage timeLimit="5000" stageID="2" next="stage-b00.xml">
-    <entity>
+    <local>
         <target type="rankA">
             <appear delay="0" x="200" y="680"/>
             <quietMotion timeLimit="4000"/>
@@ -54,5 +54,5 @@
             <appear delay="600" x="200" y="400"/>
             <quietMotion timeLimit="4000"/>
         </target>
-    </entity>
+    </local>
 </stage>

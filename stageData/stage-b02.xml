@@ -4,7 +4,7 @@
 画面下に横一列に生成、上へ移動
  -->
 <stage timeLimit="5000" stageID="2" next="stage-c01.xml">
-    <entity>
+    <local>
         <target type="rankC">
             <appear delay="0" x="200" y="900"/>
             <linearMotion delay="500" speed="6.0" acceleration="0.13"
@@ -35,5 +35,5 @@
             <linearMotion delay="500" speed="6.0" acceleration="0.13"
                           x="$keep" y="$minf" />
         </target>
-    </entity>
+    </local>
 </stage>

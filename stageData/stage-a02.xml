@@ -3,7 +3,7 @@
 中央に5つ
  -->
 <stage timeLimit="8000" stageID="4" next="stage-a03.xml">
-    <entity>
+    <local>
         <target type="rankC">
             <appear delay="0" x="960" y="500"/>
             <quietMotion timeLimit="3000"/>
@@ -26,5 +26,5 @@
             <appear delay="600" x="1360" y="500"/>
             <quietMotion timeLimit="3000"/>
         </target>
-    </entity>
+    </local>
 </stage>

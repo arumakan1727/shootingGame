@@ -4,7 +4,7 @@
 左右から挟み撃ち！w
  -->
 <stage timeLimit="8000" stageID="1" next="stage-b02.xml">
-    <entity>
+    <local>
         <target type="rankC">
             <appear delay="0" x="$left" y="$left"/>
             <linearMotion delay="0" speed="8.0" acceleration="0.1"
@@ -30,5 +30,5 @@
             <linearMotion delay="0" speed="8.0" acceleration="0.1"
                           x="$minf" y="$keep" />
         </target>
-    </entity>
+    </local>
 </stage>

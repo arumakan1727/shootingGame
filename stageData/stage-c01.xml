@@ -4,7 +4,7 @@
 画面下からポーン
  -->
 <stage timeLimit="5000" stageID="3" next="stage-d01.xml">
-    <entity>
+    <local>
         <target type="rankC">
             <appear delay="0" x="$left" y="1200"/>
             <linearMotion delay="0" speed="35.0" acceleration="-0.7"
@@ -38,5 +38,5 @@
             <appear delay="450" x="$left" y="$left"/>
             <quietMotion timeLimit="3000"/>
         </target>
-    </entity>
+    </local>
 </stage>

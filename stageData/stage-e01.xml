@@ -3,12 +3,39 @@
 的の数:6個
 上下から挟み撃ち！w
  -->
-<stage timeLimit="40000" stageID="0" next="stage-a01.xml">
-    <entity>
+<stage timeLimit="2000" stageID="0" next="stage-a01.xml">
+    <local>
         <target type="rankC">
             <appear delay="0" x="500" y="500"/>
             <circleMotion delay="0" speed="0.03" acceleration="0"
                 x="500" y="500" radius="300" deg="90"/>
         </target>
-    </entity>
+    </local>
+    <global>
+        <target type="rankA">
+            <appear delay="0" x="0" y="0"/>
+            <circleMotion delay="0" speed="0.04" acceleration="0"
+                          x="1400" y="600" radius="400" deg="40"/>
+        </target>
+        <target type="rankA">
+            <appear delay="0" x="0" y="0"/>
+            <circleMotion delay="0" speed="0.04" acceleration="0"
+                          x="1400" y="600" radius="400" deg="50"/>
+        </target>
+        <target type="rankA">
+            <appear delay="0" x="0" y="0"/>
+            <circleMotion delay="0" speed="0.04" acceleration="0"
+                          x="1400" y="600" radius="400" deg="60"/>
+        </target>
+        <target type="rankA">
+            <appear delay="0" x="0" y="0"/>
+            <circleMotion delay="0" speed="0.04" acceleration="0"
+                          x="1400" y="600" radius="400" deg="70"/>
+        </target>
+        <target type="rankA">
+            <appear delay="0" x="0" y="0"/>
+            <circleMotion delay="0" speed="0.04" acceleration="0"
+                          x="1400" y="600" radius="400" deg="80"/>
+        </target>
+    </global>
 </stage>
