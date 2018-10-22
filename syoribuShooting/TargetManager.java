@@ -120,12 +120,12 @@ public class TargetManager
         }
     }
     
-    public void forEach(Function<? extends Target> func)
+    public void forEach(Function<Target> func)
     {
         forEach(ALL_LIST, func);
     }
 
-    public void forEach(final int listType, Function<? extends Target> func)
+    public void forEach(final int listType, Function<Target> func)
     {
         switch (listType) {
             case LOCAL_LIST:

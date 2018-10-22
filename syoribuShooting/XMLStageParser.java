@@ -11,6 +11,7 @@ import syoribuShooting.sprite.Target;
 import syoribuShooting.sprite.TargetFactory;
 import syoribuShooting.sprite.TargetType;
 import syoribuShooting.sprite.XYMotion;
+import syoribuShooting.system.DebugOut;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -27,6 +28,8 @@ public class XMLStageParser extends DefaultHandler
     private static final String TAG_QUIET_MOTION  = "quietMotion";
     private static final String TAG_XY_MOTION  = "xyMotion";
     private static final String TAG_CIRCLE_MOTION  = "circleMotion";
+    private static final String TAG_LOCAL   = "local";
+    private static final String TAG_GLOBAL  = "global";
 
     private static final String ATTR_TYPE   = "type";
     private static final String ATTR_X      = "x";
@@ -45,11 +48,14 @@ public class XMLStageParser extends DefaultHandler
     private static final String ATTR_STAGE_ID = "stageID";
 
     private Target nowTarget;
+    private TargetList nowList;
     private BaseStage stage;
     private InputStream istream;
-    
+    private DebugOut debugger = new DebugOut(2, 1);
+
     public XMLStageParser()
     {
+        DebugOut.setEnable(2, false);
     }
     
     public XMLStageParser(InputStream istream)
@@ -133,9 +139,9 @@ public class XMLStageParser extends DefaultHandler
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
     {
-        System.out.println("\nstartElement: " + qName);
+        debugger.println("\nstartElement: " + qName);
         for (int i = 0; i < attributes.getLength(); i++) {
-            System.out.println("attr " + attributes.getQName(i) + " = " + attributes.getValue(i));
+            debugger.println("attr " + attributes.getQName(i) + " = " + attributes.getValue(i));
         }
         switch (qName)
         {
@@ -158,6 +164,14 @@ public class XMLStageParser extends DefaultHandler
 
             case TAG_CIRCLE_MOTION:
                 tagCircleMotion(qName, attributes); break;
+
+            case TAG_LOCAL:
+                nowList = stage.getLocalTargetList();
+                break;
+
+            case TAG_GLOBAL:
+                nowList = stage.getGlobalTargetList();
+                break;
         }
     }
 
@@ -287,12 +301,12 @@ public class XMLStageParser extends DefaultHandler
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException
     {
-        System.out.println("endElement: " + qName);
+        debugger.println("endElement: " + qName);
         switch (qName)
         {
             case TAG_TARGET:
-                System.out.println("XMLstage.add: " + nowTarget);
-                stage.getLocalTargetList().add(nowTarget);
+                debugger.println("XMLstage.add: " + nowTarget);
+                nowList.add(nowTarget);
                 break;
         }
     }
@@ -312,13 +326,13 @@ public class XMLStageParser extends DefaultHandler
     @Override
     public void startDocument() throws SAXException
     {
-        System.out.println("\n-------------------XML Document Start--------------------");
+        debugger.println("\n-------------------XML Document Start--------------------");
     }
 
     @Override
     public void endDocument() throws SAXException
     {
-        System.out.println("----------------------XML Document End----------------------\n");
+        debugger.println("----------------------XML Document End----------------------\n");
     }
 
 }

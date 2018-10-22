@@ -16,7 +16,7 @@ public abstract class FPSTimer implements Runnable
     private long period;
     private Thread thread;
 
-    private final DebugOut debugger = new DebugOut(0, 60);
+    private final DebugOut debugger = new DebugOut(0, 10);
     
     public FPSTimer(int fps)
     {

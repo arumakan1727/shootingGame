@@ -64,15 +64,6 @@ public class ScoreManager
 
     public void update()
     {
-//        final InputEventManager eventManager = game.getEventManager();
-
-//        if (scene.getState() == State.SHOOTING && eventManager.justNowMousePressed(MouseEvent.BUTTON1))
-//        {
-//            checkHit(scene.getNowStage().getHitTarget(),
-//                    eventManager.mousePressedX(),
-//                    eventManager.mousePressedY());
-//        }
-
         for(Iterator<NumberImage> itr = hitPointImages.listIterator(); itr.hasNext();)
         {
             NumberImage elem = itr.next();

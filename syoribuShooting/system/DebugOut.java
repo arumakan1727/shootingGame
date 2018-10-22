@@ -33,6 +33,11 @@ public class DebugOut
     {
         this.print(str + "\n", out);
     }
+
+    public void println(final String str)
+    {
+        println(str, System.out);
+    }
     
     private int countNext(int cnt)
     {

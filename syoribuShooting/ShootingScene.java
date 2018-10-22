@@ -3,6 +3,7 @@ package syoribuShooting;
 import syoribuShooting.sprite.Animation;
 import syoribuShooting.sprite.HitEffect1;
 import syoribuShooting.sprite.Target;
+import syoribuShooting.system.Function;
 import syoribuShooting.system.GifReader;
 import syoribuShooting.system.StopWatch;
 
@@ -25,9 +26,8 @@ enum State
 
 public class ShootingScene extends AbstractScene implements TargetEventListener
 {
-    private static final int TIME_LIMIT = 40 * 1000;
+    private static final int TIME_LIMIT = 10 * 1000;
     private final StopWatch stopWatch;
-    private BaseStage nowStage;
     private State state;
     private ScoreManager scoreManager;
     private TargetManager targetManager;
@@ -81,7 +81,7 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
     private final BufferedImage back_normal = GameConfig.readImage("back02.jpg");
     private final BufferedImage back_fever  = GameConfig.readImage("back02-red.jpg");
 
-    public ShootingScene(final String filePath)
+    ShootingScene(final String filePath)
     {
         super();
         this.setBackImage(back_normal);
@@ -126,7 +126,6 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
     public void update(final Game game, SceneManager.SceneChanger sceneChanger)
     {
         switch (this.getState()) {
-            // TODO time_stageStartedの更新
             case WAIT_SHOOTING:
                 this.setState(State.SHOOTING);
                 this.stopWatch.startTimer();
@@ -134,11 +133,11 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
                 break;
 
             case SHOOTING:
-                if (targetManager.isEmpty(TargetManager.LOCAL_LIST) ||
-                        stageManager.getStageElapsedTime(stopWatch.getElapsed()) > stageManager.getNowStage().getTimeLimit())
-                {
-                    changeStage();
-                }
+//                if (targetManager.isEmpty(TargetManager.LOCAL_LIST) ||
+//                        stageManager.getStageElapsedTime(stopWatch.getElapsed()) > stageManager.getNowStage().getTimeLimit())
+//                {
+//                    changeStage();
+//                }
                 updateShooting();
                 break;
 
@@ -173,12 +172,14 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
                 targetManager.setAllState(Target.State.DISAPPEAR);
             }
         }
-        // TODO write `BaseStage#update()` here
-        //this.nowStage.update(game);
         if (mustFinishStage()) {
-            targetManager.setAllState(Target.State.DISAPPEAR);
-            if (targetManager.isEmpty()) {
-                // TODO stageFinished, changeStage
+            targetManager.forEach(TargetManager.LOCAL_LIST, new Function<Target>()
+            {
+                @Override
+                public void task(Target obj) { obj.setState(Target.State.DISAPPEAR); }
+            });
+            if (targetManager.isEmpty(TargetManager.LOCAL_LIST)) {
+                changeStage();
             }
         }
         targetManager.update(stageManager.getStageElapsedTime(stopWatch.getElapsed()));
@@ -219,8 +220,9 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
 
     private void changeStage()
     {
+        System.err.println("change Stage");
         final BaseStage stage = stageManager.getReadStage();
-        
+
         stageManager.changeStage(stopWatch.getElapsed(), stage);
         targetManager.setLocalList(stage.getLocalTargetList());
         targetManager.getGlobalList().addAll(stage.getGlobalTargetList());
@@ -241,7 +243,7 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
 
     private boolean mustFinishStage()
     {
-        return targetManager.isEmpty(TargetManager.ALL_LIST) ||
+        return targetManager.isEmpty(TargetManager.LOCAL_LIST) ||
                 getStageElapsedTime() >= stageManager.getNowStage().getTimeLimit();
     }
 
