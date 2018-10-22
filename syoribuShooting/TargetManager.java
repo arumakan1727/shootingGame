@@ -30,17 +30,25 @@ public class TargetManager
         setGlobalList(new TargetList());
     }
 
-    public void update(int elapsedTime)
+    public void update(int stageElapsedTime, int allElapsedTime)
     {
         InputEventManager eventManager = Main.getEventManager();
         boolean cursorTouched = false;
 
-        for (TargetList list : targetList)
+        for (int i = 0; i < ALL_LIST; ++i)
         {
+            TargetList list = targetList[i];
+            int elapsed;
+            if (i == LOCAL_LIST) {
+                elapsed = stageElapsedTime;
+            } else {
+                elapsed = allElapsedTime;
+            }
+
             for(ListIterator<Target> it = list.listIterator(); it.hasNext();)
             {
                 final Target target = it.next();
-                target.update(elapsedTime);
+                target.update(elapsed);
 
                 // マウスカーソルが的に触れていればフラグを立てる
                 if (target.isClickable() && target.getBounds().isContain(eventManager.mouseX(), eventManager.mouseY()))

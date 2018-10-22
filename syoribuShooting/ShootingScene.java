@@ -178,7 +178,7 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
                 changeStage();
             }
         }
-        targetManager.update(stageManager.getStageElapsedTime(stopWatch.getElapsed()));
+        targetManager.update(getStageElapsedTime(), stopWatch.getElapsed());
     }
 
     @Override
@@ -220,7 +220,9 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
 
         stageManager.changeStage(stopWatch.getElapsed(), stage);
         targetManager.setLocalList(stage.getLocalTargetList());
-        targetManager.getGlobalList().addAll(stage.getGlobalTargetList());
+        if (stage.getGlobalTargetList().size() > 0) {
+            targetManager.getGlobalList().addAll(stage.getGlobalTargetList());
+        }
         stageManager.readStageWithThread(
                 getResourceAsStream(stage.getNextStageFilePath())
         );

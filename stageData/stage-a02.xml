@@ -27,4 +27,10 @@
             <quietMotion timeLimit="3000"/>
         </target>
     </local>
+    <global>
+        <target type="rankC">
+        <appear delay="700" x="1760" y="500"/>
+        <quietMotion timeLimit="3000"/>
+        </target>
+    </global>
 </stage>
