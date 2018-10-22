@@ -1,9 +1,14 @@
 package syoribuShooting;
 
 import syoribuShooting.sprite.AnimationProcessor;
+import syoribuShooting.system.BufferedResponsivePanel;
+import syoribuShooting.system.BufferedVolatilePanel;
 import syoribuShooting.system.CursorManager;
 import syoribuShooting.system.GameWindow;
 import syoribuShooting.system.InputEventManager;
+import syoribuShooting.system.ScreenBuffer;
+
+import static syoribuShooting.GameConfig.*;
 
 public class Main {
 
@@ -33,7 +38,29 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-        game = new Game();
+        ScreenBuffer buffer = null;
+        for (String arg : args) {
+            if (arg.equals("--buff=another")) {
+                buffer = new BufferedResponsivePanel(
+                        VIRTUAL_WIDTH,
+                        VIRTUAL_HEIGHT,
+                        REAL_WIDTH,
+                        REAL_HEIGHT);
+            }
+            else {
+                System.err.println("Argument `" + arg + "` is undefined.");
+                System.out.println("[Hint]  \'--buff=another\' - Using another buffering mode. ");
+            }
+        }
+
+        if (buffer == null) {
+            buffer = new BufferedVolatilePanel(
+                        VIRTUAL_WIDTH,
+                        VIRTUAL_HEIGHT,
+                        REAL_WIDTH,
+                        REAL_HEIGHT);
+        }
+        game = new Game(buffer);
     }
 
 }

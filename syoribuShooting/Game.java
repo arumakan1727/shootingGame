@@ -1,6 +1,7 @@
 package syoribuShooting;
 
 import syoribuShooting.sprite.AnimationProcessor;
+import syoribuShooting.system.BufferedResponsivePanel;
 import syoribuShooting.system.ScreenBuffer;
 import syoribuShooting.system.BufferedVolatilePanel;
 import syoribuShooting.system.CursorManager;
@@ -70,14 +71,11 @@ public class Game extends FPSTimer
         return this.animationProcessor;
     }
 
-    Game()
+    Game(ScreenBuffer screenBuffer)
     {
         super(GameConfig.FPS);
 
         // 描画に用いるインスタンスの選択
-        ScreenBuffer screenBuffer;
-//        screenBuffer = new BufferedResponsivePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
-        screenBuffer = new BufferedVolatilePanel(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, REAL_WIDTH, REAL_HEIGHT);
         this.window = new GameWindow(screenBuffer,GameConfig.isFullScreen);
         this.window.getEventManager().setCorrection(GameConfig.REAL_VIRTUAL_CORRECTION);
         
