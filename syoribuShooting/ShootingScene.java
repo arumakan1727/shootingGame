@@ -114,6 +114,7 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
         this.setState(State.WAIT_SHOOTING);
         this.stopWatch.initTimer(TIME_LIMIT);
         this.fireFrameAnim.setY(120);
+        Main.getCursorManager().changeCurrentCursor(ID_SHOOTING_CURSOR_NORMAL);
     }
 
     @Override
@@ -216,37 +217,16 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
         this.state = state;
     }
 
-    public BaseStage getNowStage()
-    {
-        return nowStage;
-    }
-
-    public void setNowStage(BaseStage nowStage)
-    {
-        this.nowStage = nowStage;
-    }
-
-
     private void changeStage()
     {
         final BaseStage stage = stageManager.getReadStage();
+        
         stageManager.changeStage(stopWatch.getElapsed(), stage);
         targetManager.setLocalList(stage.getLocalTargetList());
         targetManager.getGlobalList().addAll(stage.getGlobalTargetList());
         stageManager.readStageWithThread(
-                getResourceAsStream(PATH_XML + stage.getNextStageFilePath())
+                getResourceAsStream(stage.getNextStageFilePath())
         );
-//        try {
-//            readNextStageThread.join();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        BaseStage nextStage = xmlStageParser.getParsedStage();
-//        nextStage.initialize();
-//        nextStage.setState(BaseStage.State.SHOOTING);
-//        setNowStage(nextStage);
-//
-//        this.readNextStage();
     }
 
     private void stop()
@@ -262,7 +242,12 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
     private boolean mustFinishStage()
     {
         return targetManager.isEmpty(TargetManager.ALL_LIST) ||
-                stageManager.getStageElapsedTime(stopWatch.getElapsed()) >= getNowStage().getTimeLimit();
+                getStageElapsedTime() >= stageManager.getNowStage().getTimeLimit();
+    }
+
+    private int getStageElapsedTime()
+    {
+        return stageManager.getStageElapsedTime(stopWatch.getElapsed());
     }
 
     @Override
@@ -282,9 +267,11 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
     {
         scoreManager.notifyHitTarget(e);
         final Target target = e.getTarget();
-        target.setState(Target.State.DISAPPEAR);
-        Main.getAnimationProcessor().add(
-                new HitEffect1(e.getMouseX(), e.getMouseY(), false)
-        );
+        if (target != null)
+        {
+            target.setState(Target.State.DISAPPEAR);
+            Main.getAnimationProcessor().add(
+                    new HitEffect1(e.getMouseX(), e.getMouseY(), false) );
+        }
     }
 }

@@ -196,6 +196,7 @@ public class TargetManager
                 }
             }
         }
+        targetEventListener.clickedTarget(new TargetEvent(null, px, py));
     }
 
     private static boolean isOuter(Target t)
