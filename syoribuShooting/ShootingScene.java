@@ -26,7 +26,7 @@ enum State
 
 public class ShootingScene extends AbstractScene implements TargetEventListener
 {
-    private static final int TIME_LIMIT = 10 * 1000;
+    private static final int TIME_LIMIT = 40 * 1000;
     private final StopWatch stopWatch;
     private State state;
     private ScoreManager scoreManager;
@@ -103,7 +103,7 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
             }
         };
         this.stageManager = new StageManager();
-        stageManager.readStageWithThread(getResourceAsStream(FIRST_STAGE_FILE_PATH));
+        stageManager.readStageWithThread(getResourceAsStream(filePath));
 
         this.setState(State.WAIT_SHOOTING);
     }
@@ -133,11 +133,6 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
                 break;
 
             case SHOOTING:
-//                if (targetManager.isEmpty(TargetManager.LOCAL_LIST) ||
-//                        stageManager.getStageElapsedTime(stopWatch.getElapsed()) > stageManager.getNowStage().getTimeLimit())
-//                {
-//                    changeStage();
-//                }
                 updateShooting();
                 break;
 
@@ -155,6 +150,7 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
                 }
                 break;
         }
+
         this.scoreManager.update();
 
         if (scoreManager.isFever()) {
@@ -195,7 +191,7 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
         }
 
         targetManager.draw(g2d);
-        
+
         g2d.setFont(new Font(Font.MONOSPACED, Font.ITALIC, 70));
         g2d.setColor(Color.GREEN);
         int t = this.stopWatch.getRemainTime();
@@ -220,7 +216,6 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
 
     private void changeStage()
     {
-        System.err.println("change Stage");
         final BaseStage stage = stageManager.getReadStage();
 
         stageManager.changeStage(stopWatch.getElapsed(), stage);
