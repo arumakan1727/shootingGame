@@ -27,13 +27,11 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
 {
     private static final int TIME_LIMIT = 40 * 1000;
     private final StopWatch stopWatch;
-    private int time_stageStarted;
     private BaseStage nowStage;
     private State state;
     private ScoreManager scoreManager;
     private TargetManager targetManager;
-    private XMLStageParser xmlStageParser;
-    private Thread readNextStageThread;
+    private StageManager stageManager;
 
     private Animation fireFrameAnim = new Animation(GameConfig.readNumberedImages("flame%02d.png", 0, 3), 0, 0, true)
     {
@@ -88,7 +86,7 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
         super();
         this.setBackImage(back_normal);
         this.stopWatch = new StopWatch();
-        this.targetManager = new TargetManager(this, getNowStage().getLocalTargetList());
+        this.targetManager = new TargetManager(this);
         this.scoreManager = new ScoreManager()
         {
             @Override
@@ -104,18 +102,15 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
                 setBackImage(back_normal);
             }
         };
-        this.xmlStageParser = new XMLStageParser(GameConfig.getResourceAsStream(filePath));
+        this.stageManager = new StageManager();
+        stageManager.readStageWithThread(getResourceAsStream(FIRST_STAGE_FILE_PATH));
 
-        this.xmlStageParser.parse();
-        this.setNowStage(xmlStageParser.getParsedStage());
-        this.readNextStage();
         this.setState(State.WAIT_SHOOTING);
     }
 
     @Override
     public void initialize(Game game)
     {
-        this.nowStage.initialize();
         this.setState(State.WAIT_SHOOTING);
         this.stopWatch.initTimer(TIME_LIMIT);
         this.fireFrameAnim.setY(120);
@@ -129,27 +124,20 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
     @Override
     public void update(final Game game, SceneManager.SceneChanger sceneChanger)
     {
-        if (nowStage.getState() == BaseStage.State.FINISHED)
-        {
-            changeStage();
-        }
-//        else {
-//            if (game.getEventManager().isKeyPressed(KeyEvent.VK_SPACE)) {
-//                stop();
-//            } else {
-//                restart();
-//            }
-//        }
-
         switch (this.getState()) {
             // TODO time_stageStartedの更新
             case WAIT_SHOOTING:
-                this.stopWatch.startTimer();
                 this.setState(State.SHOOTING);
-                this.nowStage.setState(BaseStage.State.SHOOTING);
+                this.stopWatch.startTimer();
+                changeStage();
                 break;
 
             case SHOOTING:
+                if (targetManager.isEmpty(TargetManager.LOCAL_LIST) ||
+                        stageManager.getStageElapsedTime(stopWatch.getElapsed()) > stageManager.getNowStage().getTimeLimit())
+                {
+                    changeStage();
+                }
                 updateShooting();
                 break;
 
@@ -178,21 +166,21 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
     {
         if (this.stopWatch.isOverTimeLimit())
         {
-            if (this.nowStage.noTargets()) {
+            if (targetManager.isEmpty()) {
                 this.setState(State.TIME_OVER);
             } else {
-                nowStage.makeAllDisappear();
+                targetManager.setAllState(Target.State.DISAPPEAR);
             }
         }
         // TODO write `BaseStage#update()` here
         //this.nowStage.update(game);
         if (mustFinishStage()) {
             targetManager.setAllState(Target.State.DISAPPEAR);
-            if (targetManager.isEmpty(TargetManager.ALL_LIST)) {
+            if (targetManager.isEmpty()) {
                 // TODO stageFinished, changeStage
             }
         }
-        targetManager.update(getStageElapsedTime());
+        targetManager.update(stageManager.getStageElapsedTime(stopWatch.getElapsed()));
     }
 
     @Override
@@ -204,8 +192,8 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
             fireFrameAnim.draw(g2d);
         }
 
-        this.nowStage.draw(g2d);
-
+        targetManager.draw(g2d);
+        
         g2d.setFont(new Font(Font.MONOSPACED, Font.ITALIC, 70));
         g2d.setColor(Color.GREEN);
         int t = this.stopWatch.getRemainTime();
@@ -241,56 +229,40 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
 
     private void changeStage()
     {
-        try {
-            readNextStageThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        BaseStage nextStage = xmlStageParser.getParsedStage();
-        nextStage.initialize();
-        nextStage.setState(BaseStage.State.SHOOTING);
-        setNowStage(nextStage);
-
-        this.readNextStage();
-    }
-
-    private void readNextStage()
-    {
-        readNextStageThread = new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                final String filePath = getNowStage().getNextStageFilePath();
-                xmlStageParser.setInputStream(GameConfig.getResourceAsStream(filePath));
-                xmlStageParser.parse();
-            }
-        });
-
-        readNextStageThread.start();
+        final BaseStage stage = stageManager.getReadStage();
+        stageManager.changeStage(stopWatch.getElapsed(), stage);
+        targetManager.setLocalList(stage.getLocalTargetList());
+        targetManager.getGlobalList().addAll(stage.getGlobalTargetList());
+        stageManager.readStageWithThread(
+                getResourceAsStream(PATH_XML + stage.getNextStageFilePath())
+        );
+//        try {
+//            readNextStageThread.join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        BaseStage nextStage = xmlStageParser.getParsedStage();
+//        nextStage.initialize();
+//        nextStage.setState(BaseStage.State.SHOOTING);
+//        setNowStage(nextStage);
+//
+//        this.readNextStage();
     }
 
     private void stop()
     {
-        nowStage.setState(BaseStage.State.WAITING);
         this.stopWatch.stopTimer();
     }
 
     private void restart()
     {
-        nowStage.setState(BaseStage.State.SHOOTING);
         this.stopWatch.restartTimer();
-    }
-
-    private int getStageElapsedTime()
-    {
-        return stopWatch.getElapsed() - this.time_stageStarted;
     }
 
     private boolean mustFinishStage()
     {
         return targetManager.isEmpty(TargetManager.ALL_LIST) ||
-                getStageElapsedTime() >= getNowStage().getTimeLimit();
+                stageManager.getStageElapsedTime(stopWatch.getElapsed()) >= getNowStage().getTimeLimit();
     }
 
     @Override

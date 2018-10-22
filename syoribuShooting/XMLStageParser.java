@@ -48,9 +48,8 @@ public class XMLStageParser extends DefaultHandler
     private BaseStage stage;
     private InputStream istream;
     
-    public XMLStageParser(String filePath, Class c)
+    public XMLStageParser()
     {
-        this(c.getResourceAsStream(filePath));
     }
     
     public XMLStageParser(InputStream istream)
@@ -275,25 +274,13 @@ public class XMLStageParser extends DefaultHandler
 
         if (stageID < 0) throw new SAXException();
 
-        this.stage = new BaseStage(stageID, nextStageFilePath)
+        this.stage = new BaseStage(nextStageFilePath)
         {
             @Override
             public int getTimeLimit()
             {
                 return timeLimit;
             }
-
-            @Override
-            public boolean shouldBeFinished()
-            {
-                return this.stopWatch.getElapsed() >= this.getTimeLimit() || noTargets();
-            }
-
-            @Override
-            protected void _init() {}
-
-            @Override
-            protected void _update(Game game) {}
         };
     }
 
@@ -305,7 +292,7 @@ public class XMLStageParser extends DefaultHandler
         {
             case TAG_TARGET:
                 System.out.println("XMLstage.add: " + nowTarget);
-                stage.getTargetList().add(nowTarget);
+                stage.getLocalTargetList().add(nowTarget);
                 break;
         }
     }

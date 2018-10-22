@@ -24,10 +24,9 @@ public class TargetManager
 
     private TemporallyBool isCursorTouching = new TemporallyBool();
 
-    public TargetManager(TargetEventListener listener, TargetList localList)
+    public TargetManager(TargetEventListener listener)
     {
         this.targetEventListener = listener;
-        setLocalList(localList);
         setGlobalList(new TargetList());
     }
 
@@ -120,6 +119,11 @@ public class TargetManager
             }
         }
     }
+    
+    public void forEach(Function<? extends Target> func)
+    {
+        forEach(ALL_LIST, func);
+    }
 
     public void forEach(final int listType, Function<? extends Target> func)
     {
@@ -150,6 +154,11 @@ public class TargetManager
         }
     }
 
+    public boolean isEmpty()
+    {
+        return isEmpty(ALL_LIST);
+    }
+    
     public boolean isEmpty(final int listType)
     {
         switch (listType) {

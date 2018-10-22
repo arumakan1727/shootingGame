@@ -1,133 +1,17 @@
 package syoribuShooting;
 
-import syoribuShooting.sprite.HitEffect1;
-import syoribuShooting.sprite.Target;
-import syoribuShooting.system.InputEventManager;
-import syoribuShooting.system.StopWatch;
-
-import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
-import java.util.ConcurrentModificationException;
-import java.util.List;
-import java.util.ListIterator;
-
-import static syoribuShooting.GameConfig.*;
-
 public abstract class BaseStage
 {
     abstract public int getTimeLimit();
 
     private TargetList localTargetList, globalTargetList;
-
     private String nextStageFilePath;
-    private State state;
 
-    public enum State
+    public BaseStage(String nextStageFilePath)
     {
-        WAITING(false),
-        SHOOTING(true),
-        DISAPPEAR(true),
-        FINISHED(false);
-
-        public final boolean isTargetMove;
-
-        State(boolean targetMove)
-        {
-            this.isTargetMove = targetMove;
-        }
-    }
-
-    public BaseStage(int stageID, String nextStageFilePath)
-    {
-        this.STATE_ID = stageID;
-        this.setState(State.WAITING);
         this.nextStageFilePath = nextStageFilePath;
-    }
-
-    public void initialize()
-    {
-        System.out.println("Init elem: " + targets.size());
-        if (this.getState() != State.WAITING) {
-            throw new IllegalStateException("Now state=" + getState() + ". initialize must be WAITING");
-        }
-        this.stopWatch.initTimer();
-        _init();
-    }
-
-    public void update(final Game game)
-    {
-        if (shouldBeFinished())
-        {
-            this.makeAllDisappear();
-            this.setState(State.DISAPPEAR);
-            if (noTargets()) {
-                this.setState(State.FINISHED);
-                return;
-            }
-        }
-        if (! getState().isTargetMove) return;
-
-        final InputEventManager eventManager = game.getEventManager();
-        boolean isTouchingEntity = false;
-
-
-        // リスト中のターゲットを全てアップデートする
-        for (ListIterator<Target> it = targets.listIterator(); it.hasNext();)
-        {
-            final Target elem = it.next();
-            elem.update(stopWatch.getElapsed());
-
-            // マウスカーソルが的に触れていればフラグを立てる
-            if (elem.isClickable() && elem.getBounds().isContain(eventManager.mouseX(), eventManager.mouseY()))
-            {
-                isTouchingEntity = true;
-            }
-
-            // 画面外になったらstateをDISPOSEに変更
-            final int x = ((int) elem.getXdefault());
-            final int y = ((int) elem.getYdefault());
-            if (x < OUTER_WINDOW_MINUS
-                    || y < OUTER_WINDOW_MINUS
-                    || OUTER_WINDOW_PLUS < x
-                    || OUTER_WINDOW_PLUS < y)
-            {
-                elem.setState(Target.State.DISPOSE);
-            }
-
-            // stateがDISPOSEならリストから消す
-            if (elem.getState() == Target.State.DISPOSE)
-            {
-                try {
-                    it.remove();
-                } catch (ConcurrentModificationException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        // 何らかにマウスカーソルが当たっていれば緑の照準カーソルに、そうでなければ通常の照準カーソルにする
-        if (isTouchingEntity) {
-            game.getWindow().getCursorManager().changeCurrentCursor(ID_SHOOTING_CURSOR_GREEN);
-        } else {
-            game.getWindow().getCursorManager().changeCurrentCursor(ID_SHOOTING_CURSOR_NORMAL);
-
-        }
-
-        // クリックされて的に当たっていればhitTargetをセットし、ヒットエフェクト
-        final Target hitTarget = this.checkHit(eventManager);
-        this.setHitTarget(hitTarget);
-        if (hitTarget != null)
-        {
-            hitTarget.setState(Target.State.DISAPPEAR);
-            game.getAnimationProcessor().add(
-                    new HitEffect1(
-                            eventManager.mousePressedX(),
-                            eventManager.mousePressedY(),
-                            false)
-            );
-        }
-
-        _update(game);
+        localTargetList = new TargetList();
+        globalTargetList = new TargetList();
     }
 
     public TargetList getLocalTargetList()
@@ -139,36 +23,6 @@ public abstract class BaseStage
     {
         return globalTargetList;
     }
-
-    public void draw(final Graphics2D g2d)
-    {
-        for (final Target elem : this.targets)
-        {
-            elem.draw(g2d);
-        }
-    }
-
-    public void makeAllDisappear()
-    {
-        for (final Target elem : getTargetList() ) {
-            elem.setState(Target.State.DISAPPEAR);
-        }
-    }
-    public State getState()
-    {
-        return state;
-    }
-
-    public void setState(State state)
-    {
-        this.state = state;
-        if (state == State.SHOOTING) {
-            this.stopWatch.restartTimer();
-        } else {
-            this.stopWatch.stopTimer();
-        }
-    }
-
     
     public String getNextStageFilePath()
     {
