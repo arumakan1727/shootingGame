@@ -5,8 +5,8 @@ public enum TargetType
     rankA(500),
     rankB(300),
     rankC(100),
-    ITEM_SCORE_UP(0),
-    ITEM_TIME_DECREASE(0);
+    scoreUp(0),
+    timeDecrease(0);
 
     private final int defaultScore;
 

@@ -1,8 +1,10 @@
 package syoribuShooting;
 
 import syoribuShooting.sprite.FadeOutNumberImage;
+import syoribuShooting.sprite.Item;
 import syoribuShooting.sprite.NumberImage;
 import syoribuShooting.sprite.Target;
+import syoribuShooting.system.StopWatch;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -24,6 +26,7 @@ public class ScoreManager
     private static final int LT_X_COMBO = LT_X_SCORE;
     private static final int LT_Y_COMBO = 200;
     private static final int BASE_FEVER_POINT = 20;
+    private static final int BONUS_TIME = 10 * 1000;
     private static BufferedImage img_num[] = new BufferedImage[10];
 
     private FeverGauge feverGauge;
@@ -32,6 +35,8 @@ public class ScoreManager
     private List<NumberImage> hitPointImages;
     private int score;
     private int comboCount;
+    private double bonus = 1.0;
+    private StopWatch bonusTimer;
 
     public ScoreManager()
     {
@@ -44,6 +49,7 @@ public class ScoreManager
 
         comboValueImg   = new NumberImage(img_num, 0);
         hitPointImages  = new LinkedList<>();
+        bonusTimer = new StopWatch();
         setScore(0);
         setComboCount(0);
 
@@ -74,6 +80,14 @@ public class ScoreManager
             }
             elem.update();
         }
+        
+        if (bonusTimer.isRunning())
+        {
+            if(bonusTimer.isOverTimeLimit()) {
+                bonus = 1.0;
+                bonusTimer.stopTimer();
+            }
+        }
 
         this.feverGauge.update();
         this.updateFeverState();
@@ -87,6 +101,11 @@ public class ScoreManager
         for (NumberImage elem : hitPointImages)
         {
             elem.draw(g2d);
+        }
+        if (bonusTimer.isRunning())
+            g2d.drawString("bonus" + bonus + ",  time:" + bonusTimer.getRemainTime() / 100, 1300, 200);
+        else {
+            g2d.drawString("bonus: 1", 1300, 200);
         }
     }
 
@@ -129,10 +148,33 @@ public class ScoreManager
     {
         if (hitTarget == null) {
             this.setComboCount(0);
+            return;
         }
-        else {
+        if (hitTarget instanceof Item)
+        {
+            switch (hitTarget.getType()) {
+            case scoreUp:
+                bonus = 1.5;
+                if (bonusTimer.isRunning()) {
+                    bonusTimer.addRemainTime(BONUS_TIME);
+                }
+                else {
+                    bonusTimer.initTimer(BONUS_TIME);
+                    bonusTimer.startTimer();
+                }
+                break;
+
+            case timeDecrease:
+                break;
+                
+            default:
+                break;
+            }
+        }
+        else
+        {
             int targetScore = hitTarget.getScore(px, py);
-            targetScore = targetScore * (isFever()? 2 : 1);
+            targetScore = (int)(targetScore * (isFever()? 2 : 1) * bonus);
             addComboCount(1);
             addScore(targetScore);
 

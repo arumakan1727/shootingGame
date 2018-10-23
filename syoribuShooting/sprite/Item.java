@@ -23,7 +23,7 @@ public class Item extends Target
         if (zoom < 5) {
             this.setState(State.DISPOSE);
         }
-        zoom -= 20;
+        zoom -= 30;
         if (zoom < 0) zoom = 0;
         setZoom(zoom);
         setCenterX(prevCX);

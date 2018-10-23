@@ -51,11 +51,11 @@ public class TargetFactory
                     }
                 };
 
-            case ITEM_SCORE_UP:
-                return new Item(ITEM_SCORE_UP, GameConfig.img_scoreUP, centerX, centerY, motion);
+            case scoreUp:
+                return new Item(scoreUp, GameConfig.img_scoreUP, centerX, centerY, motion);
 
-            case ITEM_TIME_DECREASE:
-                return new Item(ITEM_TIME_DECREASE, GameConfig.img_timeDecrease, centerX, centerY, motion);
+            case timeDecrease:
+                return new Item(timeDecrease, GameConfig.img_timeDecrease, centerX, centerY, motion);
 
             default:
                 return null;

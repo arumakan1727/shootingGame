@@ -23,6 +23,7 @@ public class XMLStageParser extends DefaultHandler
 {
     private static final String TAG_STAGE  = "stage";
     private static final String TAG_TARGET  = "target";
+    private static final String TAG_ITEM    = "item";
     private static final String TAG_APPEAR  = "appear";
     private static final String TAG_LINEAR_MOTION  = "linearMotion";
     private static final String TAG_QUIET_MOTION  = "quietMotion";
@@ -149,6 +150,9 @@ public class XMLStageParser extends DefaultHandler
 
             case TAG_TARGET:
                 tagTarget(qName, attributes); break;
+                
+            case TAG_ITEM:
+                tagItem(qName, attributes); break;
 
             case TAG_APPEAR:
                 tagAppear(qName, attributes); break;
@@ -184,6 +188,16 @@ public class XMLStageParser extends DefaultHandler
                 type = GameConfig.randomTargetType();
             else
                 type = TargetType.valueOf(typeStr);
+        }
+        nowTarget = TargetFactory.createTarget(type);
+    }
+    
+    private void tagItem(String qName, Attributes attr)
+    {
+        final String typeStr = attr.getValue(ATTR_TYPE);
+        TargetType type = TargetType.scoreUp;
+        if (typeStr != null) {
+            type = TargetType.valueOf(typeStr);
         }
         nowTarget = TargetFactory.createTarget(type);
     }
@@ -305,6 +319,7 @@ public class XMLStageParser extends DefaultHandler
         switch (qName)
         {
             case TAG_TARGET:
+            case TAG_ITEM:
                 debugger.println("XMLstage.add: " + nowTarget);
                 nowList.add(nowTarget);
                 break;

@@ -193,7 +193,9 @@ public class TargetManager
         int px = eventManager.mousePressedX();
         int py = eventManager.mousePressedY();
 
-        for (TargetList list : targetList) {
+        for(int i = targetList.length-1; i >= 0; --i)
+        {
+            TargetList list = targetList[i];
             for (ListIterator<Target> it = list.listIterator(list.size()); it.hasPrevious(); )
             {
                 final Target elem = it.previous();

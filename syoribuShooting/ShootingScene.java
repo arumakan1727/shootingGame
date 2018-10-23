@@ -2,6 +2,7 @@ package syoribuShooting;
 
 import syoribuShooting.sprite.Animation;
 import syoribuShooting.sprite.HitEffect1;
+import syoribuShooting.sprite.Item;
 import syoribuShooting.sprite.Target;
 import syoribuShooting.system.Function;
 import syoribuShooting.system.GifReader;
@@ -272,8 +273,21 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
         if (target != null)
         {
             target.setState(Target.State.DISAPPEAR);
-            Main.getAnimationProcessor().add(
-                    new HitEffect1(e.getMouseX(), e.getMouseY(), false) );
+            if (target instanceof Item)
+            {
+                switch (target.getType()) {
+                case timeDecrease:
+                    stopWatch.addRemainTime(-5 * 1000);
+                    break;
+
+                default:
+                    break;
+                }
+            }
+            else
+            {
+                Main.getAnimationProcessor().add( new HitEffect1(e.getMouseX(), e.getMouseY(), false) );
+            }
         }
     }
 }

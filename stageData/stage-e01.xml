@@ -11,4 +11,16 @@
                 x="500" y="500" radius="300" deg="90"/>
         </target>
     </local>
+    <global>
+        <item type="scoreUp">
+            <appear delay="0" x="1000" y="200"/>
+            <circleMotion delay="0" speed="0.02" acceleration="0"
+                x="900" y="500" radius="300" deg="0"/>
+        </item>
+        <item type="timeDecrease">
+            <appear delay="0" x="1000" y="200"/>
+            <circleMotion delay="0" speed="-0.04" acceleration="0"
+                x="1500" y="200" radius="300" deg="180"/>
+        </item>
+    </global>
 </stage>
