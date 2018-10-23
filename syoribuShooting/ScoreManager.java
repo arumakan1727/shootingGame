@@ -4,7 +4,6 @@ import syoribuShooting.sprite.FadeOutNumberImage;
 import syoribuShooting.sprite.Item;
 import syoribuShooting.sprite.NumberImage;
 import syoribuShooting.sprite.Target;
-import syoribuShooting.system.StopWatch;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -33,10 +32,13 @@ public class ScoreManager
     private NumberImage comboValueImg;
     private BufferedImage img_combo;
     private List<NumberImage> hitPointImages;
+    private int hitCount = 0;
     private int score;
     private int comboCount;
+    private int comboMax = 0;
     private double bonus = 1.0;
-    private StopWatch bonusTimer;
+    private int bonusStartedTime = -1;
+    private int nowTime;
 
     public ScoreManager()
     {
@@ -49,7 +51,6 @@ public class ScoreManager
 
         comboValueImg   = new NumberImage(img_num, 0);
         hitPointImages  = new LinkedList<>();
-        bonusTimer = new StopWatch();
         setScore(0);
         setComboCount(0);
 
@@ -66,8 +67,9 @@ public class ScoreManager
         checkHit(e.getTarget(), e.getMouseX(), e.getMouseY());
     }
 
-    public void update()
+    public void update(int elapsedTime)
     {
+        nowTime = elapsedTime;
         for(Iterator<NumberImage> itr = hitPointImages.listIterator(); itr.hasNext();)
         {
             NumberImage elem = itr.next();
@@ -81,11 +83,11 @@ public class ScoreManager
             elem.update();
         }
         
-        if (bonusTimer.isRunning())
+        if (bonusStartedTime >= 0)
         {
-            if(bonusTimer.isOverTimeLimit()) {
+            if(elapsedTime - bonusStartedTime > BONUS_TIME) {
                 bonus = 1.0;
-                bonusTimer.stopTimer();
+                bonusStartedTime = -1;
             }
         }
 
@@ -102,11 +104,20 @@ public class ScoreManager
         {
             elem.draw(g2d);
         }
-        if (bonusTimer.isRunning())
-            g2d.drawString("bonus" + bonus + ",  time:" + bonusTimer.getRemainTime() / 100, 1300, 200);
+
+        /*
+        g2d.setColor(Color.black);
+        if (bonusStartedTime >= 0)
+            g2d.drawString("bonus" + bonus, 1300, 200);
         else {
             g2d.drawString("bonus: 1", 1300, 200);
         }
+        */
+    }
+
+    public ScoreResult getResult()
+    {
+        return new ScoreResult(getScore(), getComboMax(), getHitCount());
     }
 
     private int getScore()
@@ -132,6 +143,7 @@ public class ScoreManager
     private void setComboCount(int comboCount)
     {
         this.comboCount = comboCount;
+        comboMax = max(comboMax, getComboCount());
         comboValueImg.setNum(getComboCount());
     }
     private void addComboCount()
@@ -139,9 +151,19 @@ public class ScoreManager
         this.setComboCount(getComboCount() + 1);
     }
 
+    public int getComboMax()
+    {
+        return comboMax;
+    }
+
     public boolean isFever()
     {
         return feverGauge.isFever();
+    }
+
+    public int getHitCount()
+    {
+        return hitCount;
     }
 
     private void checkHit(final Target hitTarget, int px, int py)
@@ -155,13 +177,7 @@ public class ScoreManager
             switch (hitTarget.getType()) {
             case scoreUp:
                 bonus = 1.5;
-                if (bonusTimer.isRunning()) {
-                    bonusTimer.addRemainTime(BONUS_TIME);
-                }
-                else {
-                    bonusTimer.initTimer(BONUS_TIME);
-                    bonusTimer.startTimer();
-                }
+                bonusStartedTime = nowTime;
                 break;
 
             case timeDecrease:
@@ -173,8 +189,10 @@ public class ScoreManager
         }
         else
         {
+            ++hitCount;
+
             int targetScore = hitTarget.getScore(px, py);
-            targetScore = (int)(targetScore * (isFever()? 2 : 1) * bonus);
+            targetScore = (int)(targetScore * (isFever()? 10 : 1) * bonus);
             addComboCount();
             addScore(targetScore);
 
@@ -189,7 +207,7 @@ public class ScoreManager
             FadeOutNumberImage pointImg = new FadeOutNumberImage(img_num, targetScore, 400, GameConfig.FPS);
 
             // zoom と setCenterX,Y() の順番注意
-            pointImg.zoomWithHeight(40);
+            pointImg.zoomWithHeight(46);
             pointImg.setCenterY(py);
             pointImg.setCenterX(px);
             hitPointImages.add(pointImg);

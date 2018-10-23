@@ -1,8 +1,8 @@
 package syoribuShooting.system;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-import java.awt.Component;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
@@ -18,10 +18,10 @@ public class GameWindow
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         this.window = new JFrame(gd.getDefaultConfiguration());
         this.canvas = renderer;
-        this.eventManager = new InputEventManager((Component)canvas);
+        this.eventManager = new InputEventManager((JPanel)canvas);
         this.cursorManager = new CursorManager(this.getPane());
 
-        this.window.getContentPane().add((Component)this.canvas);  // canvasを追加
+        this.window.getContentPane().add((JPanel)this.canvas);  // canvasを追加
 
         if (isFullScreen)
         {
@@ -56,9 +56,9 @@ public class GameWindow
         return canvas;
     }
     
-    public Component getPane()
+    public JPanel getPane()
     {
-        return (Component)canvas;
+        return (JPanel) canvas;
     }
 
     public InputEventManager getEventManager()

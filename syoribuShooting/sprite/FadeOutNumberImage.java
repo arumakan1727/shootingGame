@@ -15,7 +15,7 @@ public class FadeOutNumberImage extends NumberImage
     public FadeOutNumberImage(BufferedImage[] imgs, int num, int time, int fps)
     {
         super(imgs, num);
-        this.opacity = new Transition(1.5, 0);
+        this.opacity = new Transition(2.0, 0);
         opacity.setAddition(Transition.calcAddition(opacity, fps, time));
     }
 

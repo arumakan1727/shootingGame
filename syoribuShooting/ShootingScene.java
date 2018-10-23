@@ -27,7 +27,7 @@ enum State
 
 public class ShootingScene extends AbstractScene implements TargetEventListener
 {
-    private static final int TIME_LIMIT = 40 * 1000;
+    private static final int TIME_LIMIT = 1 * 1000;
     private final StopWatch stopWatch;
     private State state;
     private ScoreManager scoreManager;
@@ -153,9 +153,12 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
                     }
                 }
                 break;
+
+            case TIME_OVER:
+                sceneChanger.changeScene(new ResultScene(scoreManager.getResult()));
         }
 
-        this.scoreManager.update();
+        this.scoreManager.update(stopWatch.getElapsed());
 
         if (scoreManager.isFever()) {
             fireFrameAnim.update();
