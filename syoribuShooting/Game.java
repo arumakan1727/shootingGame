@@ -9,10 +9,12 @@ import syoribuShooting.system.FPSTimer;
 import syoribuShooting.system.GameWindow;
 import syoribuShooting.system.InputEventManager;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.awt.Cursor;
 
 import static syoribuShooting.GameConfig.*;
@@ -91,8 +93,14 @@ public class Game extends FPSTimer
         cursorManager.defineCursor(Cursor.CROSSHAIR_CURSOR, new Cursor(Cursor.CROSSHAIR_CURSOR));
         cursorManager.defineCursor(Cursor.DEFAULT_CURSOR, new Cursor(Cursor.DEFAULT_CURSOR));
         cursorManager.defineCursor(Cursor.HAND_CURSOR, new Cursor(Cursor.HAND_CURSOR));
-        cursorManager.changeCurrentCursor(Cursor.CROSSHAIR_CURSOR);
-        
+        {
+            BufferedImage clearImg = new BufferedImage(16, 16, BufferedImage.TYPE_4BYTE_ABGR);
+            Graphics2D g = clearImg.createGraphics();
+            g.setColor(new Color(0, 0, 0, 0));
+            g.fillRect(0, 0, 16, 16);
+            g.dispose();
+            cursorManager.defineCursor(ID_CLEAR_CURSOR, clearImg, new Point(0,0));
+        }
         System.out.println("normalCursor: " + cursorManager.validCursor(ID_SHOOTING_CURSOR_NORMAL) + "\ngreenCursor: " + cursorManager.validCursor(ID_SHOOTING_CURSOR_GREEN));
         this.initialize();
         this.start();

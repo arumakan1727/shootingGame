@@ -43,6 +43,7 @@ public final class GameConfig
     public static Cursor shootingCursor, shootingCursorGreen;
     public static final int ID_SHOOTING_CURSOR_NORMAL;
     public static final int ID_SHOOTING_CURSOR_GREEN;
+    public static final int ID_CLEAR_CURSOR;
     public static BufferedImage
             img_shootingCursor,
             img_shootingCursorGreen,
@@ -70,6 +71,7 @@ public final class GameConfig
         
         ID_SHOOTING_CURSOR_NORMAL = 10;
         ID_SHOOTING_CURSOR_GREEN  = 11;
+        ID_CLEAR_CURSOR = 13;
 
         PATH_IMAGE      = "/images/";
         PATH_XML        = "/stageData/";

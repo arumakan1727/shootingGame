@@ -8,6 +8,7 @@ import syoribuShooting.system.GifReader;
 import syoribuShooting.system.StopWatch;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -114,7 +115,10 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
         this.setState(State.WAIT_SHOOTING);
         this.stopWatch.initTimer(TIME_LIMIT);
         this.fireFrameAnim.setY(120);
-        Main.getCursorManager().changeCurrentCursor(ID_SHOOTING_CURSOR_NORMAL);
+        if (! Main.getCursorManager().changeCurrentCursor(ID_SHOOTING_CURSOR_NORMAL))
+        {
+            Main.getCursorManager().changeCurrentCursor(ID_CLEAR_CURSOR);
+        }
     }
 
     @Override

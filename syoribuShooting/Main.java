@@ -41,6 +41,7 @@ public class Main {
         ScreenBuffer buffer = null;
         for (String arg : args) {
             if (arg.equals("--buff=another")) {
+                System.out.println("Using Java-BufferedImage for buffering.");
                 buffer = new BufferedResponsivePanel(
                         VIRTUAL_WIDTH,
                         VIRTUAL_HEIGHT,
@@ -54,6 +55,7 @@ public class Main {
         }
 
         if (buffer == null) {
+            System.out.println("Using VolatileImage for buffering.");
             buffer = new BufferedVolatilePanel(
                         VIRTUAL_WIDTH,
                         VIRTUAL_HEIGHT,
