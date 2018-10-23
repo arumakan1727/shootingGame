@@ -1,16 +1,12 @@
 package syoribuShooting;
 
 import syoribuShooting.sprite.TargetType;
-import syoribuShooting.system.GifReader;
 import syoribuShooting.system.Utils;
 
-import java.awt.Cursor;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,30 +22,23 @@ public final class GameConfig
         public static final int MARGIN = 100;
     }
 
-    private static boolean enableCursor;
-
-    public static final int VIRTUAL_WIDTH;
-    public static final int VIRTUAL_HEIGHT;
-    public static final int REAL_HEIGHT;
-    public static final int REAL_WIDTH;
-    public static final double REAL_VIRTUAL_CORRECTION;
-    public static final int OUTER_WINDOW_PLUS;
-    public static final int OUTER_WINDOW_MINUS;
-    public static final int FPS;
-    public static final boolean isFullScreen;
-    public static final String PATH_IMAGE, PATH_XML;
-    public static final String STAGEDATA_PREFIX;
-    public static final String FIRST_STAGE_FILE_PATH;
-    public static Cursor shootingCursor, shootingCursorGreen;
-    public static final int ID_SHOOTING_CURSOR_NORMAL;
-    public static final int ID_SHOOTING_CURSOR_GREEN;
-    public static final int ID_CLEAR_CURSOR;
-    public static BufferedImage
-            img_shootingCursor,
-            img_shootingCursorGreen,
+    static final int VIRTUAL_WIDTH;
+    static final int VIRTUAL_HEIGHT;
+    static final int REAL_HEIGHT;
+    static final int REAL_WIDTH;
+    static final double REAL_VIRTUAL_CORRECTION;
+    static final int OUTER_WINDOW_PLUS;
+    static final int OUTER_WINDOW_MINUS;
+    static final int FPS;
+    static final boolean isFullScreen;
+    static final String PATH_IMAGE, PATH_XML;
+    static final String FIRST_STAGE_FILE_PATH;
+    static final int ID_SHOOTING_CURSOR_NORMAL;
+    static final int ID_SHOOTING_CURSOR_GREEN;
+    static final int ID_CLEAR_CURSOR;
+    static BufferedImage
             img_targetA, img_targetB, img_targetC,
             img_scoreUP, img_timeDecrease;
-    public static ArrayList<BufferedImage> anim_hit = new ArrayList<>();
 
     private GameConfig() {}
 
@@ -66,7 +55,6 @@ public final class GameConfig
         OUTER_WINDOW_MINUS  = -500;
         FPS          = 50;
         isFullScreen = false;
-        enableCursor = true;
         REAL_VIRTUAL_CORRECTION = (double)VIRTUAL_HEIGHT / (double)REAL_HEIGHT;
         
         ID_SHOOTING_CURSOR_NORMAL = 10;
@@ -75,7 +63,6 @@ public final class GameConfig
 
         PATH_IMAGE      = "/images/";
         PATH_XML        = "/stageData/";
-        STAGEDATA_PREFIX= "stage";
         FIRST_STAGE_FILE_PATH = PATH_XML + "stage-e01.xml";
 
         img_targetA = readImage("super_rare_target.png");
@@ -83,23 +70,6 @@ public final class GameConfig
         img_targetC = readImage("normal_target.png");
         img_scoreUP = readImage("scoreUp.png");
         img_timeDecrease = readImage("timeDown.png");
-        anim_hit = GifReader.readGif(Game.class.getResourceAsStream(PATH_IMAGE + "hit-animation.gif"));
-
-        if (enableCursor) {
-            try {
-                img_shootingCursor      = readImage("shooting_cursor.png");
-                img_shootingCursorGreen = readImage("shooting_cursor_green.png");
-                shootingCursor = toolkit.createCustomCursor(img_shootingCursor, new Point(32, 32), "Shooting-Cursor");
-                shootingCursorGreen = toolkit.createCustomCursor(img_shootingCursorGreen, new Point(32, 32), "Shooting-Cursor-Green");
-            }
-            catch (IndexOutOfBoundsException e) {
-                e.printStackTrace();
-                enableCursor = false;
-            }
-        } else {
-            shootingCursor = null;
-            shootingCursorGreen = null;
-        }
 
         System.out.println("GetResource: done");
         System.out.println("Vertual: " + VIRTUAL_WIDTH + "x" + VIRTUAL_HEIGHT);
@@ -112,20 +82,17 @@ public final class GameConfig
         System.out.println(toolkit.getBestCursorSize(64, 64));
         try {
             Thread.sleep(100);
-        } catch (InterruptedException e) {}
+        } catch (InterruptedException ignored) {}
     }
-
-    public static boolean isEnableCursor() { return enableCursor; }
-
 
     private static int beforeRandX=0, beforeRandY=0;
 
-    public static int randomX(Allocation alloc)
+    static int randomX(Allocation alloc)
     {
         int ret;
         switch (alloc) {
             case LEFT:
-                ret =  Utils.nextInt(0+Allocation.MARGIN, Allocation.BORDER_WIDTH);
+                ret =  Utils.nextInt(Allocation.MARGIN, Allocation.BORDER_WIDTH);
                 break;
             case RIGHT:
                 ret =  Utils.nextInt(VIRTUAL_WIDTH - Allocation.BORDER_WIDTH, VIRTUAL_WIDTH - Allocation.MARGIN);
@@ -134,7 +101,7 @@ public final class GameConfig
                 ret =  Utils.nextInt(Allocation.BORDER_WIDTH, VIRTUAL_WIDTH - Allocation.BORDER_WIDTH);
                 break;
             default:
-                ret =  Utils.nextInt(0+Allocation.MARGIN, VIRTUAL_WIDTH -Allocation.MARGIN);
+                ret =  Utils.nextInt(Allocation.MARGIN, VIRTUAL_WIDTH -Allocation.MARGIN);
         }
         if (Math.abs(ret - beforeRandX) < 100) return randomX(alloc);
 
@@ -142,12 +109,12 @@ public final class GameConfig
         return ret;
     }
 
-    public static int randomY(Allocation alloc)
+    static int randomY(Allocation alloc)
     {
         int ret;
         switch (alloc) {
             case TOP:
-                ret =  Utils.nextInt(0+Allocation.MARGIN, Allocation.BORDER_HEIGHT);
+                ret =  Utils.nextInt(Allocation.MARGIN, Allocation.BORDER_HEIGHT);
                 break;
             case BOTTOM:
                 ret =  Utils.nextInt(VIRTUAL_HEIGHT - Allocation.BORDER_HEIGHT, VIRTUAL_HEIGHT - Allocation.MARGIN);
@@ -156,7 +123,7 @@ public final class GameConfig
                 ret =  Utils.nextInt(Allocation.BORDER_HEIGHT, VIRTUAL_HEIGHT - Allocation.BORDER_HEIGHT);
                 break;
             default:
-                ret =  Utils.nextInt(0+Allocation.MARGIN, VIRTUAL_HEIGHT -Allocation.MARGIN);
+                ret =  Utils.nextInt(Allocation.MARGIN, VIRTUAL_HEIGHT -Allocation.MARGIN);
         }
         if (Math.abs(ret - beforeRandY) < 50) return randomY(alloc);
 
@@ -164,7 +131,7 @@ public final class GameConfig
         return ret;
     }
 
-    public static List<BufferedImage> readNumberedImages(String fileFormat, int from, int to)
+    static List<BufferedImage> readNumberedImages(String fileFormat, int from, int to)
     {
         List<BufferedImage> list = new LinkedList<>();
         for (int i = from; i <= to; ++i) {
@@ -173,19 +140,12 @@ public final class GameConfig
         return list;
     }
 
-    public static InputStream getResourceAsStream(String filePath)
+    static InputStream getResourceAsStream(String filePath)
     {
         return Main.class.getResourceAsStream(filePath);
     }
 
-    public static String getStageDataFileName(int num)
-    {
-        return GameConfig.PATH_XML
-                + GameConfig.STAGEDATA_PREFIX
-                + String.format("%02d.xml", num);
-    }
-
-    public static TargetType randomTargetType()
+    static TargetType randomTargetType()
     {
         int rnd = Utils.nextInt(0, 99);
         if (rnd < 15) return TargetType.rankA;
@@ -193,7 +153,7 @@ public final class GameConfig
         return TargetType.rankC;
     }
     
-    public static BufferedImage readImage(final String fileName)
+    static BufferedImage readImage(final String fileName)
     {
         BufferedImage img = null;
         try

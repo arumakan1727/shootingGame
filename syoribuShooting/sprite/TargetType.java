@@ -2,16 +2,18 @@ package syoribuShooting.sprite;
 
 public enum TargetType
 {
-    rankA(500),
-    rankB(300),
-    rankC(100),
-    scoreUp(0),
-    timeDecrease(0);
+    rankA(0, 500),
+    rankB(1, 300),
+    rankC(2, 100),
+    scoreUp(3, 0),
+    timeDecrease(4, 0);
 
+    public final int ID;
     private final int defaultScore;
 
-    TargetType(int defaultScore)
+    TargetType(int id, int defaultScore)
     {
+        this.ID = id;
         this.defaultScore = defaultScore;
     }
 

@@ -109,34 +109,34 @@ public class ScoreManager
         }
     }
 
-    int getScore()
+    private int getScore()
     {
         return this.score;
     }
 
-    void setScore(int s)
+    private void setScore(int s)
     {
         this.score = s;
     }
 
-    void addScore(int s)
+    private void addScore(int s)
     {
         this.setScore(getScore() + s);
     }
 
-    int getComboCount()
+    private int getComboCount()
     {
         return comboCount;
     }
 
-    void setComboCount(int comboCount)
+    private void setComboCount(int comboCount)
     {
         this.comboCount = comboCount;
         comboValueImg.setNum(getComboCount());
     }
-    void addComboCount(int addition)
+    private void addComboCount()
     {
-        this.setComboCount(getComboCount() + addition);
+        this.setComboCount(getComboCount() + 1);
     }
 
     public boolean isFever()
@@ -175,7 +175,7 @@ public class ScoreManager
         {
             int targetScore = hitTarget.getScore(px, py);
             targetScore = (int)(targetScore * (isFever()? 2 : 1) * bonus);
-            addComboCount(1);
+            addComboCount();
             addScore(targetScore);
 
             int feverAddPoint;
@@ -186,7 +186,7 @@ public class ScoreManager
             }
             this.feverGauge.addPoint(feverAddPoint);
 
-            FadeOutNumberImage pointImg = new FadeOutNumberImage(img_num, targetScore, 400);
+            FadeOutNumberImage pointImg = new FadeOutNumberImage(img_num, targetScore, 400, GameConfig.FPS);
 
             // zoom と setCenterX,Y() の順番注意
             pointImg.zoomWithHeight(40);

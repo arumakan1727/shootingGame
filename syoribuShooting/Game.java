@@ -1,6 +1,10 @@
 package syoribuShooting;
 
 import syoribuShooting.sprite.AnimationProcessor;
+import syoribuShooting.sprite.HitEffect1;
+import syoribuShooting.sprite.TargetFactory;
+import syoribuShooting.sprite.TargetType;
+import syoribuShooting.system.GifReader;
 import syoribuShooting.system.ScreenBuffer;
 import syoribuShooting.system.CursorManager;
 import syoribuShooting.system.FPSTimer;
@@ -34,6 +38,30 @@ public class Game extends FPSTimer
 
     private void initialize()
     {
+        // カスタムカーソルの設定
+        CursorManager cursorManager = this.window.getCursorManager();
+        cursorManager.defineCursor(ID_SHOOTING_CURSOR_NORMAL, readImage("shooting_cursor.png"), new Point(32, 32));
+        cursorManager.defineCursor(ID_SHOOTING_CURSOR_GREEN, readImage("shooting_cursor_green.png"), new Point(32, 32));
+        cursorManager.defineCursor(Cursor.CROSSHAIR_CURSOR, new Cursor(Cursor.CROSSHAIR_CURSOR));
+        cursorManager.defineCursor(Cursor.DEFAULT_CURSOR, new Cursor(Cursor.DEFAULT_CURSOR));
+        cursorManager.defineCursor(Cursor.HAND_CURSOR, new Cursor(Cursor.HAND_CURSOR));
+        {
+            final BufferedImage clearImg = new BufferedImage(16, 16, BufferedImage.TYPE_4BYTE_ABGR);
+            Graphics2D g = clearImg.createGraphics();
+            g.setColor(new Color(0, 0, 0, 0));
+            g.fillRect(0, 0, 16, 16);
+            g.dispose();
+            cursorManager.defineCursor(ID_CLEAR_CURSOR, clearImg, new Point(0,0));
+        }
+        System.out.println("normalCursor: " + cursorManager.validCursor(ID_SHOOTING_CURSOR_NORMAL) + "\ngreenCursor: " + cursorManager.validCursor(ID_SHOOTING_CURSOR_GREEN));
+
+        TargetFactory.setTargetImage(TargetType.rankA.ID, img_targetA);
+        TargetFactory.setTargetImage(TargetType.rankB.ID, img_targetB);
+        TargetFactory.setTargetImage(TargetType.rankC.ID, img_targetC);
+        TargetFactory.setTargetImage(TargetType.scoreUp.ID, img_scoreUP);
+        TargetFactory.setTargetImage(TargetType.timeDecrease.ID, img_timeDecrease);
+
+        HitEffect1.setAnimation(GifReader.readGif(getResourceAsStream(PATH_IMAGE + "hit-animation.gif")));
     }
 
     private void checkCloseTrigger()
@@ -83,23 +111,6 @@ public class Game extends FPSTimer
         this.eventManager = window.getEventManager();
         this.sceneManager = new SceneManager(new TitleScene());
         this.animationProcessor = new AnimationProcessor();
-        
-        // カスタムカーソルの設定
-        CursorManager cursorManager = this.window.getCursorManager();
-        cursorManager.defineCursor(ID_SHOOTING_CURSOR_NORMAL, readImage("shooting_cursor.png"), new Point(32, 32));
-        cursorManager.defineCursor(ID_SHOOTING_CURSOR_GREEN, readImage("shooting_cursor_green.png"), new Point(32, 32));
-        cursorManager.defineCursor(Cursor.CROSSHAIR_CURSOR, new Cursor(Cursor.CROSSHAIR_CURSOR));
-        cursorManager.defineCursor(Cursor.DEFAULT_CURSOR, new Cursor(Cursor.DEFAULT_CURSOR));
-        cursorManager.defineCursor(Cursor.HAND_CURSOR, new Cursor(Cursor.HAND_CURSOR));
-        {
-            final BufferedImage clearImg = new BufferedImage(16, 16, BufferedImage.TYPE_4BYTE_ABGR);
-            Graphics2D g = clearImg.createGraphics();
-            g.setColor(new Color(0, 0, 0, 0));
-            g.fillRect(0, 0, 16, 16);
-            g.dispose();
-            cursorManager.defineCursor(ID_CLEAR_CURSOR, clearImg, new Point(0,0));
-        }
-        System.out.println("normalCursor: " + cursorManager.validCursor(ID_SHOOTING_CURSOR_NORMAL) + "\ngreenCursor: " + cursorManager.validCursor(ID_SHOOTING_CURSOR_GREEN));
         this.initialize();
         this.start();
         this.window.getPane().requestFocus();

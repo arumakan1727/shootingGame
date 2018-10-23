@@ -12,19 +12,11 @@ public class FadeOutNumberImage extends NumberImage
 {
     private Transition opacity;
 
-    public FadeOutNumberImage(BufferedImage[] imgs, int num, int time)
-    {
-        this(imgs, num, time, 0, 0, 100);
-    }
-
-    public FadeOutNumberImage(BufferedImage[] imgs, int num, int time, int x, int y, int zoom)
+    public FadeOutNumberImage(BufferedImage[] imgs, int num, int time, int fps)
     {
         super(imgs, num);
         this.opacity = new Transition(1.5, 0);
-        opacity.setAddition(Transition.calcAddition(opacity, GameConfig.FPS, time));
-        setX(x);
-        setY(y);
-        setZoom(zoom);
+        opacity.setAddition(Transition.calcAddition(opacity, fps, time));
     }
 
     @Override

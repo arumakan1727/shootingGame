@@ -2,11 +2,20 @@ package syoribuShooting.sprite;
 
 import syoribuShooting.GameConfig;
 
+import java.awt.image.BufferedImage;
+
 import static syoribuShooting.sprite.TargetType.*;
 
 public class TargetFactory
 {
     private TargetFactory() {}
+
+    private static final BufferedImage targetImages[] = new BufferedImage[TargetType.values().length];
+
+    public static void setTargetImage(int ID, final BufferedImage img)
+    {
+        targetImages[ID] = img;
+    }
 
     public static Target createTarget(final TargetType type)
     {
@@ -23,39 +32,34 @@ public class TargetFactory
         switch (type)
         {
             case rankA:
-                return new Target(rankA, GameConfig.img_targetA, centerX, centerY, motion)
+                return new Target(rankA, targetImages[rankA.ID], centerX, centerY, motion)
                 {
                     @Override
-                    protected void _update()
-                    { }
+                    protected void _update() {}
 
                     @Override
                     public Bounds getBounds() { return new CircleBounds(getCenterX(), getCenterY(), 70); }
                 };
 
             case rankB:
-                return new Target(rankB, GameConfig.img_targetB, centerX, centerY, motion)
+                return new Target(rankB, targetImages[rankB.ID], centerX, centerY, motion)
                 {
                     @Override
-                    protected void _update()
-                    {
-                    }
+                    protected void _update() {}
                 };
 
             case rankC:
-                return new Target(rankC, GameConfig.img_targetC, centerX, centerY, motion)
+                return new Target(rankC, targetImages[rankC.ID], centerX, centerY, motion)
                 {
                     @Override
-                    protected void _update()
-                    {
-                    }
+                    protected void _update() {}
                 };
 
             case scoreUp:
-                return new Item(scoreUp, GameConfig.img_scoreUP, centerX, centerY, motion);
+                return new Item(scoreUp, targetImages[scoreUp.ID], centerX, centerY, motion);
 
             case timeDecrease:
-                return new Item(timeDecrease, GameConfig.img_timeDecrease, centerX, centerY, motion);
+                return new Item(timeDecrease, targetImages[timeDecrease.ID], centerX, centerY, motion);
 
             default:
                 return null;
