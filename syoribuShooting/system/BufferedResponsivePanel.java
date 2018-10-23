@@ -11,7 +11,6 @@ public class BufferedResponsivePanel extends JPanel implements ScreenBuffer
 {
     private final BufferedImage buffer;
     private final int realHeight, realWidth;
-    private final int virtualHeight, virtualWidth;
 
     public BufferedResponsivePanel(int virtualWidth, int virtualHeight, int realWidth, int realHeight)
     {
@@ -21,8 +20,6 @@ public class BufferedResponsivePanel extends JPanel implements ScreenBuffer
         this.setSize(dimension);
         this.realHeight = realHeight;
         this.realWidth  = realWidth;
-        this.virtualWidth = virtualWidth;
-        this.virtualHeight = virtualHeight;
 
         this.buffer = new BufferedImage(
                 virtualWidth,

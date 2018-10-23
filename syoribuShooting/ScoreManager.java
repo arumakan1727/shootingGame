@@ -3,12 +3,10 @@ package syoribuShooting;
 import syoribuShooting.sprite.FadeOutNumberImage;
 import syoribuShooting.sprite.NumberImage;
 import syoribuShooting.sprite.Target;
-import syoribuShooting.system.InputEventManager;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;

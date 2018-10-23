@@ -1,9 +1,7 @@
 package syoribuShooting;
 
 import syoribuShooting.sprite.AnimationProcessor;
-import syoribuShooting.system.BufferedResponsivePanel;
 import syoribuShooting.system.ScreenBuffer;
-import syoribuShooting.system.BufferedVolatilePanel;
 import syoribuShooting.system.CursorManager;
 import syoribuShooting.system.FPSTimer;
 import syoribuShooting.system.GameWindow;
@@ -94,7 +92,7 @@ public class Game extends FPSTimer
         cursorManager.defineCursor(Cursor.DEFAULT_CURSOR, new Cursor(Cursor.DEFAULT_CURSOR));
         cursorManager.defineCursor(Cursor.HAND_CURSOR, new Cursor(Cursor.HAND_CURSOR));
         {
-            BufferedImage clearImg = new BufferedImage(16, 16, BufferedImage.TYPE_4BYTE_ABGR);
+            final BufferedImage clearImg = new BufferedImage(16, 16, BufferedImage.TYPE_4BYTE_ABGR);
             Graphics2D g = clearImg.createGraphics();
             g.setColor(new Color(0, 0, 0, 0));
             g.fillRect(0, 0, 16, 16);
