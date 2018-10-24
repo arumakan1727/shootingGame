@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,8 +50,8 @@ public final class GameConfig
         VIRTUAL_HEIGHT  = 1080;
         REAL_WIDTH      = (int) (toolkit.getScreenSize().getWidth());
         REAL_HEIGHT     = (int) (toolkit.getScreenSize().getHeight());
-//        REAL_WIDTH = 1366;
-//        REAL_HEIGHT = 768;
+//        REAL_WIDTH = (int)(1920 * 0.4);
+//        REAL_HEIGHT = (int)(1080 * 0.4);
         OUTER_WINDOW_PLUS   = VIRTUAL_WIDTH + 500;
         OUTER_WINDOW_MINUS  = -500;
         FPS          = 50;
@@ -143,6 +144,11 @@ public final class GameConfig
     static InputStream getResourceAsStream(String filePath)
     {
         return Main.class.getResourceAsStream(filePath);
+    }
+    
+    static URL getResource(String filePath)
+    {
+        return Main.class.getResource(filePath);
     }
 
     static TargetType randomTargetType()

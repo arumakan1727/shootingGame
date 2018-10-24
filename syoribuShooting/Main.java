@@ -62,6 +62,7 @@ public class Main {
                         REAL_WIDTH,
                         REAL_HEIGHT);
         }
+        
         game = new Game(buffer);
     }
 

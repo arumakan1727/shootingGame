@@ -6,6 +6,7 @@ import syoribuShooting.sprite.Item;
 import syoribuShooting.sprite.Target;
 import syoribuShooting.system.Function;
 import syoribuShooting.system.GifReader;
+import syoribuShooting.system.MP3Player;
 import syoribuShooting.system.StopWatch;
 
 import java.awt.Color;
@@ -27,12 +28,13 @@ enum State
 
 public class ShootingScene extends AbstractScene implements TargetEventListener
 {
-    private static final int TIME_LIMIT = 1 * 1000;
+    private static final int TIME_LIMIT = 60 * 1000;
     private final StopWatch stopWatch;
     private State state;
     private ScoreManager scoreManager;
     private TargetManager targetManager;
     private StageManager stageManager;
+    private MP3Player bgm;
 
     private Animation fireFrameAnim = new Animation(GameConfig.readNumberedImages("flame%02d.png", 0, 3), 0, 0, true)
     {
@@ -119,11 +121,13 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
         {
             Main.getCursorManager().changeCurrentCursor(ID_CLEAR_CURSOR);
         }
+        bgm = new MP3Player(getResource("/sounds/boss3loop.mp3"), true);
     }
 
     @Override
     public void finish(Game game)
     {
+//        bgm.stop();
     }
 
     @Override
@@ -192,11 +196,11 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
     public void draw(final Graphics2D g2d)
     {
         g2d.drawImage(this.getBackImage(), 0, 0, GameConfig.VIRTUAL_WIDTH, GameConfig.VIRTUAL_HEIGHT, null);
-
+/*
         if (scoreManager.isFever()) {
             fireFrameAnim.draw(g2d);
         }
-
+*/
         targetManager.draw(g2d);
 
         g2d.setFont(new Font(Font.MONOSPACED, Font.ITALIC, 70));
@@ -271,6 +275,8 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
     @Override
     public void clickedTarget(TargetEvent e)
     {
+        new MP3Player(getResource("/sounds/gun.mp3"), false);
+        
         scoreManager.notifyHitTarget(e);
         final Target target = e.getTarget();
         if (target != null)
@@ -290,6 +296,7 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
             else
             {
                 Main.getAnimationProcessor().add( new HitEffect1(e.getMouseX(), e.getMouseY(), false) );
+                new MP3Player(getResource("/sounds/bomb.mp3"), false);
             }
         }
     }

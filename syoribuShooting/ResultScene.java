@@ -1,19 +1,13 @@
 package syoribuShooting;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.OverlayLayout;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.TextField;
 import java.awt.geom.RoundRectangle2D;
 
 import static syoribuShooting.GameConfig.*;
@@ -30,12 +24,13 @@ public class ResultScene extends AbstractScene
     private static final int PADDING_TOP    = 100;
     private static final int ROW_HEIGHT     = 64;
     private static final int ROW_MARGIN     = 50;
+    private static final int LINE_HEIGHT    = ROW_HEIGHT + ROW_MARGIN;
     private static final int ROW_GX         = AREA_LT_X + PADDING_LEFT;
     private static final int ROW_SX         = ROW_GX + ROW_MOVE;
     private static final int ROW_SCORE_SY   = AREA_LT_Y + PADDING_TOP;
 
     private ScoreResult scoreResult;
-    private Row row_score, row_maxCombo;
+    private Row row_score, row_maxCombo, row_hitCount;
     private int cycle = 0;
     private String nickname = null;
 
@@ -44,7 +39,8 @@ public class ResultScene extends AbstractScene
         scoreResult = result;
         setBackImage(readImage("back01.jpg"));
         row_score   = new Row("Score", scoreResult.getScore(), ROW_SX, ROW_SCORE_SY, ROW_GX);
-        row_maxCombo= new Row("maxCombo", scoreResult.getComboMax(), ROW_SX + 70, ROW_SCORE_SY + ROW_HEIGHT+ ROW_MARGIN, ROW_GX);
+        row_maxCombo= new Row("maxCombo", scoreResult.getComboMax(), ROW_SX + 50, ROW_SCORE_SY + LINE_HEIGHT, ROW_GX);
+        row_hitCount = new Row("hitCount", scoreResult.getHitCount(), ROW_SX + 100, ROW_SCORE_SY + LINE_HEIGHT*2, ROW_GX);
     }
 
     @Override
@@ -65,10 +61,16 @@ public class ResultScene extends AbstractScene
     {
         row_score.update(cycle >= 70);
         row_maxCombo.update(cycle >= 70);
+        row_hitCount.update(cycle >= 70);
         ++cycle;
-
+/*
         if ((nickname == null || nickname.isEmpty()) && (cycle > 180) && cycle % 80 == 0) {
             nickname = JOptionPane.showInputDialog(Main.getWindow().getPane(), "ニックネームを入力してください");
+        }
+        */
+        
+        if (cycle > 5 * 60) {
+            sceneChanger.changeScene(new TitleScene());
         }
     }
 
@@ -76,12 +78,13 @@ public class ResultScene extends AbstractScene
     public void draw(Graphics2D g2d)
     {
         g2d.drawImage(getBackImage(), 0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT, null);
-        g2d.setColor(new Color(240, 240, 240, 200));
+        g2d.setColor(new Color(240, 240, 240, 150));
         g2d.fill(new RoundRectangle2D.Float(AREA_LT_X, AREA_LT_Y, AREA_WIDTH, AREA_HEIGHT, 50, 50));
 
         g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, ROW_HEIGHT));
         row_score.draw(g2d);
         row_maxCombo.draw(g2d);
+        row_hitCount.draw(g2d);
     }
 
     static class Row
