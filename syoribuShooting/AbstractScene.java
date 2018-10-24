@@ -28,4 +28,13 @@ public abstract class AbstractScene
     {
         this.backImage = backImage;
     }
+
+    /*
+    @Override
+    protected void finalize() throws Throwable
+    {
+        super.finalize();
+        System.err.println("##########  " + getClass().getEnclosingClass().getName() + "  ###########");
+    }
+    */
 }

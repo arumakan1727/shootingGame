@@ -16,11 +16,12 @@ public abstract class FPSTimer implements Runnable
     private long period;
     private Thread thread;
 
-    private final DebugOut debugger = new DebugOut(0, 20);
+    private final DebugOut debugger = new DebugOut(0, 60);
     
     public FPSTimer(int fps)
     {
         this.setFPS(fps);
+//        DebugOut.setEnable(0, false);
     }
     
     public void setFPS(int fps) throws IllegalArgumentException

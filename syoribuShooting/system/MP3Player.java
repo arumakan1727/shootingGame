@@ -44,7 +44,7 @@ public class MP3Player
                 pthread = new PlayThread();
                 pthread.start();
             }
-            System.out.println("Loop:" + isLoop + " Music-playbackFinished: " + soundUrl);
+//            System.out.println("Loop:" + isLoop + " Music-playbackFinished: " + soundUrl);
         }
     }
     // 再生スレッドクラス
@@ -65,7 +65,6 @@ public class MP3Player
             } catch (JavaLayerException | IOException e) {
                 e.printStackTrace();
             } finally {
-                System.out.println("Finally");
                 //再生が終わったら閉じる
                 if (player != null) player.close();
                 try {

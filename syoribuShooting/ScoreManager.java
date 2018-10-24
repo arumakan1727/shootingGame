@@ -36,6 +36,7 @@ public class ScoreManager
     private int score;
     private int comboCount;
     private int comboMax = 0;
+    private int criticalCount = 0;
     private double bonus = 1.0;
     private int bonusStartedTime = -1;
     private int nowTime;
@@ -117,7 +118,7 @@ public class ScoreManager
 
     public ScoreResult getResult()
     {
-        return new ScoreResult(getScore(), getComboMax(), getHitCount());
+        return new ScoreResult(getScore(), getComboMax(), getHitCount(), getCriticalCount());
     }
 
     private int getScore()
@@ -166,6 +167,11 @@ public class ScoreManager
         return hitCount;
     }
 
+    public int getCriticalCount()
+    {
+        return criticalCount;
+    }
+
     private void checkHit(final Target hitTarget, int px, int py)
     {
         if (hitTarget == null) {
@@ -192,7 +198,12 @@ public class ScoreManager
             ++hitCount;
 
             int targetScore = hitTarget.getScore(px, py);
-            targetScore = (int)(targetScore * (isFever()? 10 : 1) * bonus);
+
+            if (targetScore > hitTarget.getType().getDefaultScore()) {
+                ++criticalCount;
+            }
+
+            targetScore = (int)(targetScore * (isFever()? 3 : 1) * bonus);
             addComboCount();
             addScore(targetScore);
 

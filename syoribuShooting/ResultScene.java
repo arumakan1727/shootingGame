@@ -8,7 +8,9 @@ import java.awt.Composite;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
 
 import static syoribuShooting.GameConfig.*;
 import static java.lang.Math.*;
@@ -29,18 +31,22 @@ public class ResultScene extends AbstractScene
     private static final int ROW_SX         = ROW_GX + ROW_MOVE;
     private static final int ROW_SCORE_SY   = AREA_LT_Y + PADDING_TOP;
 
-    private ScoreResult scoreResult;
-    private Row row_score, row_maxCombo, row_hitCount;
+    private static final BufferedImage backImage = readImage("back01.jpg");
+    private static final Color AREA_COLOR = new Color(240, 240, 240, 150);
+    private static final Shape AREA_SHAPE = new RoundRectangle2D.Float(AREA_LT_X, AREA_LT_Y, AREA_WIDTH, AREA_HEIGHT, 50, 50);
+    private static final Font ROW_FONT  = new Font(Font.SANS_SERIF, Font.BOLD, ROW_HEIGHT);
+
+    private Row row_score, row_maxCombo, row_hitCount, row_criticalCount;
     private int cycle = 0;
     private String nickname = null;
 
-    ResultScene(ScoreResult result)
+    ResultScene(final ScoreResult result)
     {
-        scoreResult = result;
-        setBackImage(readImage("back01.jpg"));
-        row_score   = new Row("Score", scoreResult.getScore(), ROW_SX, ROW_SCORE_SY, ROW_GX);
-        row_maxCombo= new Row("maxCombo", scoreResult.getComboMax(), ROW_SX + 50, ROW_SCORE_SY + LINE_HEIGHT, ROW_GX);
-        row_hitCount = new Row("hitCount", scoreResult.getHitCount(), ROW_SX + 100, ROW_SCORE_SY + LINE_HEIGHT*2, ROW_GX);
+        setBackImage(backImage);
+        row_score   = new Row("Score", result.getScore(), ROW_SX, ROW_SCORE_SY, ROW_GX);
+        row_maxCombo= new Row("maxCombo", result.getComboMax(), ROW_SX + 50, ROW_SCORE_SY + LINE_HEIGHT, ROW_GX);
+        row_hitCount = new Row("hitCount", result.getHitCount(), ROW_SX + 100, ROW_SCORE_SY + LINE_HEIGHT*2, ROW_GX);
+        row_criticalCount = new Row("criticalCount", result.getCriticalCount(), ROW_SX+150, ROW_SCORE_SY + LINE_HEIGHT*3, ROW_GX);
     }
 
     @Override
@@ -62,13 +68,13 @@ public class ResultScene extends AbstractScene
         row_score.update(cycle >= 70);
         row_maxCombo.update(cycle >= 70);
         row_hitCount.update(cycle >= 70);
+        row_criticalCount.update(cycle >= 70);
         ++cycle;
-/*
-        if ((nickname == null || nickname.isEmpty()) && (cycle > 180) && cycle % 80 == 0) {
-            nickname = JOptionPane.showInputDialog(Main.getWindow().getPane(), "ニックネームを入力してください");
-        }
-        */
         
+//        if ((nickname == null || nickname.isEmpty()) && (cycle > 180) && cycle % 80 == 0) {
+//            nickname = JOptionPane.showInputDialog(Main.getWindow().getPane(), "ニックネームを入力してください");
+//        }
+
         if (cycle > 5 * 60) {
             sceneChanger.changeScene(new TitleScene());
         }
@@ -78,13 +84,21 @@ public class ResultScene extends AbstractScene
     public void draw(Graphics2D g2d)
     {
         g2d.drawImage(getBackImage(), 0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT, null);
-        g2d.setColor(new Color(240, 240, 240, 150));
-        g2d.fill(new RoundRectangle2D.Float(AREA_LT_X, AREA_LT_Y, AREA_WIDTH, AREA_HEIGHT, 50, 50));
+        g2d.setColor(AREA_COLOR);
+        g2d.fill(AREA_SHAPE);
 
-        g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, ROW_HEIGHT));
+        g2d.setFont(ROW_FONT);
         row_score.draw(g2d);
         row_maxCombo.draw(g2d);
         row_hitCount.draw(g2d);
+        row_criticalCount.draw(g2d);
+    }
+
+    @Override
+    protected void finalize() throws Throwable
+    {
+        super.finalize();
+        System.err.println("Result Finalize");
     }
 
     static class Row
@@ -156,7 +170,6 @@ public class ResultScene extends AbstractScene
             if (tmpVal >= 0) {
                 g2d.drawString(String.valueOf(tmpVal), VALUE_X, y);
             }
-
         }
     }
 }

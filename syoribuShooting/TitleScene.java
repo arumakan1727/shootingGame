@@ -7,25 +7,18 @@ import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import static syoribuShooting.GameConfig.FIRST_STAGE_FILE_PATH;
 import static syoribuShooting.GameConfig.readImage;
 
 public class TitleScene extends AbstractScene implements ActionListener
 {
+    private static final BufferedImage backImage = GameConfig.readImage("title_logo.jpg");
     private static final int BTN_Y = 750;
+    private static final BufferedImage img_normalBtn = readImage("play_button00.png");
+    private static final BufferedImage img_hoverBtn = readImage("play_button01.png");
+
     private boolean changeSceneFlag = false;
     private Button btn_startPlay;
-    private BufferedImage img_normalBtn = readImage("play_button00.png");
-    private BufferedImage img_hoverBtn = readImage("play_button01.png");
-    private AbstractScene nextScene = null;
-
-    private Thread nextSceneBuiltThread = new Thread(new Runnable()
-    {
-        @Override
-        public void run()
-        {
-            nextScene = new ShootingScene(GameConfig.FIRST_STAGE_FILE_PATH);
-        }
-    });
 
     public TitleScene()
     {
@@ -34,7 +27,7 @@ public class TitleScene extends AbstractScene implements ActionListener
         btn_startPlay.setCenterX(GameConfig.VIRTUAL_WIDTH / 2);
         btn_startPlay.setY(BTN_Y);
         btn_startPlay.setActionListener(this);
-        setBackImage(GameConfig.readImage("title_logo.jpg"));
+        setBackImage(backImage);
     }
 
     @Override
@@ -43,7 +36,20 @@ public class TitleScene extends AbstractScene implements ActionListener
         game.getWindow().getCursorManager().changeCurrentCursor(Cursor.DEFAULT_CURSOR);
         btn_startPlay.init(game.getWindow().getCursorManager());
 //        btn_startPlay.setEnable(false);
-        nextSceneBuiltThread.start();
+//        new Thread(new Runnable()
+//        {
+//            @Override
+//            public void run()
+//            {
+//                try {
+//                    Thread.sleep(10 * 1000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                Runtime.getRuntime().gc();
+//                System.out.println("Garbage Collected");
+//            }
+//        }).start();
     }
 
     @Override
@@ -56,7 +62,7 @@ public class TitleScene extends AbstractScene implements ActionListener
     public void update(Game game, SceneManager.SceneChanger sceneChanger)
     {
         if (changeSceneFlag) {
-            sceneChanger.changeScene(nextScene);
+            sceneChanger.changeScene(new ShootingScene(FIRST_STAGE_FILE_PATH));
         }
         btn_startPlay.update(game.getEventManager());
     }
@@ -110,5 +116,12 @@ public class TitleScene extends AbstractScene implements ActionListener
         btn_startPlay.setZoom(100);
         btn_startPlay.setCenterX(prevCX);
         btn_startPlay.setCenterY(prevCY);
+    }
+
+    @Override
+    protected void finalize() throws Throwable
+    {
+        super.finalize();
+        System.err.println("Title Finalize");
     }
 }

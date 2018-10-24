@@ -28,7 +28,7 @@ enum State
 
 public class ShootingScene extends AbstractScene implements TargetEventListener
 {
-    private static final int TIME_LIMIT = 60 * 1000;
+    private static final int TIME_LIMIT = 10 * 1000;
     private final StopWatch stopWatch;
     private State state;
     private ScoreManager scoreManager;
@@ -36,34 +36,34 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
     private StageManager stageManager;
     private MP3Player bgm;
 
-    private Animation fireFrameAnim = new Animation(GameConfig.readNumberedImages("flame%02d.png", 0, 3), 0, 0, true)
-    {
-        private static final int WAIT_CYCLE = 4;
-        private int cycle = 0;
-        @Override
-        public void update()
-        {
-            if(!scoreManager.isFever()) {
-                this.setDisposed(true);
-                return;
-            }
-            if (cycle == 0) {
-                addIndex(1);
-            }
-            ++cycle;
-            if (cycle >= WAIT_CYCLE) cycle = 0;
-        }
-
-        @Override
-        public void draw(Graphics2D g2d)
-        {
-            final Shape defaultShape = g2d.getClip();
-            g2d.setClip(new Rectangle(0, 500, GameConfig.VIRTUAL_WIDTH, GameConfig.VIRTUAL_HEIGHT));
-            super.draw(g2d);
-            g2d.setClip(defaultShape);
-        }
-    };
-    private Animation intoOverHeatAnim = new Animation(GifReader.readGif(GameConfig.getResourceAsStream(GameConfig.PATH_IMAGE + "overheat.gif")), 0, 0, false)
+//    private Animation fireFrameAnim = new Animation(GameConfig.readNumberedImages("flame%02d.png", 0, 3), 0, 0, true)
+//    {
+//        private static final int WAIT_CYCLE = 4;
+//        private int cycle = 0;
+//        @Override
+//        public void update()
+//        {
+//            if(!scoreManager.isFever()) {
+//                this.setDisposed(true);
+//                return;
+//            }
+//            if (cycle == 0) {
+//                addIndex(1);
+//            }
+//            ++cycle;
+//            if (cycle >= WAIT_CYCLE) cycle = 0;
+//        }
+//
+//        @Override
+//        public void draw(Graphics2D g2d)
+//        {
+//            final Shape defaultShape = g2d.getClip();
+//            g2d.setClip(new Rectangle(0, 500, GameConfig.VIRTUAL_WIDTH, GameConfig.VIRTUAL_HEIGHT));
+//            super.draw(g2d);
+//            g2d.setClip(defaultShape);
+//        }
+//    };
+    private static final Animation intoOverHeatAnim = new Animation(GifReader.readGif(GameConfig.getResourceAsStream(GameConfig.PATH_IMAGE + "overheat.gif")), 0, 0, false)
     {
         private static final int WAIT_CYCLE = 1;
         private int cycle = 0;
@@ -81,8 +81,8 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
         }
     };
 
-    private final BufferedImage back_normal = GameConfig.readImage("back02.jpg");
-    private final BufferedImage back_fever  = GameConfig.readImage("back02-red.jpg");
+    private static final BufferedImage back_normal = GameConfig.readImage("back02.jpg");
+    private static final BufferedImage back_fever  = GameConfig.readImage("back02-red.jpg");
 
     ShootingScene(final String filePath)
     {
@@ -95,6 +95,9 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
             @Override
             public void intoFeverMode()
             {
+                bgm.stop();
+                bgm = new MP3Player(bgm_overheat, true);
+                new MP3Player(se_explosion, false);
                 setState(State.INTO_FEVER);
                 stop();
             }
@@ -103,6 +106,8 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
             public void intoNormalMode()
             {
                 setBackImage(back_normal);
+                bgm.stop();
+                bgm = new MP3Player(bgm_shooting, true);
             }
         };
         this.stageManager = new StageManager();
@@ -116,18 +121,18 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
     {
         this.setState(State.WAIT_SHOOTING);
         this.stopWatch.initTimer(TIME_LIMIT);
-        this.fireFrameAnim.setY(120);
+//        this.fireFrameAnim.setY(120);
         if (! Main.getCursorManager().changeCurrentCursor(ID_SHOOTING_CURSOR_NORMAL))
         {
             Main.getCursorManager().changeCurrentCursor(ID_CLEAR_CURSOR);
         }
-        bgm = new MP3Player(getResource("/sounds/boss3loop.mp3"), true);
+        bgm = new MP3Player(bgm_shooting, true);
     }
 
     @Override
     public void finish(Game game)
     {
-//        bgm.stop();
+        bgm.stop();
     }
 
     @Override
@@ -164,9 +169,9 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
 
         this.scoreManager.update(stopWatch.getElapsed());
 
-        if (scoreManager.isFever()) {
-            fireFrameAnim.update();
-        }
+//        if (scoreManager.isFever()) {
+//            fireFrameAnim.update();
+//        }
     }
 
     private void updateShooting()
@@ -237,6 +242,8 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
         stageManager.readStageWithThread(
                 getResourceAsStream(stage.getNextStageFilePath())
         );
+        Runtime.getRuntime().gc();
+        System.out.println("------- Garbage Collected. -------");
     }
 
     private void stop()
@@ -275,7 +282,7 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
     @Override
     public void clickedTarget(TargetEvent e)
     {
-        new MP3Player(getResource("/sounds/gun.mp3"), false);
+        new MP3Player(se_gun, false);
         
         scoreManager.notifyHitTarget(e);
         final Target target = e.getTarget();
@@ -288,16 +295,20 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
                 case timeDecrease:
                     stopWatch.addRemainTime(-5 * 1000);
                     break;
-
-                default:
-                    break;
                 }
             }
             else
             {
                 Main.getAnimationProcessor().add( new HitEffect1(e.getMouseX(), e.getMouseY(), false) );
-                new MP3Player(getResource("/sounds/bomb.mp3"), false);
+                new MP3Player(se_bomb, false);
             }
         }
+    }
+
+    @Override
+    protected void finalize() throws Throwable
+    {
+        super.finalize();
+        System.err.println("######################");
     }
 }

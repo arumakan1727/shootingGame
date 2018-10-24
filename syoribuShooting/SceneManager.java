@@ -17,8 +17,6 @@ public class SceneManager
         }
     };
 
-    public SceneManager() {}
-
     public SceneManager(AbstractScene scene)
     {
         this.nextScene = scene;

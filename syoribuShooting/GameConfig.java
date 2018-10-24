@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public final class GameConfig
     static final int OUTER_WINDOW_MINUS;
     static final int FPS;
     static final boolean isFullScreen;
-    static final String PATH_IMAGE, PATH_XML;
+    static final String PATH_IMAGE, PATH_XML, PATH_SOUNDS;
     static final String FIRST_STAGE_FILE_PATH;
     static final int ID_SHOOTING_CURSOR_NORMAL;
     static final int ID_SHOOTING_CURSOR_GREEN;
@@ -40,6 +41,7 @@ public final class GameConfig
     static BufferedImage
             img_targetA, img_targetB, img_targetC,
             img_scoreUP, img_timeDecrease;
+    static final URL se_gun, se_bomb, se_explosion, se_buzzer, bgm_shooting, bgm_overheat;
 
     private GameConfig() {}
 
@@ -48,10 +50,10 @@ public final class GameConfig
 
         VIRTUAL_WIDTH   = 1920;
         VIRTUAL_HEIGHT  = 1080;
-        REAL_WIDTH      = (int) (toolkit.getScreenSize().getWidth());
-        REAL_HEIGHT     = (int) (toolkit.getScreenSize().getHeight());
-//        REAL_WIDTH = (int)(1920 * 0.4);
-//        REAL_HEIGHT = (int)(1080 * 0.4);
+//        REAL_WIDTH      = (int) (toolkit.getScreenSize().getWidth());
+//        REAL_HEIGHT     = (int) (toolkit.getScreenSize().getHeight());
+        REAL_WIDTH = (int)(1920 * 0.6);
+        REAL_HEIGHT = (int)(1080 * 0.6);
         OUTER_WINDOW_PLUS   = VIRTUAL_WIDTH + 500;
         OUTER_WINDOW_MINUS  = -500;
         FPS          = 50;
@@ -64,6 +66,7 @@ public final class GameConfig
 
         PATH_IMAGE      = "/images/";
         PATH_XML        = "/stageData/";
+        PATH_SOUNDS     = "/sounds/";
         FIRST_STAGE_FILE_PATH = PATH_XML + "stage-e01.xml";
 
         img_targetA = readImage("super_rare_target.png");
@@ -71,6 +74,13 @@ public final class GameConfig
         img_targetC = readImage("normal_target.png");
         img_scoreUP = readImage("scoreUp.png");
         img_timeDecrease = readImage("timeDown.png");
+
+        se_gun          = getResource(PATH_SOUNDS + "gun.mp3");
+        se_bomb         = getResource(PATH_SOUNDS + "bomb.mp3");
+        se_explosion    = getResource(PATH_SOUNDS + "explosion3.mp3");
+        se_buzzer       = getResource(PATH_SOUNDS + "se_buzzer.mp3");
+        bgm_shooting    = getResource(PATH_SOUNDS + "boss3loop.mp3");
+        bgm_overheat    = getResource(PATH_SOUNDS + "bgm_overheat.mp3");
 
         System.out.println("GetResource: done");
         System.out.println("Vertual: " + VIRTUAL_WIDTH + "x" + VIRTUAL_HEIGHT);
