@@ -6,6 +6,7 @@ import syoribuShooting.system.BufferedVolatilePanel;
 import syoribuShooting.system.CursorManager;
 import syoribuShooting.system.GameWindow;
 import syoribuShooting.system.InputEventManager;
+import syoribuShooting.system.MP3Player;
 import syoribuShooting.system.ScreenBuffer;
 
 import static syoribuShooting.GameConfig.*;
@@ -39,18 +40,37 @@ public class Main {
      */
     public static void main(String[] args) {
         ScreenBuffer buffer = null;
-        for (String arg : args) {
-            if (arg.equals("--buff=another")) {
-                System.out.println("Using Java-BufferedImage for buffering.");
-                buffer = new BufferedResponsivePanel(
-                        VIRTUAL_WIDTH,
-                        VIRTUAL_HEIGHT,
-                        REAL_WIDTH,
-                        REAL_HEIGHT);
-            }
-            else {
-                System.err.println("Argument `" + arg + "` is undefined.");
-                System.out.println("[Hint]  \'--buff=another\' - Using another buffering mode. ");
+        for (int i = 0; i < args.length; ++i)
+        {
+            final String arg = args[i];
+            switch (arg) {
+                case "--buff=another":
+                    System.out.println("Using Java-BufferedImage for buffering.");
+                    buffer = new BufferedResponsivePanel(
+                            VIRTUAL_WIDTH,
+                            VIRTUAL_HEIGHT,
+                            REAL_WIDTH,
+                            REAL_HEIGHT);
+                case "--nosounds":
+                    MP3Player.setEnable(false);
+                    break;
+
+                case "--scale":
+                    try {
+                        ++i;
+                        double scale = Double.parseDouble(args[i]);
+                        GameConfig.REAL_HEIGHT  = (int)(VIRTUAL_HEIGHT * scale);
+                        GameConfig.REAL_WIDTH   = (int)(VIRTUAL_WIDTH * scale);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.exit(1);
+                    }
+
+                default:
+                    System.err.println("Argument `" + arg + "` is undefined.");
+                    System.out.println("[Hint]  \'--buff=another\' - Using another buffering mode. ");
+                    System.out.println("[Hint]  \'--nosounds\' - Sound off.");
+                    System.out.println("[Hint]  \'--scale {scale}\' - Config window scale.");
             }
         }
 

@@ -26,8 +26,8 @@ public final class GameConfig
 
     static final int VIRTUAL_WIDTH;
     static final int VIRTUAL_HEIGHT;
-    static final int REAL_HEIGHT;
-    static final int REAL_WIDTH;
+    static int REAL_HEIGHT;
+    static int REAL_WIDTH;
     static final double REAL_VIRTUAL_CORRECTION;
     static final int OUTER_WINDOW_PLUS;
     static final int OUTER_WINDOW_MINUS;
@@ -50,10 +50,10 @@ public final class GameConfig
 
         VIRTUAL_WIDTH   = 1920;
         VIRTUAL_HEIGHT  = 1080;
-//        REAL_WIDTH      = (int) (toolkit.getScreenSize().getWidth());
-//        REAL_HEIGHT     = (int) (toolkit.getScreenSize().getHeight());
-        REAL_WIDTH = (int)(1920 * 0.6);
-        REAL_HEIGHT = (int)(1080 * 0.6);
+        REAL_WIDTH      = (int) (toolkit.getScreenSize().getWidth());
+        REAL_HEIGHT     = (int) (toolkit.getScreenSize().getHeight());
+//        REAL_WIDTH = (int)(1920 * 0.6);
+//        REAL_HEIGHT = (int)(1080 * 0.6);
         OUTER_WINDOW_PLUS   = VIRTUAL_WIDTH + 500;
         OUTER_WINDOW_MINUS  = -500;
         FPS          = 50;

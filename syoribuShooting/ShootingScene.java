@@ -28,7 +28,7 @@ enum State
 
 public class ShootingScene extends AbstractScene implements TargetEventListener
 {
-    private static final int TIME_LIMIT = 10 * 1000;
+    private static final int TIME_LIMIT = 60 * 1000;
     private final StopWatch stopWatch;
     private State state;
     private ScoreManager scoreManager;

@@ -9,6 +9,7 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 
@@ -75,7 +76,7 @@ public class ResultScene extends AbstractScene
 //            nickname = JOptionPane.showInputDialog(Main.getWindow().getPane(), "ニックネームを入力してください");
 //        }
 
-        if (cycle > 5 * 60) {
+        if (Main.getEventManager().justNowMousePressed(MouseEvent.BUTTON1)) {
             sceneChanger.changeScene(new TitleScene());
         }
     }

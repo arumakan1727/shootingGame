@@ -10,18 +10,23 @@ import javazoom.jl.player.advanced.PlaybackListener;
 // new すれば引数のURLのサウンドを再生してくれるクラス
 public class MP3Player
 {
+    private static boolean isEnable = true;
+
     private URL soundUrl;
     private boolean isLoop; //ループするならtrue
     private LoopPlaybackListener loopListener; //再生し終わった時のイベントをlistenする用
     private PlayThread pthread;
+
     public MP3Player(URL surl, boolean loop)
     {
-        this.soundUrl = surl;
-        this.isLoop = loop;
-        this.loopListener = new LoopPlaybackListener();
-        //新しいスレッドで再生
-        this.pthread = new PlayThread();
-        this.pthread.start();
+        if (isEnable()) {
+            this.soundUrl = surl;
+            this.isLoop = loop;
+            this.loopListener = new LoopPlaybackListener();
+            //新しいスレッドで再生
+            this.pthread = new PlayThread();
+            this.pthread.start();
+        }
     }
     
     
@@ -34,6 +39,17 @@ public class MP3Player
             System.out.println("MP3Player.stop()");
         }
     }
+
+    public static void setEnable(boolean enable)
+    {
+        isEnable = enable;
+    }
+
+    public static boolean isEnable()
+    {
+        return isEnable;
+    }
+
     //ループ用リスナー
     class LoopPlaybackListener extends PlaybackListener
     {
