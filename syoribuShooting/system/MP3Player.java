@@ -33,6 +33,8 @@ public class MP3Player
     //ループ再生中止
     public void stop()
     {
+        if (!isEnable()) return;
+
         this.isLoop = false;
         if (pthread != null &&  pthread.player != null) {
             this.pthread.player.stop();

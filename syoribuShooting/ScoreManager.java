@@ -106,14 +106,12 @@ public class ScoreManager
             elem.draw(g2d);
         }
 
-        /*
-        g2d.setColor(Color.black);
-        if (bonusStartedTime >= 0)
-            g2d.drawString("bonus" + bonus, 1300, 200);
-        else {
-            g2d.drawString("bonus: 1", 1300, 200);
-        }
-        */
+//        g2d.setColor(Color.black);
+//        if (bonusStartedTime >= 0)
+//            g2d.drawString("bonus" + bonus, 1300, 200);
+//        else {
+//            g2d.drawString("bonus: 1", 1300, 200);
+//        }
     }
 
     public ScoreResult getResult()

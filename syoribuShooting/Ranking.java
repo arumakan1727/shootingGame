@@ -3,6 +3,7 @@ package syoribuShooting;
 import java.sql.*;
 
 public class Ranking {
+    private static boolean isEnable = true;
     /*
         データベースにユーザー情報を登録する
         第1引数 : 得点
@@ -10,6 +11,8 @@ public class Ranking {
         戻り値  : なし
      */
     public static void InsertData(int points, String username) throws Exception {
+        if (!isEnable) return;
+
         Connection con = null;
         Statement stmt = null;
 
@@ -57,8 +60,13 @@ public class Ranking {
 
     }
 
+    public static void setEnable(boolean enable)
+    {
+        isEnable = enable;
+    }
 
     public static int GetRanking(int points) throws Exception{
+        if (!isEnable) return -1;
         Connection con = null;
         Statement stmt = null;
         ResultSet rs = null;

@@ -58,6 +58,10 @@ public class Main {
                     System.out.println("Sound off");
                     break;
 
+                case "--noframe":
+                    GameConfig.isFullScreen = false;
+                    break;
+
 //                case "--scale":
 //                    try {
 //                        ++i;
@@ -72,9 +76,11 @@ public class Main {
 //                    break;
 
                 default:
+                    System.out.println();
                     System.err.println("Argument `" + arg + "` is undefined.");
                     System.out.println("[Hint]  \'--buff=another\' - Using another buffering mode. ");
                     System.out.println("[Hint]  \'--nosounds\' - Sound off.");
+                    System.exit(0);
 //                    System.out.println("[Hint]  \'--scale {scale}\' - Config window scale.");
             }
         }

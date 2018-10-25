@@ -32,7 +32,7 @@ public final class GameConfig
     static final int OUTER_WINDOW_PLUS;
     static final int OUTER_WINDOW_MINUS;
     static final int FPS;
-    static final boolean isFullScreen;
+    static boolean isFullScreen;
     static final String PATH_IMAGE, PATH_XML, PATH_SOUNDS;
     static final String FIRST_STAGE_FILE_PATH;
     static final int ID_SHOOTING_CURSOR_NORMAL;
@@ -57,7 +57,7 @@ public final class GameConfig
         OUTER_WINDOW_PLUS   = VIRTUAL_WIDTH + 500;
         OUTER_WINDOW_MINUS  = -500;
         FPS          = 50;
-        isFullScreen = false;
+        isFullScreen = true;
         REAL_VIRTUAL_CORRECTION = (double)VIRTUAL_HEIGHT / (double)REAL_HEIGHT;
         
         ID_SHOOTING_CURSOR_NORMAL = 10;

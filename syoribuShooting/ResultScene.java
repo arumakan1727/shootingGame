@@ -41,10 +41,12 @@ public class ResultScene extends AbstractScene
     private static final Font ROW_FONT  = new Font(Font.SANS_SERIF, Font.BOLD, ROW_HEIGHT);
     private static final Color COLOR_TAG = new Color(35, 35, 35);
     private static final Color COLOR_LINE= new Color(90, 90, 90, 128);
+    private static final Color COLOR_SUCCESS = new Color(180, 180, 180);
 
-    private Row row_score, row_maxCombo, row_hitCount, row_criticalCount;
-    final ScoreResult result;
+    private Row row_score, row_maxCombo, row_hitCount;
+    private final ScoreResult result;
     private int cycle = 0;
+    private int ranking = -1;
     private String nickname = null;
 
     ResultScene(final ScoreResult result)
@@ -75,7 +77,6 @@ public class ResultScene extends AbstractScene
         row_score.update(cycle >= 70);
         row_maxCombo.update(cycle >= 70);
         row_hitCount.update(cycle >= 70);
-//        row_criticalCount.update(cycle >= 70);
         ++cycle;
         
         final NameValidate validate = checkValidName();
@@ -84,6 +85,8 @@ public class ResultScene extends AbstractScene
             if (checkValidName().isOk()) {
                 try {
                     Ranking.InsertData(result.getScore(), nickname);
+                    Thread.sleep(10);
+                    ranking = Ranking.GetRanking(result.getScore());
                 } catch (Exception e) {
                     System.err.println("Uploading DataBase: Failed");
                 }
@@ -100,37 +103,37 @@ public class ResultScene extends AbstractScene
         if (nickname == null || nickname.isEmpty()) return NameValidate.NIL;
         if (nickname.length() > 20) return NameValidate.LEN_OVER;
         for (int i = 0; i < nickname.length(); ++i){
-            final char ch = nickname.charAt(i);
-            if (nickname.indexOf(' ') >= 0) return new NameValidate(" ");
-            if (nickname.indexOf("　") >= 0) return new NameValidate("　");
-            if (nickname.indexOf('\'') >= 0) return new NameValidate("\'");
-            if (nickname.indexOf('\"') >= 0) return new NameValidate("\"");
-            if (nickname.indexOf('*') >= 0) return new NameValidate("*");
-            if (nickname.indexOf('!') >= 0) return new NameValidate("!");
-            if (nickname.indexOf("%") >= 0) return new NameValidate("%");
-            if (nickname.indexOf("&") >= 0) return new NameValidate("&");
-            if (nickname.indexOf("?") >= 0) return new NameValidate("?");
-            if (nickname.indexOf("\\") >= 0) return new NameValidate("\\");
+            if (nickname.indexOf(' ') >= 0)     return new NameValidate(" ");
+            if (nickname.contains("　"))        return new NameValidate("　");
+            if (nickname.indexOf('\'') >= 0)    return new NameValidate("\'");
+            if (nickname.indexOf('\"') >= 0)    return new NameValidate("\"");
+            if (nickname.indexOf('*') >= 0)     return new NameValidate("*");
+            if (nickname.indexOf('!') >= 0)     return new NameValidate("!");
+            if (nickname.contains("%"))         return new NameValidate("%");
+            if (nickname.contains("&"))         return new NameValidate("&");
+            if (nickname.contains("?"))         return new NameValidate("?");
+            if (nickname.contains("\\"))        return new NameValidate("\\");
+            if (nickname.contains("="))        return new NameValidate("\\");
         }
         return NameValidate.OK;
     }
     
     static class NameValidate
     {
-        public static final NameValidate OK = new NameValidate(null);
-        public static final NameValidate NIL = new NameValidate("");
-        public static final NameValidate LEN_OVER = new NameValidate("0");
-        public final String invalid;
-        public NameValidate(String s){
+        static final NameValidate OK = new NameValidate(null);
+        static final NameValidate NIL = new NameValidate("");
+        static final NameValidate LEN_OVER = new NameValidate("0");
+        final String invalid;
+        NameValidate(String s){
             invalid = s;
         }
-        public boolean isOk() {
+        boolean isOk() {
             return invalid == null;
         }
-        public boolean isNil() {
+        boolean isNil() {
             return invalid.isEmpty();
         }
-        public boolean isLenOver() {
+        boolean isLenOver() {
             return invalid.equals("0");
         }
     }
@@ -146,19 +149,18 @@ public class ResultScene extends AbstractScene
         row_score.draw(g2d);
         row_maxCombo.draw(g2d);
         row_hitCount.draw(g2d);
-//        row_criticalCount.draw(g2d);
-        
+
         if (cycle > 150) {
             g2d.setFont(new Font(Font.DIALOG, Font.PLAIN, 40));
             final NameValidate validate = checkValidName();
-            if (validate.isOk()) {
-                g2d.setColor(new Color(0, 180, 20));
+            if (validate.isOk())
+            {
+                g2d.setColor(new Color(0, 160, 20));
                 drawStringCenter(g2d, "\'" + nickname + "\' をニックネームとして登録しました。", MSG_Y - ROW_HEIGHT - 20);
-                try {
-                    drawStringCenter(g2d, nickname + "さんの順位は " + Ranking.GetRanking(result.getScore()) + "です!", MSG_Y);
-                } catch (Exception e) {
-                    // TODO: handle exception
+                if (ranking >= 0) {
+                    drawStringCenter(g2d, nickname + "さんの順位は " + ranking + "です!", MSG_Y);
                 }
+
                 drawStringCenter(g2d, "クリックしてタイトルへ戻ります。", MSG_Y + (ROW_HEIGHT + 20));
             } else if (validate.isLenOver()) {
                 g2d.setColor(Color.RED);
