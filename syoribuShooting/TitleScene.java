@@ -35,6 +35,7 @@ public class TitleScene extends AbstractScene implements ActionListener
     {
         game.getWindow().getCursorManager().changeCurrentCursor(Cursor.DEFAULT_CURSOR);
         btn_startPlay.init(game.getWindow().getCursorManager());
+        Runtime.getRuntime().gc();
 //        btn_startPlay.setEnable(false);
 //        new Thread(new Runnable()
 //        {
@@ -122,6 +123,6 @@ public class TitleScene extends AbstractScene implements ActionListener
     protected void finalize() throws Throwable
     {
         super.finalize();
-        System.err.println("Title Finalize");
+        System.out.println("Title Finalize");
     }
 }

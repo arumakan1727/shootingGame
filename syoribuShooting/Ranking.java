@@ -96,13 +96,17 @@ public class Ranking {
             rs = stmt.executeQuery(sql);
 
             //得点がどの位置にあるかを探す
+            int old = 0;
             rank = 1;
             while(rs.next()){
               int code = rs.getInt("Points");
               if(code == points){
                 break;
               }
-              rank++;
+              if (code != old){
+                  ++rank;
+              }
+              old = code;
             }
 
             con.commit();

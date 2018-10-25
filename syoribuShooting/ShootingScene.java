@@ -12,8 +12,6 @@ import syoribuShooting.system.StopWatch;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.image.BufferedImage;
 
 import static syoribuShooting.GameConfig.*;
@@ -28,7 +26,7 @@ enum State
 
 public class ShootingScene extends AbstractScene implements TargetEventListener
 {
-    private static final int TIME_LIMIT = 60 * 1000;
+    private static final int TIME_LIMIT = 40 * 1000;
     private final StopWatch stopWatch;
     private State state;
     private ScoreManager scoreManager;
@@ -309,6 +307,6 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
     protected void finalize() throws Throwable
     {
         super.finalize();
-        System.err.println("######################");
+        System.out.println("Shooting Finalize");
     }
 }

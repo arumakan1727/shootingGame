@@ -51,26 +51,31 @@ public class Main {
                             VIRTUAL_HEIGHT,
                             REAL_WIDTH,
                             REAL_HEIGHT);
+                    break;
+                    
                 case "--nosounds":
                     MP3Player.setEnable(false);
+                    System.out.println("Sound off");
                     break;
 
-                case "--scale":
-                    try {
-                        ++i;
-                        double scale = Double.parseDouble(args[i]);
-                        GameConfig.REAL_HEIGHT  = (int)(VIRTUAL_HEIGHT * scale);
-                        GameConfig.REAL_WIDTH   = (int)(VIRTUAL_WIDTH * scale);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        System.exit(1);
-                    }
+//                case "--scale":
+//                    try {
+//                        ++i;
+//                        double scale = Double.parseDouble(args[i]);
+//                        GameConfig.REAL_HEIGHT  = (int)(VIRTUAL_HEIGHT * scale);
+//                        GameConfig.REAL_WIDTH   = (int)(VIRTUAL_WIDTH * scale);
+//                        System.out.println("scale: " + scale + ",  " + REAL_HEIGHT + "x" + REAL_WIDTH);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        System.exit(1);
+//                    }
+//                    break;
 
                 default:
                     System.err.println("Argument `" + arg + "` is undefined.");
                     System.out.println("[Hint]  \'--buff=another\' - Using another buffering mode. ");
                     System.out.println("[Hint]  \'--nosounds\' - Sound off.");
-                    System.out.println("[Hint]  \'--scale {scale}\' - Config window scale.");
+//                    System.out.println("[Hint]  \'--scale {scale}\' - Config window scale.");
             }
         }
 

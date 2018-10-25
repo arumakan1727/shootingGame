@@ -34,7 +34,7 @@ public class MP3Player
     public void stop()
     {
         this.isLoop = false;
-        if (this.pthread.player != null) {
+        if (pthread != null &&  pthread.player != null) {
             this.pthread.player.stop();
             System.out.println("MP3Player.stop()");
         }
