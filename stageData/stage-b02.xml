@@ -36,4 +36,11 @@
                           x="$keep" y="$minf" />
         </target>
     </local>
+    <global>
+        <item type="timeDecrease">
+            <appear delay="0" x="0" y="0"/>
+            <circleMotion delay="0" speed="0.015" acceleration="0"
+                          x="0" y="0" radius="900" deg="0"/>
+        </item>
+    </global>
 </stage>

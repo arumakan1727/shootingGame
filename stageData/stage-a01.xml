@@ -17,11 +17,4 @@
             <quietMotion timeLimit="3000"/>
         </target>
     </local>
-    <global>
-        <item type="timeDecrease">
-            <appear delay="1000" x="0" y="0"/>
-            <circleMotion delay="0" speed="-0.03" acceleration="0"
-                x="0" y="900" radius="800" deg="100"/>
-        </item>
-    </global>
 </stage>

@@ -37,4 +37,11 @@
                           x="$keep" y="$inf" />
         </target>
     </local>
+    <global>
+        <item type="scoreUp">
+            <appear delay="100" x="0" y="0"/>
+            <circleMotion delay="0" speed="-0.012" acceleration="0"
+                          x="1900" y="900" radius="900" deg="270"/>
+        </item>
+    </global>
 </stage>

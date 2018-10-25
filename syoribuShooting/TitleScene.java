@@ -2,6 +2,7 @@ package syoribuShooting;
 
 import syoribuShooting.sprite.ActionListener;
 import syoribuShooting.sprite.Button;
+import syoribuShooting.system.MP3Player;
 
 import java.awt.Cursor;
 import java.awt.Graphics2D;
@@ -9,6 +10,7 @@ import java.awt.image.BufferedImage;
 
 import static syoribuShooting.GameConfig.FIRST_STAGE_FILE_PATH;
 import static syoribuShooting.GameConfig.readImage;
+import static syoribuShooting.GameConfig.se_buzzer;
 
 public class TitleScene extends AbstractScene implements ActionListener
 {
@@ -19,6 +21,8 @@ public class TitleScene extends AbstractScene implements ActionListener
 
     private boolean changeSceneFlag = false;
     private Button btn_startPlay;
+    private boolean visibleBtn = false;
+    private long startTime;
 
     public TitleScene()
     {
@@ -36,6 +40,8 @@ public class TitleScene extends AbstractScene implements ActionListener
         game.getWindow().getCursorManager().changeCurrentCursor(Cursor.DEFAULT_CURSOR);
         btn_startPlay.init(game.getWindow().getCursorManager());
         Runtime.getRuntime().gc();
+        game.setFPS(25);
+        startTime = System.currentTimeMillis();
 //        btn_startPlay.setEnable(false);
 //        new Thread(new Runnable()
 //        {
@@ -66,13 +72,28 @@ public class TitleScene extends AbstractScene implements ActionListener
             sceneChanger.changeScene(new ShootingScene(FIRST_STAGE_FILE_PATH));
         }
         btn_startPlay.update(game.getEventManager());
+
+        long elapsed = System.currentTimeMillis() - startTime;
+        if (visibleBtn) {
+            if (elapsed > 2000) {
+                visibleBtn = false;
+                startTime = System.currentTimeMillis();
+            }
+        } else {
+            if (elapsed > 500) {
+                visibleBtn = true;
+                startTime = System.currentTimeMillis();
+            }
+        }
     }
 
     @Override
     public void draw(Graphics2D g2d)
     {
         g2d.drawImage(getBackImage(), 0, 0, GameConfig.VIRTUAL_WIDTH, GameConfig.VIRTUAL_HEIGHT, null);
-        btn_startPlay.draw(g2d);
+        if (btn_startPlay.isMouseEnter() || visibleBtn) {
+            btn_startPlay.draw(g2d);
+        }
     }
 
     @Override
@@ -99,6 +120,8 @@ public class TitleScene extends AbstractScene implements ActionListener
     {
         setUnPushed();
         changeSceneFlag = true;
+        new MP3Player(se_buzzer, false);
+        btn_startPlay.setEnable(false);
     }
 
     private void setPushed()

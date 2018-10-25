@@ -85,7 +85,7 @@ public class Button extends Sprite
     {
         Composite defaultComposite = g2d.getComposite();
         if (!isEnable) {
-            AlphaComposite alpha = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
+            AlphaComposite alpha = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f);
             g2d.setComposite(alpha);
         }
         
@@ -106,6 +106,11 @@ public class Button extends Sprite
     public void setEnable(boolean isEnable)
     {
         this.isEnable = isEnable;
+    }
+
+    public boolean isMouseEnter()
+    {
+        return this.isMouseEnter;
     }
     
 }

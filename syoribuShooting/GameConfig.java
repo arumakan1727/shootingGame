@@ -3,6 +3,7 @@ package syoribuShooting;
 import syoribuShooting.sprite.TargetType;
 import syoribuShooting.system.Utils;
 
+import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -41,7 +42,8 @@ public final class GameConfig
     static BufferedImage
             img_targetA, img_targetB, img_targetC,
             img_scoreUP, img_timeDecrease;
-    static final URL se_gun, se_bomb, se_explosion, se_buzzer, bgm_shooting, bgm_overheat;
+    static final URL se_gun, se_bomb, se_explosion, se_buzzer, bgm_shooting, bgm_overheat,
+                        se_down, se_magical;
 
     private GameConfig() {}
 
@@ -67,7 +69,7 @@ public final class GameConfig
         PATH_IMAGE      = "/images/";
         PATH_XML        = "/stageData/";
         PATH_SOUNDS     = "/sounds/";
-        FIRST_STAGE_FILE_PATH = PATH_XML + "stage-e01.xml";
+        FIRST_STAGE_FILE_PATH = PATH_XML + "stage-a01.xml";
 
         img_targetA = readImage("super_rare_target.png");
         img_targetB = readImage("high_points_target.png");
@@ -81,6 +83,8 @@ public final class GameConfig
         se_buzzer       = getResource(PATH_SOUNDS + "se_buzzer.mp3");
         bgm_shooting    = getResource(PATH_SOUNDS + "boss3loop.mp3");
         bgm_overheat    = getResource(PATH_SOUNDS + "bgm_overheat.mp3");
+        se_down         = getResource(PATH_SOUNDS + "se_down.mp3");
+        se_magical      = getResource(PATH_SOUNDS + "se_scoreUp.mp3");
 
         System.out.println("GetResource: done");
         System.out.println("Vertual: " + VIRTUAL_WIDTH + "x" + VIRTUAL_HEIGHT);

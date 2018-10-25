@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import static syoribuShooting.GameConfig.img_scoreUP;
 import static syoribuShooting.GameConfig.readImage;
 import static java.lang.Math.min;
 import static java.lang.Math.max;
@@ -106,6 +107,11 @@ public class ScoreManager
             elem.draw(g2d);
         }
 
+        if (bonusStartedTime >= 0) {
+            int x = Main.getEventManager().mouseX();
+            int y = Main.getEventManager().mouseY();
+            g2d.drawImage(img_scoreUP, x+20, y-40, 30, 30, null);
+        }
 //        g2d.setColor(Color.black);
 //        if (bonusStartedTime >= 0)
 //            g2d.drawString("bonus" + bonus, 1300, 200);

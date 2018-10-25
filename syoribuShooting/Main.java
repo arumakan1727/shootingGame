@@ -58,8 +58,9 @@ public class Main {
                     System.out.println("Sound off");
                     break;
 
-                case "--noframe":
+                case "--frame":
                     GameConfig.isFullScreen = false;
+                    System.out.println("Frame enable");
                     break;
 
 //                case "--scale":
@@ -80,6 +81,7 @@ public class Main {
                     System.err.println("Argument `" + arg + "` is undefined.");
                     System.out.println("[Hint]  \'--buff=another\' - Using another buffering mode. ");
                     System.out.println("[Hint]  \'--nosounds\' - Sound off.");
+                    System.out.println("[Hint]  \'--frame\' - Window frame enable.");
                     System.exit(0);
 //                    System.out.println("[Hint]  \'--scale {scale}\' - Config window scale.");
             }

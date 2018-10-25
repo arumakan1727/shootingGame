@@ -12,6 +12,9 @@ import syoribuShooting.system.StopWatch;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 
 import static syoribuShooting.GameConfig.*;
@@ -27,12 +30,17 @@ enum State
 public class ShootingScene extends AbstractScene implements TargetEventListener
 {
     private static final int TIME_LIMIT = 60 * 1000;
+    private static final Shape CLIP_TIME_AREA = new RoundRectangle2D.Float(VIRTUAL_WIDTH-450, 18, 390, 70, 10, 10);
+    private static final Color COLOR_TIME_AREA = new Color(255, 255, 255, 100);
     private final StopWatch stopWatch;
     private State state;
     private ScoreManager scoreManager;
     private TargetManager targetManager;
     private StageManager stageManager;
     private MP3Player bgm;
+    private boolean timeVisible = true;
+    private long startTime = -1;
+    private int pulseCnt = 0;
 
 //    private Animation fireFrameAnim = new Animation(GameConfig.readNumberedImages("flame%02d.png", 0, 3), 0, 0, true)
 //    {
@@ -125,6 +133,7 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
             Main.getCursorManager().changeCurrentCursor(ID_CLEAR_CURSOR);
         }
         bgm = new MP3Player(bgm_shooting, true);
+        game.setFPS(FPS);
     }
 
     @Override
@@ -167,6 +176,28 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
 
         this.scoreManager.update(stopWatch.getElapsed());
 
+        if (startTime >= 0) {
+            long elapsed = System.currentTimeMillis() - startTime;
+            if (timeVisible) {
+                if (elapsed > 70) {
+                    timeVisible = false;
+                    startTime = System.currentTimeMillis();
+                    ++pulseCnt;
+                }
+            } else {
+                if (elapsed > 70) {
+                    timeVisible = true;
+                    startTime = System.currentTimeMillis();
+                    ++pulseCnt;
+                }
+            }
+            if (pulseCnt > 14) {
+                pulseCnt = 0;
+                startTime = -1;
+                timeVisible = true;
+            }
+        }
+
 //        if (scoreManager.isFever()) {
 //            fireFrameAnim.update();
 //        }
@@ -206,11 +237,26 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
 */
         targetManager.draw(g2d);
 
-        g2d.setFont(new Font(Font.MONOSPACED, Font.ITALIC, 70));
-        g2d.setColor(Color.GREEN);
-        int t = this.stopWatch.getRemainTime();
-        if (t  < 0) t = 0;
-        g2d.drawString("Time: " + t/1000 + "." + t%1000 / 100, GameConfig.VIRTUAL_WIDTH - 500, 80);
+        {
+            Shape defaultClip = g2d.getClip();
+            g2d.setClip(CLIP_TIME_AREA);
+            g2d.setColor(COLOR_TIME_AREA);
+            g2d.fill(CLIP_TIME_AREA);
+            g2d.setFont(new Font(Font.MONOSPACED, Font.ITALIC, 70));
+            int t = this.stopWatch.getRemainTime();
+            if (t < 0) t = 0;
+
+            if (startTime >= 0) {
+                g2d.setColor(Color.RED);
+            } else {
+                g2d.setColor(Color.GREEN);
+            }
+            if (timeVisible) {
+                g2d.drawString("Time: " + t / 1000 + "." + t % 1000 / 100, GameConfig.VIRTUAL_WIDTH - 450, 80);
+            }
+
+            g2d.setClip(defaultClip);
+        }
 
         scoreManager.draw(g2d);
         if (getState() == State.INTO_FEVER) {
@@ -290,9 +336,16 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
             if (target instanceof Item)
             {
                 switch (target.getType()) {
-                case timeDecrease:
-                    stopWatch.addRemainTime(-5 * 1000);
-                    break;
+                    case scoreUp:
+                        new MP3Player(se_magical, false);
+                        break;
+
+                    case timeDecrease:
+                        stopWatch.addRemainTime(-5 * 1000);
+                        new MP3Player(se_down, false);
+                        startTime = System.currentTimeMillis();
+                        pulseCnt = 0;
+                        break;
                 }
             }
             else

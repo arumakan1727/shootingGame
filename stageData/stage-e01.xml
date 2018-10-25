@@ -3,19 +3,29 @@
 的の数:6個
 上下から挟み撃ち！w
  -->
-<stage timeLimit="2000" stageID="0" next="stage-a01.xml">
+<stage timeLimit="5000" stageID="0" next="stage-a02.xml">
     <local>
         <target type="rankC">
-            <appear delay="0" x="500" y="500"/>
-            <circleMotion delay="0" speed="0.03" acceleration="0"
-                x="500" y="500" radius="300" deg="90"/>
+            <appear delay="0" x="900" y="500"/>
+            <circleMotion delay="0" speed="0.035" acceleration="0"
+                          x="900" y="500" radius="380" deg="90"/>
+        </target>
+        <target type="rankC">
+            <appear delay="200" x="900" y="500"/>
+            <circleMotion delay="0" speed="0.035" acceleration="0"
+                          x="900" y="500" radius="380" deg="90"/>
+        </target>
+        <target type="rankC">
+            <appear delay="400" x="900" y="500"/>
+            <circleMotion delay="0" speed="0.035" acceleration="0"
+                          x="900" y="500" radius="380" deg="90"/>
         </target>
     </local>
     <global>
         <item type="scoreUp">
             <appear delay="100" x="0" y="0"/>
-            <circleMotion delay="0" speed="-0.03" acceleration="0"
-                x="1500" y="100" radius="800" deg="190"/>
+            <circleMotion delay="0" speed="0.02" acceleration="0"
+                x="900" y="1800" radius="1300" deg="190"/>
         </item>
     </global>
     <!--<global>-->
