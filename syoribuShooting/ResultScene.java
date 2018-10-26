@@ -83,12 +83,18 @@ public class ResultScene extends AbstractScene
         if (!validate.isOk() && (cycle > 150) && cycle % 60 == 0) {
             nickname = JOptionPane.showInputDialog(Main.getWindow().getPane(), "ニックネームを入力してください");
             if (checkValidName().isOk()) {
-                try {
-                    Ranking.InsertData(result.getScore(), nickname);
-                    Thread.sleep(10);
-                    ranking = Ranking.GetRanking(result.getScore());
-                } catch (Exception e) {
-                    System.err.println("Uploading DataBase: Failed");
+                boolean faild = true;
+                for (int i = 0; i < 5 && faild; ++i) { 
+                    try {
+                        Ranking.InsertData(result.getScore(), nickname);
+                        System.out.println("try[" + i + "] Insert Data Success!");
+                        Thread.sleep(200);
+                        ranking = Ranking.GetRanking(result.getScore());
+                        faild = false;
+                    } catch (InterruptedException ignore) {
+                    } catch (Exception e) {
+                        System.err.println("Uploading DataBase: Failed");
+                    }
                 }
             }
         }
@@ -225,7 +231,7 @@ public class ResultScene extends AbstractScene
                 }
             }
 
-            x = max(x-5, goalX);
+            x = max(x-9, goalX);
             if (x <= goalX + 70) {
                 visible = true;
             }
