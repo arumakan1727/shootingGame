@@ -12,7 +12,6 @@ import syoribuShooting.system.StopWatch;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
@@ -29,8 +28,8 @@ enum State
 
 public class ShootingScene extends AbstractScene implements TargetEventListener
 {
-    private static final int TIME_LIMIT = 60 * 1000;
-    private static final Shape CLIP_TIME_AREA = new RoundRectangle2D.Float(VIRTUAL_WIDTH-450, 18, 390, 70, 10, 10);
+    private static final int TIME_LIMIT = 120 * 1000;
+    private static final Shape CLIP_TIME_AREA = new RoundRectangle2D.Float(VIRTUAL_WIDTH-480, 14, 450, 75, 10, 10);
     private static final Color COLOR_TIME_AREA = new Color(255, 255, 255, 100);
     private final StopWatch stopWatch;
     private State state;
@@ -42,33 +41,6 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
     private long startTime = -1;
     private int pulseCnt = 0;
 
-//    private Animation fireFrameAnim = new Animation(GameConfig.readNumberedImages("flame%02d.png", 0, 3), 0, 0, true)
-//    {
-//        private static final int WAIT_CYCLE = 4;
-//        private int cycle = 0;
-//        @Override
-//        public void update()
-//        {
-//            if(!scoreManager.isFever()) {
-//                this.setDisposed(true);
-//                return;
-//            }
-//            if (cycle == 0) {
-//                addIndex(1);
-//            }
-//            ++cycle;
-//            if (cycle >= WAIT_CYCLE) cycle = 0;
-//        }
-//
-//        @Override
-//        public void draw(Graphics2D g2d)
-//        {
-//            final Shape defaultShape = g2d.getClip();
-//            g2d.setClip(new Rectangle(0, 500, GameConfig.VIRTUAL_WIDTH, GameConfig.VIRTUAL_HEIGHT));
-//            super.draw(g2d);
-//            g2d.setClip(defaultShape);
-//        }
-//    };
     private static final Animation intoOverHeatAnim = new Animation(GifReader.readGif(GameConfig.getResourceAsStream(GameConfig.PATH_IMAGE + "overheat.gif")), 0, 0, false)
     {
         private static final int WAIT_CYCLE = 1;
@@ -197,10 +169,6 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
                 timeVisible = true;
             }
         }
-
-//        if (scoreManager.isFever()) {
-//            fireFrameAnim.update();
-//        }
     }
 
     private void updateShooting()
@@ -332,7 +300,7 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
         final Target target = e.getTarget();
         if (target != null)
         {
-            target.setState(Target.State.DISAPPEAR);
+            target.setState(Target.State.CLICKED);
             if (target instanceof Item)
             {
                 switch (target.getType()) {

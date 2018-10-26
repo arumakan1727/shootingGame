@@ -58,7 +58,7 @@ public final class GameConfig
 //        REAL_HEIGHT = (int)(1080 * 0.6);
         OUTER_WINDOW_PLUS   = VIRTUAL_WIDTH + 500;
         OUTER_WINDOW_MINUS  = -500;
-        FPS          = 50;
+        FPS          = 40;
         isFullScreen = true;
         REAL_VIRTUAL_CORRECTION = (double)VIRTUAL_HEIGHT / (double)REAL_HEIGHT;
         
