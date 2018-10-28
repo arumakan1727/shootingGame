@@ -3,7 +3,6 @@ package syoribuShooting;
 import syoribuShooting.sprite.ActionListener;
 import syoribuShooting.sprite.Button;
 
-import javax.swing.JOptionPane;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -14,7 +13,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 
@@ -46,7 +44,6 @@ public class ResultScene extends AbstractScene implements ActionListener
     private static final Font ROW_FONT  = new Font(Font.SANS_SERIF, Font.BOLD, ROW_HEIGHT);
     private static final Color COLOR_TAG = new Color(35, 35, 35);
     private static final Color COLOR_LINE= new Color(90, 90, 90, 128);
-    private static final Color COLOR_SUCCESS = new Color(0, 160, 20);
 
     private Row row_score, row_maxCombo, row_hitCount;
     private Button btn_goToTitle = new Button(img_button);
@@ -106,18 +103,8 @@ public class ResultScene extends AbstractScene implements ActionListener
         btn_goToTitle.draw(g2d);
 
         if (cycle > 150) {
-//            g2d.setColor(COLOR_SUCCESS);
-//            drawStringCenter(g2d, "クリックしてタイトルへ戻ります。", MSG_Y + (ROW_HEIGHT + 20));
             btn_goToTitle.setEnable(true);
         }
-    }
-
-    private void drawStringCenter(Graphics2D g2d, String str, int leftTopY)
-    {
-        final FontMetrics metrics = g2d.getFontMetrics();
-        final Rectangle rect = metrics.getStringBounds(str, g2d).getBounds();
-        final int cx = (int)(VIRTUAL_WIDTH - rect.getWidth()) / 2;
-        g2d.drawString(str, cx, leftTopY);
     }
 
     @Override
@@ -130,11 +117,24 @@ public class ResultScene extends AbstractScene implements ActionListener
     public void mouseExited()
     {
         btn_goToTitle.setImage(img_button);
+        setUnPushed();
     }
 
     @Override
     public void justNowPressed()
     {
+        setPushed();
+    }
+
+    @Override
+    public void justNowReleased()
+    {
+        setUnPushed();
+        flg_goToTitleScene = true;
+    }
+
+    private void setPushed()
+    {
         final int prevCX = (int)btn_goToTitle.getCenterX();
         final int prevCY = (int)btn_goToTitle.getCenterY();
         btn_goToTitle.setZoom(90);
@@ -142,15 +142,13 @@ public class ResultScene extends AbstractScene implements ActionListener
         btn_goToTitle.setCenterY(prevCY);
     }
 
-    @Override
-    public void justNowReleased()
+    private void setUnPushed()
     {
         final int prevCX = (int)btn_goToTitle.getCenterX();
         final int prevCY = (int)btn_goToTitle.getCenterY();
-        btn_goToTitle.setZoom(90);
+        btn_goToTitle.setZoom(100);
         btn_goToTitle.setCenterX(prevCX);
         btn_goToTitle.setCenterY(prevCY);
-        flg_goToTitleScene = true;
     }
 
     static class Row
