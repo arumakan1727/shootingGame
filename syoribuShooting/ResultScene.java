@@ -1,5 +1,8 @@
 package syoribuShooting;
 
+import syoribuShooting.sprite.ActionListener;
+import syoribuShooting.sprite.Button;
+
 import javax.swing.JOptionPane;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
@@ -18,7 +21,7 @@ import java.awt.image.BufferedImage;
 import static syoribuShooting.GameConfig.*;
 import static java.lang.Math.*;
 
-public class ResultScene extends AbstractScene
+public class ResultScene extends AbstractScene implements ActionListener
 {
     private static final int AREA_LT_X  = 400;
     private static final int AREA_LT_Y  = 150;
@@ -36,33 +39,37 @@ public class ResultScene extends AbstractScene
     private static final int MSG_Y = 680;
 
     private static final BufferedImage backImage = readImage("back01.jpg");
+    private static final BufferedImage img_button = readImage("button-GoToTitle.png");
+    private static final BufferedImage img_buttonHover = readImage("button-GoToTitle-hover.png");
     private static final Color AREA_COLOR = new Color(240, 240, 240, 150);
     private static final Shape AREA_SHAPE = new RoundRectangle2D.Float(AREA_LT_X, AREA_LT_Y, AREA_WIDTH, AREA_HEIGHT, 50, 50);
     private static final Font ROW_FONT  = new Font(Font.SANS_SERIF, Font.BOLD, ROW_HEIGHT);
     private static final Color COLOR_TAG = new Color(35, 35, 35);
     private static final Color COLOR_LINE= new Color(90, 90, 90, 128);
-    private static final Color COLOR_SUCCESS = new Color(180, 180, 180);
+    private static final Color COLOR_SUCCESS = new Color(0, 160, 20);
 
     private Row row_score, row_maxCombo, row_hitCount;
-    private final ScoreResult result;
+    private Button btn_goToTitle = new Button(img_button);
     private int cycle = 0;
-    private int ranking = -1;
-    private String nickname = null;
+    private boolean flg_goToTitleScene = false;
 
     ResultScene(final ScoreResult result)
     {
         setBackImage(backImage);
-        this.result = result;
         row_score   = new Row("スコア", result.getScore(), ROW_SX, ROW_SCORE_SY, ROW_GX);
         row_maxCombo= new Row("最大コンボ数", result.getComboMax(), ROW_SX + 50, ROW_SCORE_SY + LINE_HEIGHT, ROW_GX);
         row_hitCount = new Row("ヒット数", result.getHitCount(), ROW_SX + 100, ROW_SCORE_SY + LINE_HEIGHT*2, ROW_GX);
-//        row_criticalCount = new Row("クリティカルヒット数", result.getCriticalCount(), ROW_SX+150, ROW_SCORE_SY + LINE_HEIGHT*3, ROW_GX);
     }
 
     @Override
     public void initialize(Game game)
     {
         Main.getCursorManager().changeCurrentCursor(Cursor.DEFAULT_CURSOR);
+        btn_goToTitle.init(Main.getCursorManager());
+        btn_goToTitle.setCenterX(VIRTUAL_WIDTH / 2);
+        btn_goToTitle.setY(660);
+        btn_goToTitle.setEnable(false);
+        btn_goToTitle.setActionListener(this);
         cycle = 0;
     }
 
@@ -77,70 +84,11 @@ public class ResultScene extends AbstractScene
         row_score.update(cycle >= 70);
         row_maxCombo.update(cycle >= 70);
         row_hitCount.update(cycle >= 70);
+        btn_goToTitle.update(game.getEventManager());
         ++cycle;
-        
-        final NameValidate validate = checkValidName();
-        if (!validate.isOk() && (cycle > 150) && cycle % 60 == 0) {
-            nickname = JOptionPane.showInputDialog(Main.getWindow().getPane(), "ニックネームを入力してください");
-            if (checkValidName().isOk()) {
-                boolean failed = true;
-                for (int i = 0; i < 10 && failed; ++i) {
-                    try {
-                        Ranking.InsertData(result.getScore(), nickname);
-                        System.out.println("try[" + i + "] Insert Data Success!");
-                        Thread.sleep(100);
-                        ranking = Ranking.GetRanking(result.getScore());
-                        failed = false;
-                    } catch (InterruptedException ignore) {
-                    } catch (Exception e) {
-                        System.err.println("Uploading DataBase[" + i + "]: Failed");
-                    }
-                }
-            }
-        }
 
-        if (validate.isOk() && Main.getEventManager().justNowMousePressed(MouseEvent.BUTTON1)) {
+        if (flg_goToTitleScene) {
             sceneChanger.changeScene(new TitleScene());
-        }
-    }
-    
-    private NameValidate checkValidName()
-    {
-        if (nickname == null || nickname.isEmpty()) return NameValidate.NIL;
-        if (nickname.length() > 20) return NameValidate.LEN_OVER;
-        for (int i = 0; i < nickname.length(); ++i){
-            if (nickname.indexOf(' ') >= 0)     return new NameValidate(" ");
-            if (nickname.contains("　"))        return new NameValidate("　");
-            if (nickname.indexOf('\'') >= 0)    return new NameValidate("\'");
-            if (nickname.indexOf('\"') >= 0)    return new NameValidate("\"");
-            if (nickname.indexOf('*') >= 0)     return new NameValidate("*");
-            if (nickname.indexOf('!') >= 0)     return new NameValidate("!");
-            if (nickname.contains("%"))         return new NameValidate("%");
-            if (nickname.contains("&"))         return new NameValidate("&");
-            if (nickname.contains("?"))         return new NameValidate("?");
-            if (nickname.contains("\\"))        return new NameValidate("\\");
-            if (nickname.contains("="))        return new NameValidate("\\");
-        }
-        return NameValidate.OK;
-    }
-    
-    static class NameValidate
-    {
-        static final NameValidate OK = new NameValidate(null);
-        static final NameValidate NIL = new NameValidate("");
-        static final NameValidate LEN_OVER = new NameValidate("0");
-        final String invalid;
-        NameValidate(String s){
-            invalid = s;
-        }
-        boolean isOk() {
-            return invalid == null;
-        }
-        boolean isNil() {
-            return invalid.isEmpty();
-        }
-        boolean isLenOver() {
-            return invalid.equals("0");
         }
     }
 
@@ -155,34 +103,15 @@ public class ResultScene extends AbstractScene
         row_score.draw(g2d);
         row_maxCombo.draw(g2d);
         row_hitCount.draw(g2d);
+        btn_goToTitle.draw(g2d);
 
         if (cycle > 150) {
-            g2d.setFont(new Font(Font.DIALOG, Font.PLAIN, 40));
-            final NameValidate validate = checkValidName();
-            if (validate.isOk())
-            {
-                g2d.setColor(new Color(0, 160, 20));
-                drawStringCenter(g2d, "\'" + nickname + "\' をニックネームとして登録しました。", MSG_Y - ROW_HEIGHT - 20);
-                if (ranking >= 0) {
-                    drawStringCenter(g2d, nickname + "さんの順位は " + ranking + "です!", MSG_Y);
-                }
-
-                drawStringCenter(g2d, "クリックしてタイトルへ戻ります。", MSG_Y + (ROW_HEIGHT + 20));
-            } else if (validate.isLenOver()) {
-                g2d.setColor(Color.RED);
-                drawStringCenter(g2d, "文字数制限を超えています。" , MSG_Y);
-                drawStringCenter(g2d, "20字以内でニックネームを入力してください。" , MSG_Y + ROW_HEIGHT + 20);
-            } else if (validate.isNil()) {
-                g2d.setColor(COLOR_TAG);
-                drawStringCenter(g2d, "ニックネームを入力してください", MSG_Y);
-                drawStringCenter(g2d, "20字以内、全角文字も使用可能です", MSG_Y + ROW_HEIGHT + 20);
-            } else {
-                g2d.setColor(Color.red);
-                drawStringCenter(g2d, "\' " + validate.invalid + " \' はニックネームに使用できません", MSG_Y);
-            }
+//            g2d.setColor(COLOR_SUCCESS);
+//            drawStringCenter(g2d, "クリックしてタイトルへ戻ります。", MSG_Y + (ROW_HEIGHT + 20));
+            btn_goToTitle.setEnable(true);
         }
     }
-    
+
     private void drawStringCenter(Graphics2D g2d, String str, int leftTopY)
     {
         final FontMetrics metrics = g2d.getFontMetrics();
@@ -192,10 +121,36 @@ public class ResultScene extends AbstractScene
     }
 
     @Override
-    protected void finalize() throws Throwable
+    public void mouseEntered()
     {
-        super.finalize();
-        System.err.println("Result Finalize");
+        btn_goToTitle.setImage(img_buttonHover);
+    }
+
+    @Override
+    public void mouseExited()
+    {
+        btn_goToTitle.setImage(img_button);
+    }
+
+    @Override
+    public void justNowPressed()
+    {
+        final int prevCX = (int)btn_goToTitle.getCenterX();
+        final int prevCY = (int)btn_goToTitle.getCenterY();
+        btn_goToTitle.setZoom(90);
+        btn_goToTitle.setCenterX(prevCX);
+        btn_goToTitle.setCenterY(prevCY);
+    }
+
+    @Override
+    public void justNowReleased()
+    {
+        final int prevCX = (int)btn_goToTitle.getCenterX();
+        final int prevCY = (int)btn_goToTitle.getCenterY();
+        btn_goToTitle.setZoom(90);
+        btn_goToTitle.setCenterX(prevCX);
+        btn_goToTitle.setCenterY(prevCY);
+        flg_goToTitleScene = true;
     }
 
     static class Row
@@ -231,7 +186,7 @@ public class ResultScene extends AbstractScene
                 }
             }
 
-            x = max(x-9, goalX);
+            x = max(x-8, goalX);
             if (x <= goalX + 70) {
                 visible = true;
             }

@@ -4,11 +4,15 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+/**
+ * 画像リストを順に描画してアニメーションを表現するクラス。
+ */
 public abstract class Animation extends Sprite
 {
+    // 描画前の更新毎に呼び出される。
     abstract public void update();
 
-    protected final List<BufferedImage> anim;
+    final List<BufferedImage> anim;
     private int index;
     private final boolean isLoop;
 
@@ -47,6 +51,11 @@ public abstract class Animation extends Sprite
         this.index = index;
     }
 
+    /**
+     * 表示する画像を指す添字を{@code plus}だけ進める。
+     * 画像リストの終端を超えた場合は添字は画像リストの末尾を指す。
+     * @param plus 表示する画像を指す添字の増分
+     */
     public void addIndex(int plus)
     {
         int idx = this.getIndex();

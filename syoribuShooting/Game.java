@@ -73,7 +73,6 @@ public class Game extends FPSTimer
         }
     }
 
-    // ::::::: 変更禁止 :::::::
     // FPS毎にこの関数が呼び出される
     @Override
     public void callBack()
@@ -106,6 +105,7 @@ public class Game extends FPSTimer
         // 描画に用いるインスタンスの選択
         this.window = new GameWindow(screenBuffer,GameConfig.isFullScreen);
         this.window.getEventManager().setCorrection(GameConfig.REAL_VIRTUAL_CORRECTION);
+        this.window.getWindow().setResizable(false);
         
         this.window.setTitle("Syoribu-Shooting");
         this.eventManager = window.getEventManager();

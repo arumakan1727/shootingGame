@@ -3,6 +3,9 @@ package syoribuShooting.sprite;
 import syoribuShooting.system.Utils;
 import static java.lang.Math.abs;
 
+/**
+ * 設定した始点から終点までの直線移動を処理をするクラス。
+ */
 public class LinearMotion extends Motion
 {
     private int startX, startY, toX, toY;
@@ -69,11 +72,13 @@ public class LinearMotion extends Motion
                 '}';
     }
 
+    // x座標が終点に到達しているならtrueを返す
     public boolean isArrivedEndX()
     {
         return abs(sprite.getXdefault() - this.getStartX()) > abs(getToX() - getStartX());
     }
 
+    // y座標が終点に到達しているならtrueを返す
     public boolean isArrivedEndY()
     {
         return abs(sprite.getYdefault() - this.getStartY()) > abs(getToY() - getStartY());
@@ -136,7 +141,7 @@ public class LinearMotion extends Motion
     /**
      * X方向のベクトルを求める
      * (speed / 斜辺) * 底辺
-     * @return
+     * @return x方向のベクトル成分
      */
     private double calcVx()
     {
@@ -144,6 +149,11 @@ public class LinearMotion extends Motion
         return this.vx = (this.getSpeed() / this.dist) * (toX - startX);
     }
 
+    /**
+     * Y方向のベクトルを求める
+     * (speed / 斜辺) * 底辺
+     * @return y方向のベクトル成分
+     */
     private double calcVy()
     {
         if (getSpeed() == 0) return this.vy = 0;

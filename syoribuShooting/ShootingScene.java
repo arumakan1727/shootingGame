@@ -28,7 +28,7 @@ enum State
 
 public class ShootingScene extends AbstractScene implements TargetEventListener
 {
-    private static final int TIME_LIMIT = 120 * 1000;
+    private static final int TIME_LIMIT = 40 * 1000;
     private static final Shape CLIP_TIME_AREA = new RoundRectangle2D.Float(VIRTUAL_WIDTH-480, 14, 450, 75, 10, 10);
     private static final Color COLOR_TIME_AREA = new Color(255, 255, 255, 100);
     private final StopWatch stopWatch;
@@ -198,11 +198,6 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
     public void draw(final Graphics2D g2d)
     {
         g2d.drawImage(this.getBackImage(), 0, 0, GameConfig.VIRTUAL_WIDTH, GameConfig.VIRTUAL_HEIGHT, null);
-/*
-        if (scoreManager.isFever()) {
-            fireFrameAnim.draw(g2d);
-        }
-*/
         targetManager.draw(g2d);
 
         {
@@ -255,7 +250,6 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
                 getResourceAsStream(stage.getNextStageFilePath())
         );
         Runtime.getRuntime().gc();
-        System.out.println("------- Garbage Collected. -------");
     }
 
     private void stop()
@@ -295,12 +289,13 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
     public void clickedTarget(TargetEvent e)
     {
         new MP3Player(se_gun, false);
-        
+
         scoreManager.notifyHitTarget(e);
         final Target target = e.getTarget();
         if (target != null)
         {
             target.setState(Target.State.CLICKED);
+            Main.getAnimationProcessor().add( new HitEffect1(e.getMouseX(), e.getMouseY(), false) );
             if (target instanceof Item)
             {
                 switch (target.getType()) {
@@ -322,12 +317,5 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
                 new MP3Player(se_bomb, false);
             }
         }
-    }
-
-    @Override
-    protected void finalize() throws Throwable
-    {
-        super.finalize();
-        System.out.println("Shooting Finalize");
     }
 }

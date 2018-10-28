@@ -38,7 +38,6 @@ public class MP3Player
         this.isLoop = false;
         if (pthread != null &&  pthread.player != null) {
             this.pthread.player.stop();
-            System.out.println("MP3Player.stop()");
         }
     }
 
@@ -62,7 +61,6 @@ public class MP3Player
                 pthread = new PlayThread();
                 pthread.start();
             }
-//            System.out.println("Loop:" + isLoop + " Music-playbackFinished: " + soundUrl);
         }
     }
     // 再生スレッドクラス

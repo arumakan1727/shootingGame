@@ -141,11 +141,4 @@ public class TitleScene extends AbstractScene implements ActionListener
         btn_startPlay.setCenterX(prevCX);
         btn_startPlay.setCenterY(prevCY);
     }
-
-    @Override
-    protected void finalize() throws Throwable
-    {
-        super.finalize();
-        System.out.println("Title Finalize");
-    }
 }

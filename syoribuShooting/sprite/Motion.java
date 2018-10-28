@@ -2,6 +2,9 @@ package syoribuShooting.sprite;
 
 import java.awt.geom.Point2D;
 
+/**
+ * {@link Sprite}に設定する動きを処理する基底のクラス
+ */
 public abstract class Motion
 {
     abstract protected void onMove(long elapsedTime);

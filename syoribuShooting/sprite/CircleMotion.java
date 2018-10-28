@@ -6,12 +6,12 @@ import static java.lang.Math.sin;
 import static java.lang.Math.cos;
 import static java.lang.Math.PI;
 
+// 円運動の処理をするクラス。
 public class CircleMotion extends Motion
 {
-    private double radius;
-
-    private double theta;
-    private int centerX, centerY;
+    private double  radius;
+    private double  theta;
+    private int     centerX, centerY;
 
     public CircleMotion(double radius, double speed, int centerX, int centerY)
     {

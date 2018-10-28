@@ -3,13 +3,11 @@ package syoribuShooting;
 import syoribuShooting.sprite.TargetType;
 import syoribuShooting.system.Utils;
 
-import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,12 +52,10 @@ public final class GameConfig
         VIRTUAL_HEIGHT  = 1080;
         REAL_WIDTH      = (int) (toolkit.getScreenSize().getWidth());
         REAL_HEIGHT     = (int) (toolkit.getScreenSize().getHeight());
-//        REAL_WIDTH = (int)(1920 * 0.6);
-//        REAL_HEIGHT = (int)(1080 * 0.6);
         OUTER_WINDOW_PLUS   = VIRTUAL_WIDTH + 500;
         OUTER_WINDOW_MINUS  = -500;
         FPS          = 40;
-        isFullScreen = true;
+        isFullScreen = false;
         REAL_VIRTUAL_CORRECTION = (double)VIRTUAL_HEIGHT / (double)REAL_HEIGHT;
         
         ID_SHOOTING_CURSOR_NORMAL = 10;
@@ -87,13 +83,10 @@ public final class GameConfig
         se_magical      = getResource(PATH_SOUNDS + "se_scoreUp.mp3");
 
         System.out.println("GetResource: done");
-        System.out.println("Vertual: " + VIRTUAL_WIDTH + "x" + VIRTUAL_HEIGHT);
-        System.out.println("Real-Virtual-Correction: " + REAL_VIRTUAL_CORRECTION);
+        System.out.println("VirtualScreen: " + VIRTUAL_WIDTH + "x" + VIRTUAL_HEIGHT);
+        System.out.println("Real-Virtual-ratio: " + REAL_VIRTUAL_CORRECTION);
         System.out.println("Real:    " + REAL_WIDTH + "x" + REAL_HEIGHT);
         System.out.println("FPS: " + FPS);
-        System.out.printf("targetA: %dx%d\n", img_targetA.getWidth(), img_targetA.getHeight());
-        System.out.printf("targetB: %dx%d\n", img_targetB.getWidth(), img_targetB.getHeight());
-        System.out.printf("targetC: %dx%d\n", img_targetC.getWidth(), img_targetC.getHeight());
         System.out.println(toolkit.getBestCursorSize(64, 64));
         try {
             Thread.sleep(100);

@@ -11,12 +11,18 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
+/**
+ * マウスでクリック可能なボタンを表すクラス。
+ * 表示されるボタンの見た目は設定された{@link BufferedImage}となる。
+ *
+ * 利用者はインスタンスを生成したあと、{@link Button#init(CursorManager)}を呼び出す必要がある。
+ */
 public class Button extends Sprite
 {
     private BufferedImage image;
     private ActionListener actionListener;
-    private boolean isMouseEnter = false;
-    private boolean isMousePress = false;
+    private boolean beforeMouseEnter = false;
+    private boolean beforeMousePress = false;
     private CursorManager cursorManager;
     private boolean isEnable = true;
 
@@ -43,49 +49,55 @@ public class Button extends Sprite
 
     public void update(InputEventManager eventManager)
     {
-        Rectangle rect = new Rectangle((int)getX(), (int)getY(), getWidth(), getHeight());
-        boolean isContain = rect.contains(eventManager.mouseX(), eventManager.mouseY());
-
-        if (isEnable && !isMouseEnter && isContain) {
-            cursorManager.changeCurrentCursor(Cursor.HAND_CURSOR);
-            actionListener.mouseEntered();
-            isMouseEnter = true;
-        }
-        else if (isMouseEnter && !isContain) {
-            cursorManager.changeCurrentCursor(Cursor.DEFAULT_CURSOR);
-            actionListener.mouseExited();
-            isMouseEnter = false;
-        }
-
         if (!isEnable) {
             return;
         }
-        
+
+        // このボタンの境界を取得し、マウスが触れているか判定する
+        Rectangle rect = new Rectangle((int)getX(), (int)getY(), getWidth(), getHeight());
+        boolean isContain = rect.contains(eventManager.mouseX(), eventManager.mouseY());
+
+        // ちょうど今containになったときにマウスカーソルの画像を指の画像に変更してイベントを発火する
+        if (!beforeMouseEnter && isContain) {
+            cursorManager.changeCurrentCursor(Cursor.HAND_CURSOR);
+            actionListener.mouseEntered();
+            beforeMouseEnter = true;
+        }
+        // ちょうど今!containになったときにマウスカーソルの画像を指の画像に変更してイベントを発火する
+        else if (beforeMouseEnter && !isContain) {
+            cursorManager.changeCurrentCursor(Cursor.DEFAULT_CURSOR);
+            actionListener.mouseExited();
+            beforeMouseEnter = false;
+        }
+
+        // ちょうど今マウスが押された or ちょうど今マウスが離されたらイベントを発火する
         final int mouseCode = MouseEvent.BUTTON1;
         if (isContain)
         {
             if (eventManager.justNowMousePressed(mouseCode)) {
                 actionListener.justNowPressed();
-                isMousePress = true;
-            } else if (isMousePress && eventManager.isMouseReleased(mouseCode)){
-                isMousePress = false;
+                beforeMousePress = true;
+            } else if (beforeMousePress && eventManager.isMouseReleased(mouseCode)){
+                beforeMousePress = false;
                 actionListener.justNowReleased();
             }
         }
         else
         {
-            if (isMousePress) {
-                isMousePress = false;
+            if (beforeMousePress) {
+                beforeMousePress = false;
                 actionListener.mouseExited();
             }
         }
     }
 
+    // ボタンのイメージを描画する
+    // !isEnableのときは半透明に描画する
     public void draw(Graphics2D g2d)
     {
         Composite defaultComposite = g2d.getComposite();
         if (!isEnable) {
-            AlphaComposite alpha = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f);
+            AlphaComposite alpha = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f);
             g2d.setComposite(alpha);
         }
         
@@ -110,7 +122,7 @@ public class Button extends Sprite
 
     public boolean isMouseEnter()
     {
-        return this.isMouseEnter;
+        return this.beforeMouseEnter;
     }
     
 }

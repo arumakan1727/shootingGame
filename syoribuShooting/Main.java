@@ -1,5 +1,6 @@
 package syoribuShooting;
 
+import org.jetbrains.annotations.NotNull;
 import syoribuShooting.sprite.AnimationProcessor;
 import syoribuShooting.system.BufferedResponsivePanel;
 import syoribuShooting.system.BufferedVolatilePanel;
@@ -36,7 +37,15 @@ public class Main {
     }
 
     /**
-     * @param args
+     * Creates instance of {@link Game} with command line argument.
+     * 画面描画バッファリングにはデフォルトで{@link java.awt.image.VolatileImage}を使用する。これはコマンドライン引数で設定可能。
+     * @param args コマンドライン引数。以下のパラメータを渡すことができます。
+     *             <ul>
+     *             <li>--buff=another - 画面描画のバッファリングに{@link java.awt.image.BufferedImage}を使用する。この指定をすると描画が遅くなることが多い。</li>
+     *             <li>--nosounds - 音声の再生を無効化する。</li>
+     *             <li>--frame - ウィンドウのフレームを有効にする。</li>
+     *             <li>--noframe - ウィンドウのフレームを無効化し、フルスクリーンで実行する。</li>
+     *             </ul>
      */
     public static void main(String[] args) {
         ScreenBuffer buffer = null;
@@ -63,18 +72,10 @@ public class Main {
                     System.out.println("Frame enable");
                     break;
 
-//                case "--scale":
-//                    try {
-//                        ++i;
-//                        double scale = Double.parseDouble(args[i]);
-//                        GameConfig.REAL_HEIGHT  = (int)(VIRTUAL_HEIGHT * scale);
-//                        GameConfig.REAL_WIDTH   = (int)(VIRTUAL_WIDTH * scale);
-//                        System.out.println("scale: " + scale + ",  " + REAL_HEIGHT + "x" + REAL_WIDTH);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        System.exit(1);
-//                    }
-//                    break;
+                case "--noframe":
+                    GameConfig.isFullScreen = true;
+                    System.out.println("Frame enable");
+                    break;
 
                 default:
                     System.out.println();
@@ -83,7 +84,6 @@ public class Main {
                     System.out.println("[Hint]  \'--nosounds\' - Sound off.");
                     System.out.println("[Hint]  \'--frame\' - Window frame enable.");
                     System.exit(0);
-//                    System.out.println("[Hint]  \'--scale {scale}\' - Config window scale.");
             }
         }
 
