@@ -28,7 +28,7 @@ enum State
 
 public class ShootingScene extends AbstractScene implements TargetEventListener
 {
-    private static final int TIME_LIMIT = 40 * 1000;
+    private static final int TIME_LIMIT = 100 * 1000;
     private static final Shape CLIP_TIME_AREA = new RoundRectangle2D.Float(VIRTUAL_WIDTH-480, 14, 450, 75, 10, 10);
     private static final Color COLOR_TIME_AREA = new Color(255, 255, 255, 100);
     private final StopWatch stopWatch;
@@ -99,7 +99,6 @@ public class ShootingScene extends AbstractScene implements TargetEventListener
     {
         this.setState(State.WAIT_SHOOTING);
         this.stopWatch.initTimer(TIME_LIMIT);
-//        this.fireFrameAnim.setY(120);
         if (! Main.getCursorManager().changeCurrentCursor(ID_SHOOTING_CURSOR_NORMAL))
         {
             Main.getCursorManager().changeCurrentCursor(ID_CLEAR_CURSOR);
